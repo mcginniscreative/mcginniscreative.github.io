@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Websites — McGinnis Creative</title>
+<meta name="description" content="Website design by Aaron McGinnis of McGinnis Creative: ecommerce, ministry, and counseling practices.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="assets/mc-logo.png" alt="McGinnis Creative"></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
+      <a href="videos.html">Videos</a>
+      <a href="branding.html">Branding</a>
+      <a class="active" href="websites.html">Websites</a>
+      <a href="interactives.html">Interactives</a>
+      <a class="nav-cta" href="index.html#contact">Let's talk</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="blob blob-indigo"></div>
+  <div class="blob blob-coral"></div>
+  <div class="wrap">
+    <a class="back-link" href="index.html">← Home</a>
+    <p class="page-kicker">Websites</p>
+    <h1 class="page-title">Web Design</h1>
+    <p class="page-desc">Sites built to carry a voice, not just a template: ecommerce, ministry, and counseling practices, each organized around the story they're telling.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:8px;">
+  <div class="wrap">
+
+    <div class="reveal project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/flower-city-logo.png" alt="Flower City Custom Apparel logo"></div>
+        <div>
+          <h3 class="project-title">Flower City Custom Apparel</h3>
+          <span class="project-role">Ecommerce site · product customizer · owner</span>
+        </div>
+      </div>
+      <p class="project-desc">The live storefront and custom apparel designer: upload a logo, place it, choose a garment, checkout.</p>
+      <p class="project-mine"><b>My work:</b> founded Flower City Custom Apparel and designed and built the site, including the step-by-step product customizer.</p>
+      <div class="project-gallery">
+        <img src="assets/flower-city-site-hero.jpg" alt="Flower City Custom Apparel website homepage">
+        <img src="assets/flower-city-site-help.jpg" alt="Flower City Custom Apparel website">
+      </div>
+    </div>
+
+    <div class="reveal project">
+      <div class="project-head">
+        <h3 class="project-title">Peter Englert</h3>
+        <span class="project-role">Website design · McGinnis Creative</span>
+      </div>
+      <p class="project-desc">Site design for a pastor's podcast, sermon library, and blog, practical theology content organized for a weekly audience.</p>
+      <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site and organized the content strategy across podcast, sermons, and blog.</p>
+      <div class="project-gallery single"><img src="assets/peter-1.jpg" alt="Peter Englert website homepage"></div>
+    </div>
+
+    <div class="reveal project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/robyn-logo.png" alt="Robyn Englert Counseling logo mark"></div>
+        <div>
+          <h3 class="project-title">Robyn Englert Counseling</h3>
+          <span class="project-role">Website design · McGinnis Creative</span>
+        </div>
+      </div>
+      <p class="project-desc">Site design for a mental health counseling practice, warm and credentialed at once.</p>
+      <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site.</p>
+      <div class="project-gallery single"><img src="assets/robyn-overview.jpg" alt="Robyn Englert Counseling website homepage"></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="blob blob-indigo"></div>
+  <div class="blob blob-coral"></div>
+  <div class="wrap contact-inner">
+    <h2>Let's build something worth remembering.</h2>
+    <p>Have a brand, a story, or a project in mind? I'd love to hear about it.</p>
+    <a class="btn btn-primary" href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a>
+    <footer>
+      <span>© <span id="year"></span> McGinnis Creative</span>
+      <span>Rochester, NY · <a href="tel:5853310509">585-331-0509</a></span>
+    </footer>
+  </div>
+</section>
+
+<script>
+  document.documentElement.classList.add('js');
+  document.getElementById('year').textContent = new Date().getFullYear();
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+  }
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.08, rootMargin:'0px 0px -30px 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
