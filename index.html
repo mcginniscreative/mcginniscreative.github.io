@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaron McGinnis — Communications &amp; Multimedia</title>
+<meta name="description" content="Storytelling, brand identity, and multimedia work by Aaron McGinnis, based in Rochester, NY.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#faf8f1;
+    --panel:#ffffff;
+    --panel-sunken:#f4f1e6;
+    --line:#e4dfcd;
+    --text:#191b1d;
+    --text-soft:#4b5257;
+    --text-faint:#8b917f;
+    --teal:#2c5b68;
+    --teal-deep:#1c3d47;
+    --teal-soft:#e2ebec;
+    --gold:#b9812f;
+    --gold-soft:#f6ecd9;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Work Sans",system-ui,sans-serif;
+    padding-block:56px;
+    padding-inline:24px;
+  }
+
+  .wrap{max-width:1040px;margin:0 auto;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin:0 0 14px;
+  }
+
+  h1{
+    font-family:"Fraunces",serif;
+    font-weight:600;
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.04;
+    margin:0 0 16px;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    max-width:18ch;
+    color:var(--teal-deep);
+  }
+
+  .lede{
+    font-size:15px;
+    line-height:1.65;
+    color:var(--text-soft);
+    max-width:64ch;
+    margin:0 0 6px;
+  }
+  .lede strong{color:var(--text);font-weight:600;}
+
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:26px 0 0;
+  }
+  .meta-chip{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.04em;
+    color:var(--text-soft);
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:6px 11px;
+    border-radius:3px;
+  }
+  .meta-chip a{color:var(--text-soft);text-decoration:none;}
+  .meta-chip a:hover{color:var(--teal);}
+
+  header.hero{
+    padding-bottom:44px;
+    margin-bottom:44px;
+    border-bottom:2px solid var(--teal);
+  }
+
+  .section{margin-bottom:56px;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .section-index{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .section-title{
+    font-family:"Fraunces",serif;
+    font-weight:600;
+    font-size:23px;
+    margin:0;
+    letter-spacing:-.005em;
+    color:var(--teal-deep);
+  }
+  .section-desc{
+    font-size:13.5px;
+    color:var(--text-soft);
+    line-height:1.6;
+    max-width:64ch;
+    margin:10px 0 26px;
+  }
+
+  .reel{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:18px;
+  }
+  .reel-card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .reel-card:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(44,91,104,.35);}
+  .reel-card:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .reel-thumb{position:relative;aspect-ratio:16/9;background:#0c0e0b;overflow:hidden;}
+  .reel-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;}
+  .reel-card:hover .reel-thumb img{opacity:1;}
+  .play-badge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .play-badge::after{
+    content:"";width:0;height:0;border-style:solid;border-width:8px 0 8px 13px;
+    border-color:transparent transparent transparent rgba(255,255,255,.95);
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));margin-left:3px;
+  }
+  .reel-body{padding:12px 13px 14px;}
+  .reel-tag{
+    font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--gold);margin:0 0 6px;
+  }
+  .reel-title{font-size:13px;font-weight:600;line-height:1.35;margin:0 0 3px;color:var(--text);}
+  .reel-org{font-size:11.5px;color:var(--text-faint);}
+
+  .featured{grid-column:1 / -1;display:grid;grid-template-columns:1.1fr .9fr;gap:0;}
+  .featured .reel-thumb{aspect-ratio:auto;height:100%;}
+  .featured .reel-body{padding:18px 20px;display:flex;flex-direction:column;justify-content:center;}
+  .featured .reel-tag{font-size:10.5px;}
+  .featured .reel-title{font-size:17px;font-family:"Fraunces",serif;font-weight:600;}
+  .featured .reel-org{font-size:12.5px;}
+  @media (max-width:560px){.featured{grid-template-columns:1fr;}}
+
+  .project{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:22px 24px 26px;margin-bottom:18px;
+  }
+  .project-top{display:flex;gap:18px;align-items:center;margin-bottom:16px;}
+  .logo-plate{
+    flex:none;width:104px;height:104px;display:flex;align-items:center;justify-content:center;
+    background:var(--panel-sunken);border:1px solid var(--line);border-radius:8px;padding:12px;
+  }
+  .logo-plate img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+  .project-head{flex:1;min-width:0;}
+  .project-title{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 5px;color:var(--teal-deep);}
+  .project-role{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;color:var(--gold);}
+  .project-desc{font-size:13px;line-height:1.6;color:var(--text-soft);max-width:70ch;margin:0 0 10px;}
+  .project-mine{
+    font-size:12.5px;line-height:1.55;color:var(--text);background:var(--teal-soft);
+    border-left:3px solid var(--teal);padding:9px 12px;border-radius:0 4px 4px 0;max-width:70ch;margin:0 0 18px;
+  }
+  .project-mine b{color:var(--teal-deep);}
+  .project-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+  .project-gallery img{width:100%;display:block;border-radius:5px;border:1px solid var(--line);background:var(--panel-sunken);}
+  .project-gallery.single{grid-template-columns:1fr;}
+  .project-gallery + .project-gallery{margin-top:10px;}
+  .project-gallery.single img{max-height:520px;object-fit:contain;margin:0 auto;}
+
+  footer{
+    border-top:1px solid var(--line);padding-top:26px;margin-top:8px;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-faint);letter-spacing:.03em;
+  }
+  footer a{color:var(--text-soft);}
+
+  @media (max-width:480px){
+    body{padding-inline:16px;padding-block:36px;}
+    .reel{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+    .project-top{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Rochester, NY</p>
+    <h1>Storytelling, brand &amp; multimedia work</h1>
+    <p class="lede">I'm <strong>Aaron McGinnis</strong>, a communications and multimedia producer based in Rochester, NY. I build brand identities, shoot and edit video, design websites, and help organizations and the people in them tell their stories well. This is a selection of that work.</p>
+    <div class="meta-row">
+      <span class="meta-chip"><a href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a></span>
+      <span class="meta-chip">585-331-0509</span>
+      <span class="meta-chip">Rochester, NY</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-index">01</span>
+      <h2 class="section-title">The reel</h2>
+    </div>
+    <p class="section-desc">Human-interest interviews, brand films, camp and community video, and research case studies, produced, shot, and edited start to finish.</p>
+
+    <div class="reel">
+      <a class="reel-card featured" href="https://youtu.be/1LGXij4pjcY" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid1.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Human story</p>
+          <p class="reel-title">Lauren McCrae, Transfer Student Story</p>
+          <p class="reel-org">Roberts Wesleyan University</p>
+        </div>
+      </a>
+      <a class="reel-card featured" href="https://youtu.be/ImuMtFGYG8k" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid2.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Human story</p>
+          <p class="reel-title">Becoming the Teacher She Needed, Vanessa Leddick Cole</p>
+          <p class="reel-org">Roberts Wesleyan University</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/7MVGm8lQxqY" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid14.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Festival trailer</p>
+          <p class="reel-title">Virginia Film Festival Trailer</p>
+          <p class="reel-org">Aaron McGinnis</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/j3cT0fE-Emk" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid15.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Brand film</p>
+          <p class="reel-title">Sigora: More Than Solar</p>
+          <p class="reel-org">Aaron McGinnis</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/SFq5f_HO1b0" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid7.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Camp</p>
+          <p class="reel-title">SB2W Counselor Promo</p>
+          <p class="reel-org">SB2w Adventure &amp; Sports Camp</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/DXwOmqnTDmc" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid9.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Human story</p>
+          <p class="reel-title">Meet Maddie, Swimmer Turned Trail Runner</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/gZ7B6BsAr8s" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid3.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Human story</p>
+          <p class="reel-title">Thank You, Teachers!</p>
+          <p class="reel-org">Roberts Wesleyan University</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/C15HSMfV_gU" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid8.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Community</p>
+          <p class="reel-title">Trail Collective</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/QKMCwCaG2sw" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid10.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Community</p>
+          <p class="reel-title">Saucony Group Run</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/6iAzS2aPNh4" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid4.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Event recap</p>
+          <p class="reel-title">Medved Madness</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/8Gi6fZOs2EM" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid5.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Event recap</p>
+          <p class="reel-title">The Feast 2025 Recap</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/9Aw-Q8vlb2w" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid11.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Hype / promo</p>
+          <p class="reel-title">Women's Soccer ECC Hype Video</p>
+          <p class="reel-org">McGinnis Creative</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://youtu.be/8ABqCLULjmo" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid6.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Content series</p>
+          <p class="reel-title">Did You Know? Roberts 150 Trivia #1</p>
+          <p class="reel-org">Roberts Wesleyan University</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://www.youtube.com/watch?v=5iBQG03HSeU" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid12.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Case study</p>
+          <p class="reel-title">American Underground, Case Study Trailer</p>
+          <p class="reel-org">Institute for Advanced Studies in Culture</p>
+        </div>
+      </a>
+      <a class="reel-card" href="https://vimeo.com/281266781" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid13.jpg" alt=""><span class="play-badge"></span></div>
+        <div class="reel-body">
+          <p class="reel-tag">Case study</p>
+          <p class="reel-title">CXC Case Study</p>
+          <p class="reel-org">Thriving Cities Group</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-index">02</span>
+      <h2 class="section-title">Brand &amp; identity systems</h2>
+    </div>
+    <p class="section-desc">Logo, brand book, and a visual system carried consistently across every piece it touches.</p>
+
+    <div class="project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/ff-logo.png" alt="Frank and Frank Heating and Cooling logo"></div>
+        <div class="project-head">
+          <h3 class="project-title">Frank &amp; Frank Heating &amp; Cooling</h3>
+          <span class="project-role">Full rebrand, logo, website, vehicle wrap</span>
+        </div>
+      </div>
+      <p class="project-desc">Ground-up brand identity for a Rochester HVAC company. Nothing carried over from before.</p>
+      <p class="project-mine"><b>My work:</b> built the full rebrand from scratch, logo, color system, brand booklet, website, and the vehicle wrap carried across the van.</p>
+      <div class="project-gallery single">
+        <img src="assets/ff-overview.jpg" alt="Frank and Frank Heating and Cooling brand overview">
+      </div>
+      <div class="project-gallery">
+        <img src="assets/ff-van-left.jpg" alt="Frank and Frank Heating and Cooling branded van">
+        <img src="assets/ff-sign.jpg" alt="Frank and Frank Heating and Cooling yard sign">
+        <img src="assets/ff-sticker.jpg" alt="Frank and Frank Heating and Cooling printed PM sticker mockup">
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/flower-city-logo.png" alt="Flower City Custom Apparel logo"></div>
+        <div class="project-head">
+          <h3 class="project-title">Flower City Custom Apparel</h3>
+          <span class="project-role">Brand book, logo, owner</span>
+        </div>
+      </div>
+      <p class="project-desc">Founded and run start to finish: logo, brand collateral, the live ecommerce site and product customizer, and ongoing social content.</p>
+      <p class="project-mine"><b>My work:</b> founded and run Flower City Custom Apparel, built the brand, the logo, the site and product customizer, and the social content that promotes it.</p>
+      <div class="project-gallery">
+        <img src="assets/flower-city-share1.jpg" alt="Flower City Custom Apparel share image">
+        <img src="assets/flower-city-share2.jpg" alt="Flower City Custom Apparel share image">
+      </div>
+      <div class="project-gallery">
+        <img src="assets/flower-city-site-hero.jpg" alt="Flower City Custom Apparel website homepage">
+        <img src="assets/flower-city-site-help.jpg" alt="Flower City Custom Apparel website">
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/thrive-garden-logo.png" alt="Thrive Garden logo"></div>
+        <div class="project-head">
+          <h3 class="project-title">Thrive Garden</h3>
+          <span class="project-role">Brand identity, applied system</span>
+        </div>
+      </div>
+      <p class="project-desc">Visual brand for an online resource company supporting the social-emotional needs of elementary students, built to hold up across a full library of downloadable worksheets.</p>
+      <p class="project-mine"><b>My work:</b> designed the visual brand, logo, color palette, and illustration style, and applied it consistently across a full library of student resource worksheets.</p>
+      <div class="project-gallery">
+        <img src="assets/thrive-cover-1.jpg" alt="Thrive Garden Daily Feelings Tracker resource cover">
+        <img src="assets/thrive-cover-2.jpg" alt="Thrive Garden My Coping Toolbox resource cover">
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/sgn-logo.jpg" alt="Small Group Network logo"></div>
+        <div class="project-head">
+          <h3 class="project-title">Small Group Network</h3>
+          <span class="project-role">Social content, brand templates</span>
+        </div>
+      </div>
+      <p class="project-desc">Social media posts built inside an existing brand system, keeping voice and visual identity consistent post to post.</p>
+      <p class="project-mine"><b>My work:</b> created social posts and built out the branded templates behind them.</p>
+      <div class="project-gallery">
+        <img src="assets/sgn-question.jpg" alt="Small Group Network branded question post">
+        <img src="assets/sgn-photo.jpg" alt="Small Group Network branded event photo post">
+        <img src="assets/sgn-cover.jpg" alt="Small Group Network Surviving to Thriving cover post">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-index">03</span>
+      <h2 class="section-title">Web &amp; digital storytelling</h2>
+    </div>
+    <p class="section-desc">Sites built to carry a voice, not just a template: ministry and counseling practices, each organized around the story they're telling.</p>
+
+    <div class="project">
+      <div class="project-head">
+        <h3 class="project-title">Peter Englert</h3>
+        <span class="project-role">Website design, McGinnis Creative</span>
+      </div>
+      <p class="project-desc">Site design for a pastor's podcast, sermon library, and blog, practical theology content organized for a weekly audience.</p>
+      <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site and organized the content strategy across podcast, sermons, and blog.</p>
+      <div class="project-gallery single">
+        <img src="assets/peter-1.jpg" alt="Peter Englert website homepage">
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <div class="logo-plate"><img src="assets/robyn-logo.png" alt="Robyn Englert Counseling logo mark"></div>
+        <div class="project-head">
+          <h3 class="project-title">Robyn Englert Counseling</h3>
+          <span class="project-role">Website design, McGinnis Creative</span>
+        </div>
+      </div>
+      <p class="project-desc">Site design for a mental health counseling practice, warm and credentialed at once.</p>
+      <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site.</p>
+      <div class="project-gallery single">
+        <img src="assets/robyn-overview.jpg" alt="Robyn Englert Counseling website homepage">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-index">04</span>
+      <h2 class="section-title">Print &amp; merch design</h2>
+    </div>
+    <p class="section-desc">Team and event apparel, from concept sheet through production-ready art.</p>
+
+    <div class="project">
+      <div class="project-head">
+        <h3 class="project-title">Basketball+</h3>
+        <span class="project-role">Merch catalog, apparel design</span>
+      </div>
+      <p class="project-desc">A full merchandise catalog for a youth basketball program, hoodies, tees, shorts, and crewnecks designed as one cohesive line.</p>
+      <p class="project-mine"><b>My work:</b> designed the apparel line and laid out the merch catalog.</p>
+      <div class="project-gallery single">
+        <img src="assets/basketball-merch.jpg" alt="Basketball+ merchandise catalog">
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-index">05</span>
+      <h2 class="section-title">Event marketing</h2>
+    </div>
+    <p class="section-desc">Promotional and program collateral for a youth retreat, one example of 20+ events branded end to end.</p>
+
+    <div class="project">
+      <div class="project-head">
+        <h3 class="project-title">Heavenly Hope Youth Retreat</h3>
+        <span class="project-role">Retreat booklet, schedule &amp; devotionals</span>
+      </div>
+      <p class="project-desc">Title art, promotional graphics, and the printed retreat booklet, designed for a church youth retreat.</p>
+      <p class="project-mine"><b>My work:</b> designed the full brand for this retreat, title art, promotional graphics, and the printed booklet, cover through devotional pages.</p>
+      <div class="project-gallery">
+        <img src="assets/heavenly-hope-poster.jpg" alt="Heavenly Hope youth retreat title poster">
+        <img src="assets/heavenly-hope-banner.jpg" alt="Heavenly Hope youth retreat promotional banner">
+        <img src="assets/heavenly-hope-1.jpg" alt="Heavenly Hope youth retreat booklet cover and weekend schedule">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Aaron McGinnis · Rochester, NY · <a href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a> · 585-331-0509
+  </footer>
+</div>
+</body>
+</html>
