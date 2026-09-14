@@ -3,225 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aaron McGinnis — Communications &amp; Multimedia</title>
-<meta name="description" content="Storytelling, brand identity, and multimedia work by Aaron McGinnis, based in Rochester, NY.">
+<title>McGinnis Creative — Aaron McGinnis</title>
+<meta name="description" content="Brand identity, video, and web design by Aaron McGinnis of McGinnis Creative, based in Rochester, NY.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <style>
   :root{
     color-scheme: light;
-    --bg:#faf8f1;
-    --panel:#ffffff;
-    --panel-sunken:#f4f1e6;
-    --line:#e4dfcd;
-    --text:#191b1d;
-    --text-soft:#4b5257;
-    --text-faint:#8b917f;
-    --teal:#2c5b68;
-    --teal-deep:#1c3d47;
-    --teal-soft:#e2ebec;
-    --gold:#b9812f;
-    --gold-soft:#f6ecd9;
+    --ink:#16181c;
+    --ink-soft:#54585f;
+    --ink-faint:#8a8e97;
+    --bg:#fbfbfd;
+    --paper:#ffffff;
+    --line:#eaeaf1;
+    --indigo-1:#4152e8;
+    --indigo-2:#1c12a3;
+    --coral-1:#ff6f6f;
+    --coral-2:#ffb3ab;
+    --coral-soft:#ffeeec;
+    --indigo-soft:#eceeff;
   }
 
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--bg);
-    color:var(--text);
-    font-family:"Work Sans",system-ui,sans-serif;
-    padding-block:56px;
-    padding-inline:24px;
+    color:var(--ink);
+    font-family:"Poppins",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
 
-  .wrap{max-width:1040px;margin:0 auto;}
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:28px;}
 
+  /* ---- nav ---- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,251,253,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1120px;margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .nav-logo{display:flex;align-items:center;gap:0;}
+  .nav-logo img{height:34px;width:auto;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{
+    font-size:14px;font-weight:500;text-decoration:none;color:var(--ink-soft);
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--indigo-1);}
+  .nav-cta{
+    font-size:13.5px;font-weight:600;color:#fff;background:var(--ink);
+    padding:9px 18px;border-radius:100px;text-decoration:none;
+    transition:transform .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--indigo-2);transform:translateY(-1px);}
+  @media (max-width:640px){.nav-links a:not(.nav-cta){display:none;}}
+
+  /* ---- decorative blobs ---- */
+  .blob{position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none;z-index:0;}
+  .blob-indigo{background:linear-gradient(135deg,var(--indigo-1),var(--indigo-2));}
+  .blob-coral{background:linear-gradient(135deg,#fff,var(--coral-1));}
+
+  /* ---- hero ---- */
+  .hero{position:relative;padding:96px 0 90px;overflow:hidden;}
+  .hero .blob-indigo{width:420px;height:420px;top:-160px;right:-120px;opacity:.9;}
+  .hero .blob-coral{width:260px;height:260px;top:60px;right:180px;opacity:.85;}
+  .hero-grid{
+    position:relative;z-index:1;
+    display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center;
+  }
   .eyebrow{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:11.5px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--gold);
-    font-weight:600;
-    margin:0 0 14px;
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--indigo-2);background:var(--indigo-soft);
+    padding:6px 14px;border-radius:100px;margin:0 0 22px;
   }
-
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--coral-1);}
   h1{
-    font-family:"Fraunces",serif;
-    font-weight:600;
-    font-size:clamp(34px,5vw,54px);
-    line-height:1.04;
-    margin:0 0 16px;
-    letter-spacing:-.01em;
-    text-wrap:balance;
-    max-width:18ch;
-    color:var(--teal-deep);
+    font-family:"Poppins",sans-serif;font-weight:800;
+    font-size:clamp(36px,5vw,58px);line-height:1.06;letter-spacing:-.02em;
+    margin:0 0 22px;text-wrap:balance;color:var(--ink);
+  }
+  h1 .accent{
+    background:linear-gradient(135deg,var(--indigo-1),var(--coral-1));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{font-size:17px;line-height:1.65;color:var(--ink-soft);max-width:52ch;margin:0 0 32px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-size:14.5px;font-weight:600;padding:13px 26px;border-radius:100px;
+    text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(22,24,28,.45);}
+  .btn-ghost{background:var(--paper);color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--indigo-1);color:var(--indigo-1);transform:translateY(-2px);}
+
+  .hero-photo{position:relative;z-index:1;}
+  .hero-photo-frame{
+    position:relative;aspect-ratio:1;border-radius:28px;overflow:hidden;
+    box-shadow:0 30px 60px -24px rgba(28,18,163,.35);
+  }
+  .hero-photo-frame img{width:100%;height:100%;object-fit:cover;}
+  .hero-photo-tag{
+    position:absolute;left:-14px;bottom:-14px;background:var(--paper);
+    border:1px solid var(--line);border-radius:14px;padding:10px 16px;
+    font-size:12.5px;font-weight:600;box-shadow:0 12px 30px -14px rgba(22,24,28,.25);
+  }
+  .hero-photo-tag span{display:block;font-size:10.5px;font-weight:500;color:var(--ink-faint);margin-top:1px;}
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-photo{order:-1;max-width:280px;margin:0 auto 8px;}
   }
 
-  .lede{
-    font-size:15px;
-    line-height:1.65;
-    color:var(--text-soft);
-    max-width:64ch;
-    margin:0 0 6px;
-  }
-  .lede strong{color:var(--text);font-weight:600;}
-
-  .meta-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin:26px 0 0;
-  }
-  .meta-chip{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:11px;
-    letter-spacing:.04em;
-    color:var(--text-soft);
-    background:var(--panel);
-    border:1px solid var(--line);
-    padding:6px 11px;
-    border-radius:3px;
-  }
-  .meta-chip a{color:var(--text-soft);text-decoration:none;}
-  .meta-chip a:hover{color:var(--teal);}
-
-  header.hero{
-    padding-bottom:44px;
-    margin-bottom:44px;
-    border-bottom:2px solid var(--teal);
+  /* ---- reveal ---- */
+  .reveal{opacity:1;transform:none;transition:opacity .6s ease, transform .6s ease;}
+  .js .reveal{opacity:0;transform:translateY(18px);}
+  .js .reveal.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion: reduce){
+    .js .reveal{opacity:1;transform:none;transition:none;}
   }
 
-  .section{margin-bottom:56px;}
-  .section-head{
-    display:flex;
-    align-items:baseline;
-    gap:14px;
-    margin-bottom:6px;
-  }
-  .section-index{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:12px;
-    color:var(--gold);
-    font-weight:600;
+  /* ---- section shell ---- */
+  .section{padding:88px 0;position:relative;}
+  .section-head{max-width:640px;margin:0 0 48px;}
+  .section-kicker{
+    font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--coral-1);margin:0 0 12px;
   }
   .section-title{
-    font-family:"Fraunces",serif;
-    font-weight:600;
-    font-size:23px;
-    margin:0;
-    letter-spacing:-.005em;
-    color:var(--teal-deep);
+    font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-.01em;
+    margin:0 0 14px;color:var(--ink);
   }
-  .section-desc{
-    font-size:13.5px;
-    color:var(--text-soft);
-    line-height:1.6;
-    max-width:64ch;
-    margin:10px 0 26px;
-  }
+  .section-desc{font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;}
 
-  .reel{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:18px;
+  /* ---- about ---- */
+  .about{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:center;}
+  .about-photo{
+    border-radius:24px;overflow:hidden;aspect-ratio:4/5;
+    box-shadow:0 24px 50px -22px rgba(22,24,28,.3);
   }
+  .about-photo img{width:100%;height:100%;object-fit:cover;}
+  .about-text p{font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin:0 0 18px;}
+  .about-text strong{color:var(--ink);}
+  .fact-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .fact-chip{
+    font-size:12.5px;font-weight:500;color:var(--ink-soft);
+    background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:7px 14px;
+  }
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr;}.about-photo{max-width:320px;margin:0 auto;}}
+
+  /* ---- reel ---- */
+  .reel{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;}
   .reel-card{
-    display:block;
-    text-decoration:none;
-    color:inherit;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:6px;
-    overflow:hidden;
-    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+    display:block;text-decoration:none;color:inherit;background:var(--paper);
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
-  .reel-card:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(44,91,104,.35);}
-  .reel-card:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .reel-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(65,82,232,.35);border-color:var(--indigo-1);}
   .reel-thumb{position:relative;aspect-ratio:16/9;background:#0c0e0b;overflow:hidden;}
-  .reel-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;}
-  .reel-card:hover .reel-thumb img{opacity:1;}
-  .play-badge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .reel-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;}
+  .reel-card:hover .reel-thumb img{transform:scale(1.05);}
+  .play-badge{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(20,15,50,0);transition:background .2s ease;
+  }
+  .reel-card:hover .play-badge{background:rgba(20,15,50,.12);}
   .play-badge::after{
-    content:"";width:0;height:0;border-style:solid;border-width:8px 0 8px 13px;
-    border-color:transparent transparent transparent rgba(255,255,255,.95);
-    filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));margin-left:3px;
+    content:"";width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.94);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px -6px rgba(0,0,0,.35);
   }
-  .reel-body{padding:12px 13px 14px;}
-  .reel-tag{
-    font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--gold);margin:0 0 6px;
+  .reel-thumb::before{
+    content:"";position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    width:0;height:0;border-style:solid;border-width:9px 0 9px 15px;
+    border-color:transparent transparent transparent var(--ink);
+    z-index:2;margin-left:3px;
   }
-  .reel-title{font-size:13px;font-weight:600;line-height:1.35;margin:0 0 3px;color:var(--text);}
-  .reel-org{font-size:11.5px;color:var(--text-faint);}
+  .reel-body{padding:14px 15px 16px;}
+  .reel-tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo-1);margin:0 0 6px;}
+  .reel-title{font-size:13.5px;font-weight:600;line-height:1.35;margin:0 0 3px;}
+  .reel-org{font-size:11.5px;color:var(--ink-faint);}
+  .reel-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr .9fr;}
+  .reel-card.featured .reel-thumb{aspect-ratio:auto;}
+  .reel-card.featured .reel-body{padding:20px 24px;display:flex;flex-direction:column;justify-content:center;}
+  .reel-card.featured .reel-title{font-size:18px;font-weight:700;}
+  @media (max-width:560px){.reel-card.featured{grid-template-columns:1fr;}}
 
-  .featured{grid-column:1 / -1;display:grid;grid-template-columns:1.1fr .9fr;gap:0;}
-  .featured .reel-thumb{aspect-ratio:auto;height:100%;}
-  .featured .reel-body{padding:18px 20px;display:flex;flex-direction:column;justify-content:center;}
-  .featured .reel-tag{font-size:10.5px;}
-  .featured .reel-title{font-size:17px;font-family:"Fraunces",serif;font-weight:600;}
-  .featured .reel-org{font-size:12.5px;}
-  @media (max-width:560px){.featured{grid-template-columns:1fr;}}
-
+  /* ---- project cards ---- */
   .project{
-    background:var(--panel);border:1px solid var(--line);border-radius:8px;
-    padding:22px 24px 26px;margin-bottom:18px;
+    background:var(--paper);border:1px solid var(--line);border-radius:20px;
+    padding:28px 30px 32px;margin-bottom:20px;
+    transition:box-shadow .2s ease;
   }
-  .project-top{display:flex;gap:18px;align-items:center;margin-bottom:16px;}
+  .project:hover{box-shadow:0 24px 50px -30px rgba(22,24,28,.25);}
+  .project-top{display:flex;gap:20px;align-items:center;margin-bottom:18px;}
   .logo-plate{
-    flex:none;width:104px;height:104px;display:flex;align-items:center;justify-content:center;
-    background:var(--panel-sunken);border:1px solid var(--line);border-radius:8px;padding:12px;
+    flex:none;width:100px;height:100px;display:flex;align-items:center;justify-content:center;
+    background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px;
   }
-  .logo-plate img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
-  .project-head{flex:1;min-width:0;}
-  .project-title{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 5px;color:var(--teal-deep);}
-  .project-role{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;color:var(--gold);}
-  .project-desc{font-size:13px;line-height:1.6;color:var(--text-soft);max-width:70ch;margin:0 0 10px;}
+  .logo-plate img{max-width:100%;max-height:100%;object-fit:contain;}
+  .project-title{font-size:20px;font-weight:700;margin:0 0 5px;}
+  .project-role{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-1);}
+  .project-desc{font-size:13.5px;line-height:1.65;color:var(--ink-soft);max-width:70ch;margin:0 0 10px;}
   .project-mine{
-    font-size:12.5px;line-height:1.55;color:var(--text);background:var(--teal-soft);
-    border-left:3px solid var(--teal);padding:9px 12px;border-radius:0 4px 4px 0;max-width:70ch;margin:0 0 18px;
+    font-size:13px;line-height:1.6;color:var(--ink);background:var(--indigo-soft);
+    border-left:3px solid var(--indigo-1);padding:11px 14px;border-radius:0 10px 10px 0;
+    max-width:70ch;margin:0 0 20px;
   }
-  .project-mine b{color:var(--teal-deep);}
-  .project-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
-  .project-gallery img{width:100%;display:block;border-radius:5px;border:1px solid var(--line);background:var(--panel-sunken);}
+  .project-mine b{color:var(--indigo-2);}
+  .project-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+  .project-gallery img{
+    width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg);
+    transition:transform .25s ease;
+  }
+  .project-gallery a{display:block;border-radius:12px;overflow:hidden;}
+  .project-gallery img:hover{transform:scale(1.02);}
   .project-gallery.single{grid-template-columns:1fr;}
-  .project-gallery + .project-gallery{margin-top:10px;}
   .project-gallery.single img{max-height:520px;object-fit:contain;margin:0 auto;}
+  .project-gallery + .project-gallery{margin-top:12px;}
 
+  /* ---- footer / contact ---- */
+  .contact{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:90px 0 70px;}
+  .contact .blob-indigo{width:360px;height:360px;bottom:-140px;left:-100px;opacity:.55;}
+  .contact .blob-coral{width:220px;height:220px;top:-60px;right:80px;opacity:.5;}
+  .contact-inner{position:relative;z-index:1;text-align:center;max-width:640px;margin:0 auto;}
+  .contact h2{font-size:clamp(28px,4vw,42px);font-weight:800;margin:0 0 18px;letter-spacing:-.01em;}
+  .contact p{font-size:15.5px;line-height:1.65;color:rgba(255,255,255,.72);margin:0 0 32px;}
+  .contact .btn-primary{background:linear-gradient(135deg,var(--indigo-1),var(--coral-1));}
   footer{
-    border-top:1px solid var(--line);padding-top:26px;margin-top:8px;
-    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-faint);letter-spacing:.03em;
+    border-top:1px solid rgba(255,255,255,.12);margin-top:64px;padding-top:26px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:12.5px;color:rgba(255,255,255,.55);
   }
-  footer a{color:var(--text-soft);}
+  footer a{text-decoration:none;color:rgba(255,255,255,.75);}
+  footer a:hover{color:#fff;}
 
   @media (max-width:480px){
-    body{padding-inline:16px;padding-block:36px;}
-    .reel{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
-    .project-top{flex-direction:column;align-items:flex-start;}
+    .wrap{padding-inline:20px;}
+    .hero{padding:72px 0 64px;}
+    .section{padding:64px 0;}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="hero">
-    <p class="eyebrow">Rochester, NY</p>
-    <h1>Storytelling, brand &amp; multimedia work</h1>
-    <p class="lede">I'm <strong>Aaron McGinnis</strong>, a communications and multimedia producer based in Rochester, NY. I build brand identities, shoot and edit video, design websites, and help organizations and the people in them tell their stories well. This is a selection of that work.</p>
-    <div class="meta-row">
-      <span class="meta-chip"><a href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a></span>
-      <span class="meta-chip">585-331-0509</span>
-      <span class="meta-chip">Rochester, NY</span>
-    </div>
-  </header>
 
-  <section class="section">
-    <div class="section-head">
-      <span class="section-index">01</span>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><img src="assets/mc-logo.png" alt="McGinnis Creative"></a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a class="nav-cta" href="#contact">Let's talk</a>
+    </div>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<section class="hero">
+  <div class="blob blob-indigo"></div>
+  <div class="blob blob-coral"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Rochester, NY · Creative Studio</p>
+      <h1>Stories, brands &amp; multimedia <span class="accent">built to be remembered.</span></h1>
+      <p class="hero-sub">I'm Aaron McGinnis, founder of McGinnis Creative. I build brand identities, shoot and edit video, and design websites for people and organizations doing work that matters.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#work">See the work →</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="hero-photo-frame">
+        <img src="assets/aaron-headshot.jpg" alt="Aaron McGinnis">
+      </div>
+      <div class="hero-photo-tag">Aaron McGinnis<span>Founder, McGinnis Creative</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="reveal about-photo">
+      <img src="assets/aaron-headshot.jpg" alt="Aaron McGinnis smiling in a home office">
+    </div>
+    <div class="reveal about-text">
+      <p class="section-kicker">About</p>
+      <p><strong>I love telling stories through multimedia</strong>, especially when the work actually matters. For the past several years I've run McGinnis Creative, a one-person studio here in Rochester, where I've led full brand rebrands, built websites, and shot and edited video for clients ranging from a heating and cooling company to a youth sports camp.</p>
+      <p>Beyond client work, I've spent a lot of my career helping other people tell their own stories, whether it was my own students at Light House Studio, campers at Summer's Best 2 Weeks, students at my local church, or college students at Roberts Wesleyan University. Hearing those stories and making room for them to be shared has been just as important to me as telling my own.</p>
+      <div class="fact-row">
+        <span class="fact-chip">Rochester, NY</span>
+        <span class="fact-chip">Disc golf</span>
+        <span class="fact-chip">Gardening</span>
+        <span class="fact-chip">Hiking</span>
+        <span class="fact-chip">Home recording</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="section-kicker">Selected work</p>
       <h2 class="section-title">The reel</h2>
+      <p class="section-desc">Human-interest interviews, brand films, camp and community video, and research case studies, produced, shot, and edited start to finish.</p>
     </div>
-    <p class="section-desc">Human-interest interviews, brand films, camp and community video, and research case studies, produced, shot, and edited start to finish.</p>
 
-    <div class="reel">
+    <div class="reel reveal">
       <a class="reel-card featured" href="https://youtu.be/1LGXij4pjcY" target="_blank" rel="noopener">
         <div class="reel-thumb"><img src="thumbs/vid1.jpg" alt=""><span class="play-badge"></span></div>
         <div class="reel-body">
@@ -343,28 +444,28 @@
         </div>
       </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="section-head">
-      <span class="section-index">02</span>
-      <h2 class="section-title">Brand &amp; identity systems</h2>
+<section class="section" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="section-kicker">Brand systems</p>
+      <h2 class="section-title">Identity &amp; brand design</h2>
+      <p class="section-desc">Logo, brand book, and a visual system carried consistently across every piece it touches.</p>
     </div>
-    <p class="section-desc">Logo, brand book, and a visual system carried consistently across every piece it touches.</p>
 
-    <div class="project">
+    <div class="reveal project">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/ff-logo.png" alt="Frank and Frank Heating and Cooling logo"></div>
-        <div class="project-head">
+        <div>
           <h3 class="project-title">Frank &amp; Frank Heating &amp; Cooling</h3>
-          <span class="project-role">Full rebrand, logo, website, vehicle wrap</span>
+          <span class="project-role">Full rebrand · logo · website · vehicle wrap</span>
         </div>
       </div>
       <p class="project-desc">Ground-up brand identity for a Rochester HVAC company. Nothing carried over from before.</p>
       <p class="project-mine"><b>My work:</b> built the full rebrand from scratch, logo, color system, brand booklet, website, and the vehicle wrap carried across the van.</p>
-      <div class="project-gallery single">
-        <img src="assets/ff-overview.jpg" alt="Frank and Frank Heating and Cooling brand overview">
-      </div>
+      <div class="project-gallery single"><img src="assets/ff-overview.jpg" alt="Frank and Frank Heating and Cooling brand overview"></div>
       <div class="project-gallery">
         <img src="assets/ff-van-left.jpg" alt="Frank and Frank Heating and Cooling branded van">
         <img src="assets/ff-sign.jpg" alt="Frank and Frank Heating and Cooling yard sign">
@@ -372,12 +473,12 @@
       </div>
     </div>
 
-    <div class="project">
+    <div class="reveal project">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/flower-city-logo.png" alt="Flower City Custom Apparel logo"></div>
-        <div class="project-head">
+        <div>
           <h3 class="project-title">Flower City Custom Apparel</h3>
-          <span class="project-role">Brand book, logo, owner</span>
+          <span class="project-role">Brand book · logo · owner</span>
         </div>
       </div>
       <p class="project-desc">Founded and run start to finish: logo, brand collateral, the live ecommerce site and product customizer, and ongoing social content.</p>
@@ -392,12 +493,12 @@
       </div>
     </div>
 
-    <div class="project">
+    <div class="reveal project">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/thrive-garden-logo.png" alt="Thrive Garden logo"></div>
-        <div class="project-head">
+        <div>
           <h3 class="project-title">Thrive Garden</h3>
-          <span class="project-role">Brand identity, applied system</span>
+          <span class="project-role">Brand identity · applied system</span>
         </div>
       </div>
       <p class="project-desc">Visual brand for an online resource company supporting the social-emotional needs of elementary students, built to hold up across a full library of downloadable worksheets.</p>
@@ -408,12 +509,12 @@
       </div>
     </div>
 
-    <div class="project">
+    <div class="reveal project">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/sgn-logo.jpg" alt="Small Group Network logo"></div>
-        <div class="project-head">
+        <div>
           <h3 class="project-title">Small Group Network</h3>
-          <span class="project-role">Social content, brand templates</span>
+          <span class="project-role">Social content · brand templates</span>
         </div>
       </div>
       <p class="project-desc">Social media posts built inside an existing brand system, keeping voice and visual identity consistent post to post.</p>
@@ -424,74 +525,78 @@
         <img src="assets/sgn-cover.jpg" alt="Small Group Network Surviving to Thriving cover post">
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="section-head">
-      <span class="section-index">03</span>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="section-kicker">Websites</p>
       <h2 class="section-title">Web &amp; digital storytelling</h2>
+      <p class="section-desc">Sites built to carry a voice, not just a template: ministry and counseling practices, each organized around the story they're telling.</p>
     </div>
-    <p class="section-desc">Sites built to carry a voice, not just a template: ministry and counseling practices, each organized around the story they're telling.</p>
 
-    <div class="project">
-      <div class="project-head">
-        <h3 class="project-title">Peter Englert</h3>
-        <span class="project-role">Website design, McGinnis Creative</span>
+    <div class="reveal project">
+      <div class="project-top">
+        <div>
+          <h3 class="project-title">Peter Englert</h3>
+          <span class="project-role">Website design · McGinnis Creative</span>
+        </div>
       </div>
       <p class="project-desc">Site design for a pastor's podcast, sermon library, and blog, practical theology content organized for a weekly audience.</p>
       <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site and organized the content strategy across podcast, sermons, and blog.</p>
-      <div class="project-gallery single">
-        <img src="assets/peter-1.jpg" alt="Peter Englert website homepage">
-      </div>
+      <div class="project-gallery single"><img src="assets/peter-1.jpg" alt="Peter Englert website homepage"></div>
     </div>
 
-    <div class="project">
+    <div class="reveal project">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/robyn-logo.png" alt="Robyn Englert Counseling logo mark"></div>
-        <div class="project-head">
+        <div>
           <h3 class="project-title">Robyn Englert Counseling</h3>
-          <span class="project-role">Website design, McGinnis Creative</span>
+          <span class="project-role">Website design · McGinnis Creative</span>
         </div>
       </div>
       <p class="project-desc">Site design for a mental health counseling practice, warm and credentialed at once.</p>
       <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed and built the site.</p>
-      <div class="project-gallery single">
-        <img src="assets/robyn-overview.jpg" alt="Robyn Englert Counseling website homepage">
-      </div>
+      <div class="project-gallery single"><img src="assets/robyn-overview.jpg" alt="Robyn Englert Counseling website homepage"></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="section-head">
-      <span class="section-index">04</span>
+<section class="section" style="background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="section-kicker">Print</p>
       <h2 class="section-title">Print &amp; merch design</h2>
+      <p class="section-desc">Team and event apparel, from concept sheet through production-ready art.</p>
     </div>
-    <p class="section-desc">Team and event apparel, from concept sheet through production-ready art.</p>
-
-    <div class="project">
-      <div class="project-head">
-        <h3 class="project-title">Basketball+</h3>
-        <span class="project-role">Merch catalog, apparel design</span>
+    <div class="reveal project">
+      <div class="project-top">
+        <div>
+          <h3 class="project-title">Basketball+</h3>
+          <span class="project-role">Merch catalog · apparel design</span>
+        </div>
       </div>
       <p class="project-desc">A full merchandise catalog for a youth basketball program, hoodies, tees, shorts, and crewnecks designed as one cohesive line.</p>
       <p class="project-mine"><b>My work:</b> designed the apparel line and laid out the merch catalog.</p>
-      <div class="project-gallery single">
-        <img src="assets/basketball-merch.jpg" alt="Basketball+ merchandise catalog">
-      </div>
+      <div class="project-gallery single"><img src="assets/basketball-merch.jpg" alt="Basketball+ merchandise catalog"></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="section-head">
-      <span class="section-index">05</span>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="section-kicker">Events</p>
       <h2 class="section-title">Event marketing</h2>
+      <p class="section-desc">Promotional and program collateral for a youth retreat, one example of 20+ events branded end to end.</p>
     </div>
-    <p class="section-desc">Promotional and program collateral for a youth retreat, one example of 20+ events branded end to end.</p>
-
-    <div class="project">
-      <div class="project-head">
-        <h3 class="project-title">Heavenly Hope Youth Retreat</h3>
-        <span class="project-role">Retreat booklet, schedule &amp; devotionals</span>
+    <div class="reveal project">
+      <div class="project-top">
+        <div>
+          <h3 class="project-title">Heavenly Hope Youth Retreat</h3>
+          <span class="project-role">Retreat booklet · schedule &amp; devotionals</span>
+        </div>
       </div>
       <p class="project-desc">Title art, promotional graphics, and the printed retreat booklet, designed for a church youth retreat.</p>
       <p class="project-mine"><b>My work:</b> designed the full brand for this retreat, title art, promotional graphics, and the printed booklet, cover through devotional pages.</p>
@@ -501,11 +606,37 @@
         <img src="assets/heavenly-hope-1.jpg" alt="Heavenly Hope youth retreat booklet cover and weekend schedule">
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    Aaron McGinnis · Rochester, NY · <a href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a> · 585-331-0509
-  </footer>
-</div>
+<section class="contact" id="contact">
+  <div class="blob blob-indigo"></div>
+  <div class="blob blob-coral"></div>
+  <div class="wrap contact-inner">
+    <h2>Let's build something worth remembering.</h2>
+    <p>Have a brand, a story, or a project in mind? I'd love to hear about it.</p>
+    <a class="btn btn-primary" href="mailto:creative.mcginnis@gmail.com">creative.mcginnis@gmail.com</a>
+    <footer>
+      <span>© <span id="year"></span> McGinnis Creative</span>
+      <span>Rochester, NY · <a href="tel:5853310509">585-331-0509</a></span>
+    </footer>
+  </div>
+</section>
+
+<script>
+  document.documentElement.classList.add('js');
+  document.getElementById('year').textContent = new Date().getFullYear();
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
 </body>
 </html>
