@@ -284,19 +284,31 @@
 
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">02 · Live</p>
-      <h2 class="section-title">Bounce Pit</h2>
-      <p class="section-desc">Add a ball, then go smack it around. Drag any ball and let go to fling it, they collide with each other too.</p>
+      <h2 class="section-title">Toys I Grew Up With</h2>
+      <p class="section-desc">Eighteen toys, one bin. Fling them around, or click one to hear the story.</p>
     </div>
 
     <div class="reveal playground">
       <div class="bp-stage" id="bpStage">
         <canvas id="bpCanvas"></canvas>
-        <span class="bp-hint" id="bpHint">Drag a ball →</span>
+        <span class="bp-hint" id="bpHint">Drag one, or click it for the story →</span>
       </div>
       <div class="pg-controls">
-        <button class="pg-btn" id="bpAdd">+ Add a ball</button>
-        <button class="pg-btn" id="bpClear">Clear</button>
+        <button class="pg-btn" id="bpReplay">↺ Drop them again</button>
         <div class="pg-spacer"></div>
+      </div>
+    </div>
+
+    <div class="map-modal-backdrop" id="toyModalBackdrop">
+      <div class="map-modal" id="toyModal">
+        <div class="map-modal-carousel" id="toyModalCarousel" style="display:none;">
+          <img class="map-modal-photo" id="toyModalPhoto" src="" alt="">
+        </div>
+        <div class="map-modal-body">
+          <button class="map-back-btn" id="toyModalBack">← Back</button>
+          <div class="map-modal-city" id="toyModalName"></div>
+          <p class="map-modal-text" id="toyModalText"></p>
+        </div>
       </div>
     </div>
 
@@ -527,15 +539,35 @@
     });
   })();
 
-  /* ---- bounce pit ---- */
+  /* ---- toys i grew up with ---- */
   (function(){
     if(typeof Matter === 'undefined') return;
     var stage = document.getElementById('bpStage');
     var canvas = document.getElementById('bpCanvas');
     var hint = document.getElementById('bpHint');
-    var addBtn = document.getElementById('bpAdd');
-    var clearBtn = document.getElementById('bpClear');
+    var replayBtn = document.getElementById('bpReplay');
     var ctx = canvas.getContext('2d');
+
+    var TOYS = [
+      {name:'Tinker Toys', material:'wood', fact:"Building whatever I could imagine, one wooden spoke at a time. Tinker Toys have been around since 1914 — one of the oldest construction toys in America."},
+      {name:'Lincoln Logs', material:'wood', fact:"Log cabins that never quite matched the box, and I didn't care. Invented in 1916 by John Lloyd Wright, son of the architect Frank Lloyd Wright."},
+      {name:'Lego Set', material:'plastic', color:'#ff6f6f', fact:"Spent hours building the same set, just to tear it apart and start over. LEGO's interlocking brick system has been around since 1958 and is still going strong."},
+      {name:'Little Tikes Hoop', material:'plastic', color:'#4152e8', fact:"My first jump shot, about two feet off the ground. Little Tikes has been making backyard staples like this since 1970."},
+      {name:'Slingshot', material:'wood', fact:"Definitely aimed at more than just cans in the backyard. Slingshots are one of the oldest toys around — kids have been getting into trouble with them for centuries."},
+      {name:'Soccer Ball', material:'leather', img:'assets/facts/soccer-ball.jpg', fact:"The ball I actually learned to kick with, long before real games counted. Youth soccer exploded in popularity across the US through the '90s."},
+      {name:'Rayman', material:'crt', fact:"Hours on a beige tower PC, just trying to get past one level. Rayman launched in 1995 and became one of the era's most memorable platformers."},
+      {name:'Rayman Math', material:'crt', fact:"Somehow they got me to do math homework by calling it a game. Edutainment CD-ROMs like this one were everywhere in classrooms and living rooms through the late '90s."},
+      {name:'Leap Frog 2nd Grade', material:'crt', fact:"Another ‘educational’ game I definitely just played for fun. LeapFrog built its whole brand on this through the late '90s and 2000s."},
+      {name:'Golf Clubs', material:'chrome', fact:"My first set, way too big for me, and I loved them anyway."},
+      {name:'Mario Kart Wii', material:'crt', fact:"Family game nights got competitive fast. Released in 2008, it's still one of the best-selling video games ever, with over 37 million copies sold."},
+      {name:'Rescue Heroes', material:'plastic', color:'#ff8585', img:'assets/facts/rescue-heroes.jpg', fact:"Every toy box needs a few heroes on standby. Fisher-Price ran this line from 1998 into the mid-2000s."},
+      {name:'GI Joe Figure', material:'plastic', color:'#5c6b2e', img:'assets/facts/gi-joe.jpg', fact:"Action figures that actually did something, not just stood there. GI Joe's been around since 1964, with the ‘Real American Hero’ line taking off in 1982."},
+      {name:'Badminton Set', material:'fabric', fact:"Backyard tournaments with rules we mostly made up. The game itself dates back to 1870s England — badminton's been a backyard staple for over 150 years."},
+      {name:'Huffy Bike', material:'chrome', img:'assets/facts/huffy-bike.jpg', fact:"The bike that made me feel like I could do anything. Huffy's been building bikes in Ohio since 1892."},
+      {name:'Backyard Soccer', material:'crt', fact:"My first taste of being the star player, even if it was pixelated. Backyard Soccer launched in 1998 and defined a whole genre of kids' sports games."},
+      {name:'Guitar Hero', material:'plastic', color:'#16181c', img:'assets/facts/guitar-hero.jpg', fact:"Convinced for a summer I was actually a rock star. Guitar Hero launched in 2005 and turned into a full-blown cultural phenomenon by decade's end."},
+      {name:'Space Jam Set', material:'plastic', color:'#786ae4', fact:"Looney Tunes meets basketball — a weird combo that somehow worked. The movie hit theaters in 1996 and spawned a wave of toy tie-ins the following year."}
+    ];
 
     var Engine = Matter.Engine, World = Matter.Composite, Bodies = Matter.Bodies,
         Mouse = Matter.Mouse, MouseConstraint = Matter.MouseConstraint, Runner = Matter.Runner,
@@ -544,14 +576,6 @@
     var engine = Engine.create();
     engine.gravity.y = 0.9;
 
-    var palette = [
-      ['#4152e8','#786ae4'],
-      ['#ff8585','#ff6f6f'],
-      ['#786ae4','#ff8585'],
-      ['#1c12a3','#4152e8'],
-      ['#ff6f6f','#4152e8']
-    ];
-    var MAX_BALLS = 22;
     var balls = [];
     var walls = [];
     var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -574,31 +598,30 @@
       World.add(engine.world, walls);
     }
 
-    function addBall(x, y){
-      if(balls.length >= MAX_BALLS){
-        var oldest = balls.shift();
-        World.remove(engine.world, oldest);
-      }
-      var r = 22 + Math.random()*20;
-      var b = Bodies.circle(
-        x !== undefined ? x : w*0.2 + Math.random()*w*0.6,
-        y !== undefined ? y : -40 - Math.random()*80,
-        r,
-        {restitution:0.82, friction:0.02, frictionAir:0.0008, density:0.0016}
-      );
-      b.colors = palette[Math.floor(Math.random()*palette.length)];
-      Body.setAngularVelocity(b, (Math.random()-0.5)*0.2);
-      balls.push(b);
-      World.add(engine.world, b);
-      return b;
+    function dropAll(){
+      balls.forEach(function(b){ World.remove(engine.world, b); });
+      balls = [];
+      var cols = 6;
+      var margin = 55;
+      var usableW = Math.max(w - margin*2, cols*60);
+      var colW = usableW / cols;
+      TOYS.forEach(function(toy, i){
+        var r = 22 + Math.random()*5;
+        var col = i % cols;
+        var row = Math.floor(i / cols);
+        var x = margin + colW*(col+0.5) + (Math.random()-0.5)*colW*0.25;
+        var y = -30 - row*70 - Math.random()*20;
+        var b = Bodies.circle(x, y, r, {restitution:0.78, friction:0.02, frictionAir:0.001, density:0.0016});
+        b.toy = toy;
+        Body.setAngularVelocity(b, (Math.random()-0.5)*0.2);
+        balls.push(b);
+        World.add(engine.world, b);
+      });
     }
 
     sizeCanvas();
     window.addEventListener('resize', sizeCanvas);
-
-    addBall(w*0.32, h*0.2);
-    addBall(w*0.55, h*0.4);
-    addBall(w*0.72, h*0.15);
+    dropAll();
 
     var mouse = Mouse.create(canvas);
     mouse.pixelRatio = dpr;
@@ -608,38 +631,191 @@
     });
     World.add(engine.world, mouseConstraint);
 
-    Matter.Events.on(mouseConstraint, 'startdrag', function(){
-      hint.classList.add('hide');
-    });
-
     var runner = Runner.create();
     Runner.run(runner, engine);
+
+    /* safety net: rare corner-collision hiccups can fling a ball out of bounds; bring it back */
+    Matter.Events.on(engine, 'afterUpdate', function(){
+      balls.forEach(function(b){
+        if(b.position.x < -80 || b.position.x > w + 80 || b.position.y > h + 200 || b.position.y < -800){
+          Body.setPosition(b, {x: w*0.2 + Math.random()*w*0.6, y: -30 - Math.random()*40});
+          Body.setVelocity(b, {x:0, y:0});
+          Body.setAngularVelocity(b, 0);
+        }
+      });
+    });
+
+    function drawWood(b){
+      var g = ctx.createRadialGradient(
+        b.position.x - b.circleRadius*0.35, b.position.y - b.circleRadius*0.35, b.circleRadius*0.1,
+        b.position.x, b.position.y, b.circleRadius
+      );
+      g.addColorStop(0,'#d8a86a'); g.addColorStop(1,'#8a5a30');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+      ctx.save();
+      ctx.clip();
+      ctx.strokeStyle = 'rgba(90,55,20,.35)'; ctx.lineWidth = 1.4;
+      for(var i=-2;i<=2;i++){
+        ctx.beginPath();
+        ctx.ellipse(b.position.x, b.position.y + i*b.circleRadius*0.35, b.circleRadius*1.1, b.circleRadius*0.22, 0, 0, Math.PI*2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    function drawChrome(b){
+      var g = ctx.createLinearGradient(
+        b.position.x - b.circleRadius, b.position.y - b.circleRadius,
+        b.position.x + b.circleRadius, b.position.y + b.circleRadius
+      );
+      g.addColorStop(0,'#f4f6fb'); g.addColorStop(.35,'#9aa4b8'); g.addColorStop(.55,'#e8ebf2'); g.addColorStop(1,'#5a6478');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255,255,255,.75)';
+      ctx.ellipse(b.position.x - b.circleRadius*0.35, b.position.y - b.circleRadius*0.4, b.circleRadius*0.28, b.circleRadius*0.14, -0.6, 0, Math.PI*2);
+      ctx.fill();
+    }
+    function drawPlastic(b){
+      var base = b.toy.color || '#4152e8';
+      var g = ctx.createRadialGradient(
+        b.position.x - b.circleRadius*0.35, b.position.y - b.circleRadius*0.35, b.circleRadius*0.08,
+        b.position.x, b.position.y, b.circleRadius
+      );
+      g.addColorStop(0,'#ffffff'); g.addColorStop(.18, base); g.addColorStop(1, base);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+    }
+    function drawLeather(b){
+      var g = ctx.createRadialGradient(
+        b.position.x - b.circleRadius*0.3, b.position.y - b.circleRadius*0.3, b.circleRadius*0.1,
+        b.position.x, b.position.y, b.circleRadius
+      );
+      g.addColorStop(0,'#fffdf5'); g.addColorStop(1,'#d8d2bd');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+      ctx.save(); ctx.clip();
+      ctx.strokeStyle = 'rgba(30,30,20,.5)'; ctx.lineWidth = 1.3;
+      var pts = 5, r2 = b.circleRadius*0.42;
+      ctx.beginPath();
+      for(var i=0;i<=pts;i++){
+        var a = (i/pts)*Math.PI*2 - Math.PI/2;
+        var px = b.position.x + Math.cos(a)*r2, py = b.position.y + Math.sin(a)*r2;
+        i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+      }
+      ctx.closePath(); ctx.stroke();
+      ctx.restore();
+    }
+    function drawFabric(b){
+      var g = ctx.createRadialGradient(
+        b.position.x - b.circleRadius*0.3, b.position.y - b.circleRadius*0.3, b.circleRadius*0.1,
+        b.position.x, b.position.y, b.circleRadius
+      );
+      g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#dfe3ee');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+      ctx.save(); ctx.clip();
+      ctx.strokeStyle = 'rgba(65,82,232,.28)'; ctx.lineWidth = 1;
+      var step = b.circleRadius*0.4;
+      for(var x=-b.circleRadius; x<=b.circleRadius; x+=step){
+        ctx.beginPath(); ctx.moveTo(b.position.x+x, b.position.y-b.circleRadius); ctx.lineTo(b.position.x+x, b.position.y+b.circleRadius); ctx.stroke();
+      }
+      for(var y=-b.circleRadius; y<=b.circleRadius; y+=step){
+        ctx.beginPath(); ctx.moveTo(b.position.x-b.circleRadius, b.position.y+y); ctx.lineTo(b.position.x+b.circleRadius, b.position.y+y); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    function drawCrt(b){
+      var g = ctx.createRadialGradient(
+        b.position.x - b.circleRadius*0.3, b.position.y - b.circleRadius*0.3, b.circleRadius*0.1,
+        b.position.x, b.position.y, b.circleRadius
+      );
+      g.addColorStop(0,'#3a3fb0'); g.addColorStop(1,'#12142e');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2); ctx.fill();
+      ctx.save(); ctx.clip();
+      ctx.strokeStyle = 'rgba(120,255,220,.35)'; ctx.lineWidth = 1;
+      for(var y=-b.circleRadius; y<=b.circleRadius; y+=3.5){
+        ctx.beginPath(); ctx.moveTo(b.position.x-b.circleRadius, b.position.y+y); ctx.lineTo(b.position.x+b.circleRadius, b.position.y+y); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    var MATERIAL_DRAW = {wood:drawWood, chrome:drawChrome, plastic:drawPlastic, leather:drawLeather, fabric:drawFabric, crt:drawCrt};
 
     function draw(){
       ctx.clearRect(0,0,w,h);
       balls.forEach(function(b){
-        var g = ctx.createRadialGradient(
-          b.position.x - b.circleRadius*0.35, b.position.y - b.circleRadius*0.35, b.circleRadius*0.1,
-          b.position.x, b.position.y, b.circleRadius
-        );
-        g.addColorStop(0, b.colors[0]);
-        g.addColorStop(1, b.colors[1]);
-        ctx.beginPath();
-        ctx.fillStyle = g;
-        ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2);
-        ctx.fill();
+        (MATERIAL_DRAW[b.toy.material] || drawPlastic)(b);
       });
       requestAnimationFrame(draw);
     }
     draw();
 
-    addBtn.addEventListener('click', function(){
-      addBall();
-      hint.classList.add('hide');
+    replayBtn.addEventListener('click', function(){
+      dropAll();
+      hint.classList.remove('hide');
     });
-    clearBtn.addEventListener('click', function(){
-      balls.forEach(function(b){ World.remove(engine.world, b); });
-      balls = [];
+
+    /* click (not drag) opens the toy's story */
+    var downPos = null, downTime = 0;
+    function getPos(e){
+      var r = canvas.getBoundingClientRect();
+      var t = e.changedTouches ? e.changedTouches[0] : e;
+      return {x: t.clientX - r.left, y: t.clientY - r.top};
+    }
+    function onDown(e){ downPos = getPos(e); downTime = Date.now(); }
+    function onUp(e){
+      if(!downPos) return;
+      var p = getPos(e);
+      var dist = Math.hypot(p.x - downPos.x, p.y - downPos.y);
+      var dt = Date.now() - downTime;
+      downPos = null;
+      if(dist > 6 || dt > 500) return;
+      for(var i=balls.length-1;i>=0;i--){
+        var b = balls[i];
+        if(Math.hypot(p.x - b.position.x, p.y - b.position.y) <= b.circleRadius){
+          openToy(b.toy);
+          hint.classList.add('hide');
+          return;
+        }
+      }
+    }
+    canvas.addEventListener('mousedown', onDown);
+    canvas.addEventListener('mouseup', onUp);
+    canvas.addEventListener('touchstart', onDown, {passive:true});
+    canvas.addEventListener('touchend', onUp, {passive:true});
+
+    var toyBackdrop = document.getElementById('toyModalBackdrop');
+    var toyCarousel = document.getElementById('toyModalCarousel');
+    var toyPhoto = document.getElementById('toyModalPhoto');
+    var toyName = document.getElementById('toyModalName');
+    var toyText = document.getElementById('toyModalText');
+    var toyBack = document.getElementById('toyModalBack');
+    var toyLastFocused = null;
+
+    function openToy(toy){
+      toyName.textContent = toy.name;
+      toyText.textContent = toy.fact;
+      if(toy.img){
+        toyPhoto.src = toy.img;
+        toyPhoto.alt = toy.name;
+        toyCarousel.style.display = 'block';
+      } else {
+        toyPhoto.removeAttribute('src');
+        toyCarousel.style.display = 'none';
+      }
+      toyLastFocused = document.activeElement;
+      toyBackdrop.classList.add('open');
+      toyBack.focus();
+    }
+    function closeToy(){
+      toyBackdrop.classList.remove('open');
+      if(toyLastFocused) toyLastFocused.focus();
+    }
+    toyBack.addEventListener('click', closeToy);
+    toyBackdrop.addEventListener('click', function(e){ if(e.target === toyBackdrop) closeToy(); });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && toyBackdrop.classList.contains('open')) closeToy();
     });
   })();
 
