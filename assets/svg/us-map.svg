@@ -7,7 +7,7 @@
 .borders {stroke:#fbfbfd; stroke-width:1.4}
 .dccircle {display:none}
 .separator1 {stroke:#d7daf6; stroke-width:1.4}
-.ny,.pa,.oh,.va,.ga {fill:#c7cdf7}
+.ny,.pa,.oh,.va,.ga,.il,.mo,.wv,.tn,.vt,.tx {fill:#c7cdf7}
 
 /* Individual states can be colored as follows:
 .ks,.mt,.pa {fill:#0000FF}
