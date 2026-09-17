@@ -606,12 +606,13 @@
       var usableW = Math.max(w - margin*2, cols*60);
       var colW = usableW / cols;
       TOYS.forEach(function(toy, i){
-        var r = 22 + Math.random()*5;
+        var r = 16 + Math.random()*24;
         var col = i % cols;
-        var row = Math.floor(i / cols);
+        var rowFromBottom = Math.floor(i / cols);
         var x = margin + colW*(col+0.5) + (Math.random()-0.5)*colW*0.25;
-        var y = -30 - row*70 - Math.random()*20;
-        var b = Bodies.circle(x, y, r, {restitution:0.78, friction:0.02, frictionAir:0.001, density:0.0016});
+        var targetY = h - 40 - rowFromBottom*68;
+        var y = targetY - 60 - Math.random()*60;
+        var b = Bodies.circle(x, y, r, {restitution:0.7, friction:0.02, frictionAir:0.001, density:0.0016});
         b.toy = toy;
         Body.setAngularVelocity(b, (Math.random()-0.5)*0.2);
         balls.push(b);
@@ -622,6 +623,14 @@
     sizeCanvas();
     window.addEventListener('resize', sizeCanvas);
     dropAll();
+
+    /* the pit's real width/height can still be wrong on first paint (fonts/images
+       not settled yet) — re-measure and re-drop once everything has fully loaded */
+    if(document.readyState === 'complete'){
+      sizeCanvas(); dropAll();
+    } else {
+      window.addEventListener('load', function(){ sizeCanvas(); dropAll(); });
+    }
 
     var mouse = Mouse.create(canvas);
     mouse.pixelRatio = dpr;
