@@ -84,6 +84,57 @@
     transition:opacity .3s ease;
   }
   .bp-hint.hide{opacity:0;}
+
+  /* ---- facts map ---- */
+  .map-stage{
+    position:relative;border-radius:18px;overflow:hidden;
+    background:var(--bg);padding:24px;
+  }
+  .map-inner{position:relative;width:100%;max-width:760px;margin:0 auto;}
+  .map-inner img{display:block;width:100%;height:auto;}
+  .map-pin{
+    position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;
+    border-radius:50%;border:2px solid #fff;padding:0;cursor:pointer;
+    background:linear-gradient(135deg,#ff8585,#786ae4);
+    box-shadow:0 2px 6px rgba(28,18,163,.35);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .map-pin::after{
+    content:'';position:absolute;inset:-6px;border-radius:50%;
+    border:2px solid #786ae4;opacity:0;transition:opacity .18s ease, transform .18s ease;
+    transform:scale(.7);
+  }
+  .map-pin:hover{transform:scale(1.25);}
+  .map-pin.active{transform:scale(1.3);box-shadow:0 3px 10px rgba(28,18,163,.5);}
+  .map-pin.active::after{opacity:1;transform:scale(1);}
+  @media (prefers-reduced-motion: no-preference){
+    .map-pin{animation:pinPulse 2.6s ease-in-out infinite;}
+    .map-pin:nth-child(3n+1){animation-delay:.3s;}
+    .map-pin:nth-child(3n+2){animation-delay:.9s;}
+  }
+  @keyframes pinPulse{
+    0%,100%{box-shadow:0 2px 6px rgba(28,18,163,.35);}
+    50%{box-shadow:0 2px 6px rgba(28,18,163,.35), 0 0 0 6px rgba(120,106,228,.18);}
+  }
+  .map-fact-card{
+    margin:18px 22px 6px;padding:16px 20px;border-radius:14px;
+    background:var(--paper);border:1px solid var(--line);
+    min-height:64px;display:flex;flex-direction:column;justify-content:center;gap:2px;
+    transition:border-color .2s ease;
+  }
+  .map-fact-city{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo-1);}
+  .map-fact-text{font-size:14.5px;color:var(--ink);line-height:1.5;}
+  .map-fact-hint{font-size:14px;color:var(--ink-faint);}
+  .map-legend{
+    display:flex;flex-wrap:wrap;gap:8px;padding:0 22px 22px;
+  }
+  .map-legend button{
+    font-size:12px;font-weight:600;color:var(--ink-faint);background:var(--bg);
+    border:1px solid var(--line);border-radius:100px;padding:6px 13px;cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .map-legend button:hover{color:var(--indigo-1);border-color:var(--indigo-1);}
+  .map-legend button.active{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
 </style>
 </head>
 <body>
@@ -200,6 +251,43 @@
         <button class="pg-btn" id="bpAdd">+ Add a ball</button>
         <button class="pg-btn" id="bpClear">Clear</button>
         <div class="pg-spacer"></div>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">03 · Live</p>
+      <h2 class="section-title">Facts About Aaron</h2>
+      <p class="section-desc">A few stops on the map that made me, me. Click a pin to read the story.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="map-stage" id="mapStage">
+        <div class="map-inner" id="mapInner">
+          <img src="assets/svg/us-map.svg" alt="Map of the United States" draggable="false">
+          <button class="map-pin" style="left:78.2%;top:32.0%" data-city="Jamestown, NY" data-fact="Born and raised here — my hometown."></button>
+          <button class="map-pin" style="left:78.7%;top:21.9%" data-city="Brockport, NY" data-fact="Moved here in 2008, to the town where my dad grew up."></button>
+          <button class="map-pin" style="left:79.2%;top:28.3%" data-city="North Chili, NY" data-fact="Went to Roberts Wesleyan University here."></button>
+          <button class="map-pin" style="left:81.9%;top:24.5%" data-city="Rochester, NY" data-fact="Home today, with my wife and our 3 kids."></button>
+          <button class="map-pin" style="left:87.5%;top:34.2%" data-city="New York, NY" data-fact="Competed in the East Coast Conference Championships for track and field."></button>
+          <button class="map-pin" style="left:79.0%;top:39.3%" data-city="Boswell, PA" data-fact="Spent 4 summers as media director and mentor at Summer's Best 2 Weeks camp."></button>
+          <button class="map-pin" style="left:81.6%;top:47.6%" data-city="Charlottesville, VA" data-fact="Moved here in 2016 to work in multimedia production and teach filmmaking."></button>
+          <button class="map-pin" style="left:75.3%;top:37.6%" data-city="Canton, OH" data-fact="Where my wife is from — small-town roots on both sides."></button>
+          <button class="map-pin" style="left:70.4%;top:62.6%" data-city="Rome, GA" data-fact="Competed in the NCCAA Long Jump Championships here in 2016."></button>
+        </div>
+      </div>
+      <div class="map-fact-card" id="mapFactCard">
+        <span class="map-fact-hint">Click a pin to read a fact →</span>
+      </div>
+      <div class="map-legend" id="mapLegend">
+        <button data-city="Jamestown, NY">Jamestown, NY</button>
+        <button data-city="Brockport, NY">Brockport, NY</button>
+        <button data-city="North Chili, NY">North Chili, NY</button>
+        <button data-city="Rochester, NY">Rochester, NY</button>
+        <button data-city="New York, NY">New York, NY</button>
+        <button data-city="Boswell, PA">Boswell, PA</button>
+        <button data-city="Charlottesville, VA">Charlottesville, VA</button>
+        <button data-city="Canton, OH">Canton, OH</button>
+        <button data-city="Rome, GA">Rome, GA</button>
       </div>
     </div>
 
@@ -466,6 +554,35 @@
     clearBtn.addEventListener('click', function(){
       balls.forEach(function(b){ World.remove(engine.world, b); });
       balls = [];
+    });
+  })();
+
+  /* ---- facts map ---- */
+  (function(){
+    var pins = document.querySelectorAll('.map-pin');
+    var legendBtns = document.querySelectorAll('.map-legend button');
+    var card = document.getElementById('mapFactCard');
+
+    function showFact(city, fact){
+      pins.forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-city') === city); });
+      legendBtns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-city') === city); });
+      card.innerHTML =
+        '<span class="map-fact-city">' + city + '</span>' +
+        '<span class="map-fact-text">' + fact + '</span>';
+    }
+
+    pins.forEach(function(pin){
+      pin.addEventListener('click', function(){
+        showFact(pin.getAttribute('data-city'), pin.getAttribute('data-fact'));
+      });
+    });
+
+    legendBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var city = btn.getAttribute('data-city');
+        var pin = document.querySelector('.map-pin[data-city="' + city + '"]');
+        if(pin) showFact(city, pin.getAttribute('data-fact'));
+      });
     });
   })();
 </script>
