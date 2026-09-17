@@ -147,6 +147,26 @@
   }
   .map-modal-backdrop.open .map-modal{transform:translateY(0) scale(1);opacity:1;}
   .map-modal-photo{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--bg);}
+  .map-modal-carousel{position:relative;}
+  .map-carousel-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(22,24,28,.45);color:#fff;font-size:20px;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease;
+  }
+  .map-carousel-arrow:hover{background:rgba(22,24,28,.7);}
+  .map-carousel-arrow.prev{left:10px;}
+  .map-carousel-arrow.next{right:10px;}
+  .map-carousel-dots{
+    position:absolute;bottom:10px;left:0;right:0;
+    display:flex;justify-content:center;gap:6px;
+  }
+  .map-carousel-dots span{
+    width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);
+    transition:background .15s ease, transform .15s ease;
+  }
+  .map-carousel-dots span.active{background:#fff;transform:scale(1.3);}
   .map-modal-body{padding:26px 28px 28px;}
   .map-back-btn{
     display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
@@ -291,20 +311,20 @@
         <div class="map-inner" id="mapInner">
           <img src="assets/svg/us-map.svg" alt="Map of the United States" draggable="false">
           <button class="map-pin" style="left:78.2%;top:32.0%" data-city="Falconer, NY" data-img="assets/facts/falconer-ny.jpg" data-fact="Born in Jamestown hospital next door, raised right here in Falconer — my hometown."></button>
-          <button class="map-pin" style="left:78.7%;top:21.9%" data-city="Brockport, NY" data-img="assets/facts/brockport-ny.jpg" data-fact="Moved here in 2008, to the town where my dad grew up."></button>
-          <button class="map-pin" style="left:79.2%;top:28.3%" data-city="North Chili, NY" data-img="assets/facts/north-chili.jpg" data-fact="Went to Roberts Wesleyan University here."></button>
-          <button class="map-pin" style="left:81.9%;top:24.5%" data-city="Rochester, NY" data-img="assets/facts/rochester.jpg" data-fact="Home today, with my wife and our 3 kids."></button>
+          <button class="map-pin" style="left:78.4%;top:23.6%" data-city="Brockport, NY" data-img="assets/facts/brockport-ny.jpg" data-fact="Moved here in 2008, to the town where my dad grew up."></button>
+          <button class="map-pin" style="left:79.6%;top:26.6%" data-city="North Chili, NY" data-img="assets/facts/north-chili.jpg" data-fact="Went to Roberts Wesleyan University here."></button>
+          <button class="map-pin" style="left:81.5%;top:23.9%" data-city="Rochester, NY" data-img="assets/facts/rochester.jpg" data-fact="Home today, with my wife and our 3 kids."></button>
           <button class="map-pin" style="left:87.5%;top:34.2%" data-city="New York, NY" data-img="assets/facts/new-york-ny.jpg" data-fact="Competed in the East Coast Conference Championships for track and field — 2015 indoor champions."></button>
-          <button class="map-pin" style="left:79.0%;top:39.3%" data-city="Boswell, PA" data-img="assets/facts/boswell-pa.jpg" data-fact="Spent 4 summers as media director and mentor at Summer's Best 2 Weeks camp."></button>
+          <button class="map-pin" style="left:79.0%;top:39.3%" data-city="Boswell, PA" data-img="assets/facts/boswell-pa.jpg|assets/facts/boswell-pa-2.jpg" data-fact="Spent 4 summers as media director and mentor at Summer's Best 2 Weeks camp."></button>
           <button class="map-pin" style="left:81.6%;top:47.6%" data-city="Charlottesville, VA" data-img="assets/facts/charlottesville-va.jpg" data-fact="Moved here in 2016 to work in multimedia production and teach filmmaking."></button>
-          <button class="map-pin" style="left:75.3%;top:37.6%" data-city="Canton, OH" data-img="assets/facts/canton-oh.jpg" data-fact="Where my wife is from, and where we got married — small-town roots on both sides."></button>
-          <button class="map-pin" style="left:70.4%;top:62.6%" data-city="Rome, GA" data-img="assets/facts/rome-ga.jpg" data-fact="Competed in the NCCAA Long Jump Championships here in 2016 — came home with a medal."></button>
+          <button class="map-pin" style="left:75.3%;top:37.6%" data-city="Canton, OH" data-img="assets/facts/canton-oh.jpg|assets/facts/canton-oh-2.jpg" data-fact="Where my wife is from, and where we got married — small-town roots on both sides."></button>
+          <button class="map-pin" style="left:70.4%;top:62.6%" data-city="Rome, GA" data-img="assets/facts/rome-ga.jpg|assets/facts/rome-ga-2.jpg" data-fact="Competed in the NCCAA Long Jump Championships here in 2016 — came home with a medal."></button>
 
           <button class="map-pin" style="left:64.2%;top:35.9%" data-city="Chicago, IL" data-img="assets/facts/chicago.jpg" data-fact="Spent time here at a conference on storytelling and creativity."></button>
           <button class="map-pin" style="left:67.1%;top:56.0%" data-city="Nashville, TN" data-img="" data-fact="Went to a storytelling conference here too — a lot of my creative thinking traces back to these trips."></button>
           <button class="map-pin" style="left:84.2%;top:20.6%" data-city="Thousand Islands, NY" data-img="assets/facts/thousand-islands.jpg" data-fact="Took a boat tour through here on the way to Quebec to visit my brother."></button>
           <button class="map-pin" style="left:74.5%;top:46.4%" data-city="Barboursville, WV" data-img="assets/facts/barboursville-wv.jpg" data-fact="My grandpa's hometown. His ancestors sailed to Virginia on the Mayflower and later settled in West Virginia — he moved up to Rochester to attend Roberts Wesleyan."></button>
-          <button class="map-pin" style="left:60.7%;top:48.6%" data-city="St. Louis, MO" data-img="assets/facts/st-louis.jpg" data-fact="Caught a Cardinals game at Busch Stadium, with the Arch rising just past the outfield."></button>
+          <button class="map-pin" style="left:60.7%;top:48.6%" data-city="St. Louis, MO" data-img="assets/facts/st-louis.jpg|assets/facts/st-louis-2.jpg|assets/facts/st-louis-3.jpg" data-fact="Caught a Cardinals game at Busch Stadium, with the Arch rising just past the outfield."></button>
           <button class="map-pin" style="left:69.7%;top:44.3%" data-city="Cincinnati, OH" data-img="assets/facts/cincinnati-enactus.jpg" data-fact="Competed in the Enactus national competition here and came home with a medal." data-link="https://www.youtube.com/watch?v=tYK1VjyVuJU" data-link-text="Watch the recap →"></button>
           <button class="map-pin" style="left:79.2%;top:51.4%" data-city="Lynchburg, VA" data-img="assets/facts/lynchburg-va.jpg" data-fact="Visited friends here during an ice storm that shut the whole city down."></button>
           <button class="map-pin" style="left:87.6%;top:18.7%" data-city="Smugglers' Notch, VT" data-img="assets/facts/smugglers-notch-vt.jpg" data-fact="Threw in the 2023 Disc Golf World Championships on this course."></button>
@@ -342,7 +362,12 @@
 
     <div class="map-modal-backdrop" id="mapModalBackdrop">
       <div class="map-modal" id="mapModal">
-        <img class="map-modal-photo" id="mapModalPhoto" src="" alt="" style="display:none;">
+        <div class="map-modal-carousel" id="mapModalCarousel" style="display:none;">
+          <img class="map-modal-photo" id="mapModalPhoto" src="" alt="">
+          <button class="map-carousel-arrow prev" id="mapCarouselPrev" aria-label="Previous photo">‹</button>
+          <button class="map-carousel-arrow next" id="mapCarouselNext" aria-label="Next photo">›</button>
+          <div class="map-carousel-dots" id="mapCarouselDots"></div>
+        </div>
         <div class="map-modal-body">
           <button class="map-back-btn" id="mapModalBack">← Back</button>
           <div class="map-modal-city" id="mapModalCity"></div>
@@ -624,30 +649,57 @@
     var legendBtns = document.querySelectorAll('.map-legend button');
     var backdrop = document.getElementById('mapModalBackdrop');
     var modal = document.getElementById('mapModal');
+    var carousel = document.getElementById('mapModalCarousel');
     var photo = document.getElementById('mapModalPhoto');
+    var prevBtn = document.getElementById('mapCarouselPrev');
+    var nextBtn = document.getElementById('mapCarouselNext');
+    var dotsEl = document.getElementById('mapCarouselDots');
     var cityEl = document.getElementById('mapModalCity');
     var textEl = document.getElementById('mapModalText');
     var linkEl = document.getElementById('mapModalLink');
     var backBtn = document.getElementById('mapModalBack');
     var lastFocused = null;
+    var images = [];
+    var imgIndex = 0;
+
+    function showImage(i){
+      imgIndex = (i + images.length) % images.length;
+      photo.src = images[imgIndex];
+      dotsEl.querySelectorAll('span').forEach(function(dot, di){
+        dot.classList.toggle('active', di === imgIndex);
+      });
+    }
 
     function openFact(pin){
       var city = pin.getAttribute('data-city');
       var fact = pin.getAttribute('data-fact');
-      var img = pin.getAttribute('data-img');
+      var imgAttr = pin.getAttribute('data-img');
       var link = pin.getAttribute('data-link');
       pins.forEach(function(p){ p.classList.toggle('active', p === pin); });
       legendBtns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-city') === city); });
       cityEl.textContent = city;
       textEl.textContent = fact;
-      if(img){
-        photo.src = img;
+
+      images = imgAttr ? imgAttr.split('|') : [];
+      if(images.length){
         photo.alt = city;
-        photo.style.display = 'block';
+        carousel.style.display = 'block';
+        var multi = images.length > 1;
+        prevBtn.style.display = multi ? 'flex' : 'none';
+        nextBtn.style.display = multi ? 'flex' : 'none';
+        dotsEl.innerHTML = '';
+        if(multi){
+          images.forEach(function(){
+            var dot = document.createElement('span');
+            dotsEl.appendChild(dot);
+          });
+        }
+        showImage(0);
       } else {
         photo.removeAttribute('src');
-        photo.style.display = 'none';
+        carousel.style.display = 'none';
       }
+
       if(link){
         linkEl.href = link;
         linkEl.textContent = pin.getAttribute('data-link-text') || 'Learn more →';
@@ -659,6 +711,9 @@
       backdrop.classList.add('open');
       backBtn.focus();
     }
+
+    prevBtn.addEventListener('click', function(){ showImage(imgIndex - 1); });
+    nextBtn.addEventListener('click', function(){ showImage(imgIndex + 1); });
 
     function closeFact(){
       backdrop.classList.remove('open');
@@ -686,7 +741,10 @@
       if(e.target === backdrop) closeFact();
     });
     document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && backdrop.classList.contains('open')) closeFact();
+      if(!backdrop.classList.contains('open')) return;
+      if(e.key === 'Escape') closeFact();
+      if(e.key === 'ArrowLeft' && images.length > 1) showImage(imgIndex - 1);
+      if(e.key === 'ArrowRight' && images.length > 1) showImage(imgIndex + 1);
     });
   })();
 </script>
