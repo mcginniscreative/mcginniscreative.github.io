@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
 <style>
   /* ---- logo playground ---- */
   .playground{
@@ -47,6 +48,7 @@
   }
   .swatch:hover{transform:scale(1.1);}
   .swatch.active{border-color:var(--ink);box-shadow:0 0 0 2px var(--paper), 0 0 0 4px var(--ink);}
+  .bg-swatch.bg-active{border-color:var(--ink);box-shadow:0 0 0 2px var(--paper), 0 0 0 4px var(--ink);}
   .swatch-ink{background:#16181c;}
   .swatch-indigo{background:#4152e8;}
   .swatch-coral{background:#ff6f6f;}
@@ -67,6 +69,21 @@
   .pg-spacer{flex:1;min-width:8px;}
 
   .pg-note{font-size:12.5px;color:var(--ink-faint);padding:0 22px 22px;margin:0;}
+
+  /* ---- bounce pit ---- */
+  .bp-stage{
+    position:relative;border-radius:18px;overflow:hidden;
+    height:420px;background:var(--bg);touch-action:none;cursor:grab;
+  }
+  .bp-stage:active{cursor:grabbing;}
+  .bp-stage canvas{display:block;width:100%;height:100%;}
+  .bp-hint{
+    position:absolute;top:14px;left:16px;font-size:12px;font-weight:500;
+    color:var(--ink-faint);background:rgba(255,255,255,.75);backdrop-filter:blur(4px);
+    padding:5px 11px;border-radius:100px;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .bp-hint.hide{opacity:0;}
 </style>
 </head>
 <body>
@@ -152,11 +169,38 @@
           <button class="swatch swatch-grad" data-color="gradient" aria-label="Brand gradient"></button>
           <input type="color" id="pgCustom" value="#16181c" aria-label="Custom color">
         </div>
+
+        <span class="pg-label">Background</span>
+        <div class="pg-group">
+          <button class="swatch bg-swatch bg-active" data-bg="#fbfbfd" aria-label="Paper background"></button>
+          <button class="swatch bg-swatch" data-bg="#16181c" aria-label="Ink background"></button>
+          <button class="swatch bg-swatch" data-bg="#eceeff" aria-label="Indigo tint background"></button>
+          <button class="swatch bg-swatch" data-bg="#ffeeec" aria-label="Coral tint background"></button>
+          <input type="color" id="pgBgCustom" value="#fbfbfd" aria-label="Custom background color">
+        </div>
+
         <div class="pg-spacer"></div>
-        <button class="pg-btn" id="pgBg">Dark backdrop</button>
         <button class="pg-btn" id="pgReplay">↺ Draw it again</button>
       </div>
       <p class="pg-note">Tip: pick "brand gradient," then move your cursor over the mark, it shifts with you.</p>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">02 · Live</p>
+      <h2 class="section-title">Bounce Pit</h2>
+      <p class="section-desc">Add a ball, then go smack it around. Drag any ball and let go to fling it, they collide with each other too.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="bp-stage" id="bpStage">
+        <canvas id="bpCanvas"></canvas>
+        <span class="bp-hint" id="bpHint">Drag a ball →</span>
+      </div>
+      <div class="pg-controls">
+        <button class="pg-btn" id="bpAdd">+ Add a ball</button>
+        <button class="pg-btn" id="bpClear">Clear</button>
+        <div class="pg-spacer"></div>
+      </div>
     </div>
 
     <div class="coming-soon reveal" style="padding:48px 40px;">
@@ -212,16 +256,19 @@
     var drawRect = document.getElementById('draw-rect');
     var swatches = document.querySelectorAll('.swatch');
     var customInput = document.getElementById('pgCustom');
-    var bgBtn = document.getElementById('pgBg');
+    var bgSwatches = document.querySelectorAll('.bg-swatch');
+    var bgCustom = document.getElementById('pgBgCustom');
     var replayBtn = document.getElementById('pgReplay');
     var grad = document.getElementById('playground-grad');
+    var inkManuallySet = false;
 
     function setActive(el){
       swatches.forEach(function(s){ s.classList.remove('active'); });
       if(el) el.classList.add('active');
     }
 
-    function applyColor(value){
+    function applyColor(value, manual){
+      if(manual) inkManuallySet = true;
       if(value === 'gradient'){
         stage.classList.add('grad-fill');
       } else {
@@ -233,18 +280,47 @@
     swatches.forEach(function(btn){
       btn.addEventListener('click', function(){
         setActive(btn);
-        applyColor(btn.getAttribute('data-color'));
+        applyColor(btn.getAttribute('data-color'), true);
       });
     });
 
     customInput.addEventListener('input', function(){
       setActive(null);
-      applyColor('currentColor:' + customInput.value);
+      applyColor('currentColor:' + customInput.value, true);
     });
 
-    bgBtn.addEventListener('click', function(){
-      var dark = stage.classList.toggle('dark');
-      bgBtn.textContent = dark ? 'Light backdrop' : 'Dark backdrop';
+    function setBgActive(el){
+      bgSwatches.forEach(function(s){ s.classList.remove('bg-active'); });
+      if(el) el.classList.add('bg-active');
+    }
+
+    function hexLuminance(hex){
+      hex = hex.replace('#','');
+      var r = parseInt(hex.substr(0,2),16)/255;
+      var g = parseInt(hex.substr(2,2),16)/255;
+      var b = parseInt(hex.substr(4,2),16)/255;
+      return 0.2126*r + 0.7152*g + 0.0722*b;
+    }
+
+    function applyBg(hex){
+      stage.style.background = hex;
+      stage.classList.remove('dark');
+      if(!inkManuallySet && !stage.classList.contains('grad-fill')){
+        var light = hexLuminance(hex) > 0.55;
+        svg.style.color = light ? '#16181c' : '#ffffff';
+      }
+    }
+
+    bgSwatches.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        setBgActive(btn);
+        applyBg(btn.getAttribute('data-bg'));
+      });
+    });
+
+    bgCustom.addEventListener('input', function(){
+      setBgActive(null);
+      applyBg(bgCustom.value);
     });
 
     function playDraw(){
@@ -274,6 +350,122 @@
       grad.setAttribute('y1', y);
       grad.setAttribute('x2', Math.min(1,x+0.3));
       grad.setAttribute('y2', y);
+    });
+  })();
+
+  /* ---- bounce pit ---- */
+  (function(){
+    if(typeof Matter === 'undefined') return;
+    var stage = document.getElementById('bpStage');
+    var canvas = document.getElementById('bpCanvas');
+    var hint = document.getElementById('bpHint');
+    var addBtn = document.getElementById('bpAdd');
+    var clearBtn = document.getElementById('bpClear');
+    var ctx = canvas.getContext('2d');
+
+    var Engine = Matter.Engine, World = Matter.Composite, Bodies = Matter.Bodies,
+        Mouse = Matter.Mouse, MouseConstraint = Matter.MouseConstraint, Runner = Matter.Runner,
+        Body = Matter.Body;
+
+    var engine = Engine.create();
+    engine.gravity.y = 0.9;
+
+    var palette = [
+      ['#4152e8','#786ae4'],
+      ['#ff8585','#ff6f6f'],
+      ['#786ae4','#ff8585'],
+      ['#1c12a3','#4152e8'],
+      ['#ff6f6f','#4152e8']
+    ];
+    var MAX_BALLS = 22;
+    var balls = [];
+    var walls = [];
+    var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    function sizeCanvas(){
+      w = stage.clientWidth;
+      h = stage.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+
+      walls.forEach(function(b){ World.remove(engine.world, b); });
+      var t = 60;
+      walls = [
+        Bodies.rectangle(w/2, h + t/2, w + t*2, t, {isStatic:true}),
+        Bodies.rectangle(-t/2, h/2, t, h + t*2, {isStatic:true}),
+        Bodies.rectangle(w + t/2, h/2, t, h + t*2, {isStatic:true}),
+        Bodies.rectangle(w/2, -t/2 - 40, w + t*2, t, {isStatic:true})
+      ];
+      World.add(engine.world, walls);
+    }
+
+    function addBall(x, y){
+      if(balls.length >= MAX_BALLS){
+        var oldest = balls.shift();
+        World.remove(engine.world, oldest);
+      }
+      var r = 22 + Math.random()*20;
+      var b = Bodies.circle(
+        x !== undefined ? x : w*0.2 + Math.random()*w*0.6,
+        y !== undefined ? y : -40 - Math.random()*80,
+        r,
+        {restitution:0.82, friction:0.02, frictionAir:0.0008, density:0.0016}
+      );
+      b.colors = palette[Math.floor(Math.random()*palette.length)];
+      Body.setAngularVelocity(b, (Math.random()-0.5)*0.2);
+      balls.push(b);
+      World.add(engine.world, b);
+      return b;
+    }
+
+    sizeCanvas();
+    window.addEventListener('resize', sizeCanvas);
+
+    addBall(w*0.32, h*0.2);
+    addBall(w*0.55, h*0.4);
+    addBall(w*0.72, h*0.15);
+
+    var mouse = Mouse.create(canvas);
+    mouse.pixelRatio = dpr;
+    var mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint:{stiffness:0.2, damping:0.1, render:{visible:false}}
+    });
+    World.add(engine.world, mouseConstraint);
+
+    Matter.Events.on(mouseConstraint, 'startdrag', function(){
+      hint.classList.add('hide');
+    });
+
+    var runner = Runner.create();
+    Runner.run(runner, engine);
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      balls.forEach(function(b){
+        var g = ctx.createRadialGradient(
+          b.position.x - b.circleRadius*0.35, b.position.y - b.circleRadius*0.35, b.circleRadius*0.1,
+          b.position.x, b.position.y, b.circleRadius
+        );
+        g.addColorStop(0, b.colors[0]);
+        g.addColorStop(1, b.colors[1]);
+        ctx.beginPath();
+        ctx.fillStyle = g;
+        ctx.arc(b.position.x, b.position.y, b.circleRadius, 0, Math.PI*2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    addBtn.addEventListener('click', function(){
+      addBall();
+      hint.classList.add('hide');
+    });
+    clearBtn.addEventListener('click', function(){
+      balls.forEach(function(b){ World.remove(engine.world, b); });
+      balls = [];
     });
   })();
 </script>
