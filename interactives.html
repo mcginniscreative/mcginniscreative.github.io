@@ -1542,10 +1542,14 @@
 
       Promise.all(jobs).then(function(){
         var t0 = ctx.currentTime + 0.15;
+        /* MP3 decodes with ~1105 samples of encoder delay up front and ~1800 of padding at
+           the end; loop only the real 8 bars (694043 samples) so the seam has no gap */
+        var LOOP_START = 1105 / 44100, LOOP_END = (1105 + 694043) / 44100;
         function play(buf, dest){
           var src = ctx.createBufferSource();
           src.buffer = buf; src.loop = true;
-          src.connect(dest); src.start(t0);
+          src.loopStart = LOOP_START; src.loopEnd = Math.min(LOOP_END, buf.duration);
+          src.connect(dest); src.start(t0, LOOP_START);
         }
         STEMS.forEach(function(s){
           if(s.keys){ play(s.majorBuf, s.majorGain); play(s.minorBuf, s.minorGain); }
