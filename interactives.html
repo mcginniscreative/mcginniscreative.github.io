@@ -429,7 +429,7 @@
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">01 · Live</p>
       <h2 class="section-title">Hideout: Stem Mixer</h2>
-      <p class="section-desc">Every sound in this song is a layer I recorded myself. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
+      <p class="section-desc">"Hideout" was written by my good friend Micah, and honestly, his version is better than mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener" style="color:var(--indigo-1);font-weight:600;">Check it out on Spotify &rarr;</a> This one is my recording, and every sound in it is a layer I recorded myself. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
     </div>
 
     <div class="reveal playground">
@@ -1527,7 +1527,7 @@
       {id:'drums', name:'Drums', color:'#e9b520', keys:false},
       {id:'beatz', name:'Beatz', color:'#2fbf85', keys:false, vol:0.4},
       {id:'shaker', name:'Shaker', color:'#5aa9ea', keys:false, vol:0.4},
-      {id:'cymbal', name:'Cymbal Swell', color:'#ee6fae', keys:false, on:true}
+      {id:'cymbal', name:'Cymbal Swell', color:'#ee6fae', keys:false}
     ];
 
     STEMS.forEach(function(s){
@@ -1620,10 +1620,10 @@
           s.majorGain.gain.value = isMinor ? 0 : 1;
           s.minorGain.gain.value = isMinor ? 1 : 0;
           s.majorGain.connect(s.onGain); s.minorGain.connect(s.onGain);
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=4').then(function(buf){ s.majorBuf = buf; tick(); }));
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=4').then(function(buf){ s.minorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=5').then(function(buf){ s.majorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=5').then(function(buf){ s.minorBuf = buf; tick(); }));
         } else {
-          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=4').then(function(buf){ s.buf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=5').then(function(buf){ s.buf = buf; tick(); }));
         }
       });
 
