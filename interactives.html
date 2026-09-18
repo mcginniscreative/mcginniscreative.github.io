@@ -284,7 +284,7 @@
   .hm-card.hm-dark{
     --hm-bg:#0f1020; --hm-ink:#f2f3ff; --hm-soft:#9aa0c8; --hm-pad:#1a1c33; --hm-pad-line:#2c2f55;
   }
-  .hm-stage{position:relative;min-height:460px;padding:18px 18px 22px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair;}
+  .hm-stage{position:relative;min-height:460px;padding:18px 18px 22px;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:crosshair;}
   .hm-stage canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
   .hm-top{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:18px;}
   .hm-start,.hm-dark-btn{
@@ -346,6 +346,14 @@
   .hm-credit{position:relative;z-index:2;margin:10px 0 0;font-size:12.5px;line-height:1.6;color:var(--hm-soft);text-align:center;transition:color .4s ease;}
   .hm-credit a{color:#786ae4;font-weight:600;text-decoration:none;white-space:nowrap;}
   .hm-credit a:hover{text-decoration:underline;}
+  .hm-tone{
+    position:relative;z-index:2;height:92px;margin:0 0 24px;border-radius:18px;touch-action:none;cursor:crosshair;
+    border:1.5px dashed var(--hm-pad-line);
+    background:linear-gradient(90deg,rgba(28,18,163,.28),rgba(120,106,228,.10) 50%,rgba(255,180,120,.30));
+    display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+    font:600 12px/1.3 'Poppins',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--hm-soft);
+  }
+  .hm-tone-mid{text-align:center;text-transform:none;letter-spacing:0;font-weight:500;font-size:12.5px;max-width:46%;}
   .hm-orb{
     position:absolute;z-index:3;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle,rgba(255,255,255,.9),rgba(120,106,228,.35) 55%,transparent 72%);
@@ -429,7 +437,7 @@
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">01 · Live</p>
       <h2 class="section-title">Hideout: Stem Mixer</h2>
-      <p class="section-desc">"Hideout" was written by my good friend Micah, and honestly, his version is better than mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener" style="color:var(--indigo-1);font-weight:600;">Check it out on Spotify &rarr;</a> This one is my recording, and every sound in it is a layer I recorded myself. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
+      <p class="section-desc">"Hideout" was written by my good friend Micah, and his version is better than mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener" style="color:var(--indigo-1);font-weight:600;">Check it out on Spotify &rarr;</a> This one is my recording, and every sound in it is a layer I recorded. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
     </div>
 
     <div class="reveal playground">
@@ -449,6 +457,7 @@
               <span class="hm-mood-text"><b id="hmMoodLabel">Change the mood</b><small id="hmMoodSub">Flip the whole song to a minor key</small></span>
             </button>
           </div>
+          <div class="hm-tone" id="hmTone"><span>Dark</span><span class="hm-tone-mid" id="hmToneMid">Drag here to shape the tone</span><span>Bright</span></div>
           <div class="hm-pads" id="hmPads"></div>
           <div class="hm-orb" id="hmOrb"></div>
           <p class="hm-hint" id="hmHint">Tap a layer to switch it on or off. Drag anywhere: left is dark, right is bright.</p>
@@ -1517,7 +1526,7 @@
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var STEMS = [
-      {id:'strings', name:'Strings', color:'#786ae4', keys:true, on:true},
+      {id:'strings', name:'Strings', color:'#786ae4', keys:true, on:true, vol:0.5},
       {id:'vibes', name:'Vibraphone', color:'#2bb5c4', keys:true, vol:0.4},
       {id:'bass', name:'Bass', color:'#4152e8', keys:true},
       {id:'softgtr', name:'Soft Guitar', color:'#f0994a', keys:true, on:true},
@@ -1690,13 +1699,20 @@
 
     /* drag = brightness (X) + edge/resonance (Y) */
     var dragging = false, sx = 0, sy = 0, moved = 0, bright = 1;
+    var toneEl = document.getElementById('hmTone');
+    var toneRectEl = stage;
+    if(window.matchMedia('(pointer: coarse)').matches){
+      hint.textContent = 'Tap a layer to switch it on or off. Drag the tone strip: left is dark, right is bright.';
+      document.getElementById('hmToneMid').textContent = 'Drag here to shape the tone';
+    }
     function setTone(e){
-      var r = stage.getBoundingClientRect();
+      var r = toneRectEl.getBoundingClientRect();
+      var sr = stage.getBoundingClientRect();
       var x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
       var y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
       bright = x;
-      orb.style.left = (e.clientX - r.left) + 'px';
-      orb.style.top = (e.clientY - r.top) + 'px';
+      orb.style.left = (e.clientX - sr.left) + 'px';
+      orb.style.top = (e.clientY - sr.top) + 'px';
       if(!ctx || !filter) return;
       var t = ctx.currentTime;
       filter.frequency.setTargetAtTime(250 * Math.pow(16000 / 250, x), t, 0.03);
@@ -1704,6 +1720,9 @@
     }
     stage.addEventListener('pointerdown', function(e){
       if(e.target.closest('.hm-start, .hm-dark-btn, .hm-mood-btn, .hm-credit a')) return;
+      var inTone = !!e.target.closest('#hmTone');
+      if(e.pointerType === 'touch' && !inTone) return;   /* touch drags only from the tone strip, so the rest of the card scrolls */
+      toneRectEl = inTone ? toneEl : stage;
       dragging = true; sx = e.clientX; sy = e.clientY; moved = 0;
       orb.classList.add('on');
       setTone(e);
