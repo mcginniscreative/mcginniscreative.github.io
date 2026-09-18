@@ -310,6 +310,7 @@
     position:relative;aspect-ratio:1/1;border-radius:50%;border:2px solid var(--hm-pad-line);
     background:var(--hm-pad);color:var(--hm-soft);cursor:pointer;padding:8px;
     font:600 12px/1.25 'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;
+    -webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;outline:none;
     transition:background .35s ease,color .35s ease,border-color .35s ease;
   }
   .hm-pad[aria-pressed="true"]{
@@ -318,7 +319,8 @@
     transform:scale(calc(1 + var(--lvl) * .16));
     box-shadow:0 0 calc(10px + var(--lvl) * 46px) calc(var(--lvl) * 10px) color-mix(in srgb,var(--c) 55%,transparent);
   }
-  .hm-pad:focus-visible{outline:3px solid #786ae4;outline-offset:3px;}
+  .hm-pad:focus-visible{outline:3px solid #786ae4;outline-offset:3px;border-radius:50%;}
+  .hm-pad:focus:not(:focus-visible){outline:none;}
   .hm-mood{position:relative;z-index:2;display:flex;justify-content:center;margin:8px 0 46px;}
   .hm-mood-btn{
     display:inline-flex;align-items:center;gap:14px;cursor:pointer;
@@ -1560,12 +1562,12 @@
 
     var STEMS = [
       {id:'strings', name:'Strings', color:'#786ae4', keys:true, on:true, vol:0.5},
-      {id:'vibes', name:'Vibraphone', color:'#2bb5c4', keys:true, vol:0.4},
+      {id:'vibes', name:'Vibraphone', color:'#2bb5c4', keys:true, on:true, vol:0.4},
       {id:'bass', name:'Bass', color:'#4152e8', keys:true},
-      {id:'softgtr', name:'Soft Guitar', color:'#f0994a', keys:true, on:true},
+      {id:'softgtr', name:'Soft Guitar', color:'#f0994a', keys:true},
       {id:'rockgtr', name:'Rock Guitar', color:'#e8506a', keys:true, vol:0.4},
-      {id:'lead', name:'Lead Vocal', color:'#ff6f6f', keys:true, on:true},
-      {id:'backing', name:'Backing Vocals', color:'#b46df2', keys:true, on:true},
+      {id:'lead', name:'Lead Vocal', color:'#ff6f6f', keys:true},
+      {id:'backing', name:'Backing Vocals', color:'#b46df2', keys:true},
       {id:'drums', name:'Drums', color:'#e9b520', keys:false},
       {id:'beatz', name:'Beatz', color:'#2fbf85', keys:false, vol:0.4},
       {id:'shaker', name:'Shaker', color:'#5aa9ea', keys:false, vol:0.4},
