@@ -8,6 +8,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  /* ---- reel wheel (scroll-driven, enhances the grid below; grid stays as fallback) ---- */
+  .wheel{position:relative;background:#16181c;--navh:68px;}
+  .wheel-stage{position:sticky;top:var(--navh);height:calc(100vh - var(--navh));height:calc(100svh - var(--navh));overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 45%,#23252c 0%,#16181c 62%,#101114 100%);color:#fff;}
+  .wheel-orb{position:absolute;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.9;}
+  .wheel-orb.o1{width:26px;height:26px;left:9%;top:16%;}
+  .wheel-orb.o2{width:14px;height:14px;right:12%;bottom:24%;}
+  .wheel-items{position:absolute;left:0;right:0;top:0;bottom:118px;}
+  .wheel-item{position:absolute;left:50%;top:50%;display:block;border-radius:16px;overflow:hidden;background:#0c0e0b;
+    box-shadow:0 24px 60px -22px rgba(0,0,0,.8);will-change:transform,filter,opacity;cursor:pointer;
+    transition:box-shadow .3s ease;}
+  .wheel-item img{width:100%;height:100%;object-fit:cover;display:block;}
+  .wheel-item:focus-visible{outline:3px solid #ff8585;outline-offset:4px;}
+  .wheel-play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;opacity:0;transform:scale(.7);
+    transition:opacity .3s ease,transform .3s ease;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5));}
+  .wheel-play::before{content:"";position:absolute;left:16px;top:8px;border-style:solid;border-width:24px 0 24px 42px;border-color:transparent transparent transparent #fff;border-radius:4px;}
+  .wheel-item.active .wheel-play{opacity:1;transform:scale(1);}
+  .wheel-caption{position:absolute;left:0;right:0;bottom:0;z-index:2001;text-align:center;padding:64px 20px 44px;background:linear-gradient(180deg,rgba(22,24,28,0) 0%,rgba(22,24,28,.92) 46%,#16181c 100%);pointer-events:none;}
+  .wheel-tag{margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#ff9a9a;}
+  .wheel-title{margin:0;font-size:clamp(18px,3.4vw,26px);font-weight:700;line-height:1.25;}
+  .wheel-org{margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.6);}
+  .wheel-meta{position:absolute;left:0;right:0;bottom:12px;z-index:2002;display:flex;justify-content:center;gap:16px;font-size:12px;color:rgba(255,255,255,.5);}
+  .wheel-count{font-weight:600;color:rgba(255,255,255,.8);}
+</style>
 </head>
 <body>
 
@@ -184,6 +209,106 @@
   } else {
     els.forEach(function(el){ el.classList.add('in'); });
   }
+</script>
+<script>
+(function(){
+  var grid = document.querySelector('.reel');
+  if(!grid || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cards = [].slice.call(grid.querySelectorAll('.reel-card'));
+  var N = cards.length; if(N < 3) return;
+  var gridSection = grid.closest('section');
+  var nav = document.querySelector('nav');
+
+  var wrap = document.createElement('section');
+  wrap.className = 'wheel'; wrap.id = 'reelWheel';
+  wrap.setAttribute('aria-label', 'Video reel');
+  wrap.innerHTML = '<div class="wheel-stage"><div class="wheel-orb o1"></div><div class="wheel-orb o2"></div>' +
+    '<div class="wheel-items"></div>' +
+    '<div class="wheel-caption"><p class="wheel-tag"></p><h2 class="wheel-title"></h2><p class="wheel-org"></p></div>' +
+    '<div class="wheel-meta"><span class="wheel-count"></span><span>Scroll or swipe to spin the reel</span></div></div>';
+  gridSection.parentNode.insertBefore(wrap, gridSection);
+  gridSection.hidden = true;
+
+  var stage = wrap.querySelector('.wheel-stage'), holder = wrap.querySelector('.wheel-items');
+  var capTag = wrap.querySelector('.wheel-tag'), capTitle = wrap.querySelector('.wheel-title'), capOrg = wrap.querySelector('.wheel-org');
+  var countEl = wrap.querySelector('.wheel-count'), caption = wrap.querySelector('.wheel-caption');
+
+  var items = cards.map(function(c, i){
+    var a = document.createElement('a');
+    a.className = 'wheel-item'; a.href = c.href; a.target = '_blank'; a.rel = 'noopener';
+    var title = c.querySelector('.reel-title').textContent;
+    a.setAttribute('aria-label', 'Play video: ' + title);
+    a.innerHTML = '<img src="' + c.querySelector('img').getAttribute('src') + '" alt=""><span class="wheel-play"></span>';
+    a.addEventListener('click', function(e){
+      if(i !== current){ e.preventDefault(); goTo(i); }
+    });
+    a.addEventListener('focus', function(){ if(i !== current) goTo(i); });
+    holder.appendChild(a);
+    return {el:a, tag:c.querySelector('.reel-tag').textContent, title:title, org:c.querySelector('.reel-org').textContent};
+  });
+
+  var W = 600, H = 338, stepPx = 320, navH = 68, current = -1;
+
+  function measure(){
+    navH = nav ? nav.offsetHeight : 68;
+    wrap.style.setProperty('--navh', navH + 'px');
+    var stageH = window.innerHeight - navH;
+    var avail = stageH - 118;
+    W = Math.min(680, window.innerWidth * 0.88);
+    H = W * 9 / 16;
+    if(H > avail * 0.6){ H = avail * 0.6; W = H * 16 / 9; }
+    stepPx = Math.max(240, window.innerHeight * 0.42);
+    wrap.style.height = (stageH + (N - 1) * stepPx) + 'px';
+    items.forEach(function(it){ it.el.style.width = W + 'px'; it.el.style.height = H + 'px'; it.el.style.marginLeft = (-W/2) + 'px'; it.el.style.marginTop = (-H/2) + 'px'; });
+  }
+
+  function wrapAbsTop(){ return wrap.getBoundingClientRect().top + window.pageYOffset; }
+  function goTo(i){ window.scrollTo({top: wrapAbsTop() - navH + i * stepPx, behavior: 'smooth'}); }
+
+  function render(){
+    var rect = wrap.getBoundingClientRect();
+    var p = Math.min(1, Math.max(0, (navH - rect.top) / ((N - 1) * stepPx))) * (N - 1);
+    var S1 = H * 0.72, S2 = H * 0.42;
+    for(var i = 0; i < N; i++){
+      var d = i - p, ad = Math.abs(d), el = items[i].el;
+      if(ad > 3.6){ el.style.visibility = 'hidden'; el.style.opacity = 0; continue; }
+      var off = ad < 1 ? ad * S1 : S1 + (ad - 1) * S2;
+      var y = (d < 0 ? -1 : 1) * off;
+      var sc = Math.max(0.4, 1 - ad * 0.2);
+      var blur = Math.min(7, ad * 2.8);
+      el.style.visibility = 'visible';
+      el.style.opacity = Math.max(0, 1 - ad * 0.34).toFixed(3);
+      el.style.zIndex = 1000 - Math.round(ad * 100);
+      el.style.filter = blur > 0.15 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none';
+      el.style.transform = 'translateY(' + y.toFixed(1) + 'px) scale(' + sc.toFixed(3) + ')';
+    }
+    var idx = Math.round(p);
+    if(idx !== current){
+      if(current >= 0) items[current].el.classList.remove('active');
+      current = idx; items[idx].el.classList.add('active');
+      capTag.textContent = items[idx].tag; capTitle.textContent = items[idx].title; capOrg.textContent = items[idx].org;
+      countEl.textContent = (idx + 1) + ' / ' + N;
+    }
+    return p;
+  }
+
+  var ticking = false, idle = null;
+  function onScroll(){
+    if(!ticking){ ticking = true; requestAnimationFrame(function(){ ticking = false; render(); }); }
+    clearTimeout(idle);
+    idle = setTimeout(function(){
+      var rect = wrap.getBoundingClientRect();
+      var raw = (navH - rect.top) / stepPx;
+      if(raw < 0 || raw > N - 1) return;
+      var near = Math.round(raw);
+      if(Math.abs(raw - near) > 0.05) goTo(near);
+    }, 170);
+  }
+  measure(); render();
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ measure(); render(); });
+  window.wheelDebug = {render: render, measure: measure, items: items, N: N};
+})();
 </script>
 </body>
 </html>
