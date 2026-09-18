@@ -597,6 +597,8 @@
             <button class="hm-start" id="hmStart" type="button">▶ Start the band</button>
             <div class="hm-progress" id="hmProgress"><div id="hmProgressFill"></div></div>
             <button class="hm-dark-btn" id="hmDark" type="button" aria-pressed="false">Dark mode</button>
+            <button class="hm-dark-btn" id="hmAllOn" type="button">All on</button>
+            <button class="hm-dark-btn" id="hmAllOff" type="button">All off</button>
             <span class="hm-key" id="hmKey">Major</span>
           </div>
           <div class="hm-pads" id="hmPads"></div>
@@ -1575,6 +1577,19 @@
       if(playing){ ctx.suspend(); playing = false; startBtn.textContent = 'Play'; }
       else { ctx.resume(); playing = true; startBtn.textContent = 'Pause'; requestAnimationFrame(frame); }
     });
+
+    function setAll(on){
+      STEMS.forEach(function(s, i){
+        if(s.on === on) return;
+        s.on = on;
+        s.el.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if(!on) s.el.style.setProperty('--lvl', 0);
+        applyOn(s);
+        if(on) setTimeout(function(){ spawnBlob(s, 1); }, i * 40);
+      });
+    }
+    document.getElementById('hmAllOn').addEventListener('click', function(){ setAll(true); });
+    document.getElementById('hmAllOff').addEventListener('click', function(){ setAll(false); });
 
     darkBtn.addEventListener('click', function(){
       isMinor = !isMinor;
