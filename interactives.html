@@ -1932,7 +1932,7 @@
     form.addEventListener('submit', function(e){ e.preventDefault(); reveal(); });
     document.getElementById('mlAgain').addEventListener('click', function(){
       idx = (idx + 1) % STORIES.length;
-      form.reset(); card.hidden = true; goBtn.textContent = 'Write my note →'; upd();
+      card.hidden = true; goBtn.textContent = 'Write my note →'; upd();
       var first = document.getElementById('ml_name'); if(first) first.focus({preventScroll:true});
     });
     document.getElementById('mlCopy').addEventListener('click', function(){
