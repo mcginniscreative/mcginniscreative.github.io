@@ -428,6 +428,37 @@
 
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">01 · Live</p>
+      <h2 class="section-title">Hideout: Stem Mixer</h2>
+      <p class="section-desc">Every sound in this song is a layer I recorded myself. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="hm-card" id="hmCard">
+        <div class="hm-stage" id="hmStage">
+          <canvas id="hmCanvas"></canvas>
+          <div class="hm-top">
+            <button class="hm-start" id="hmStart" type="button">▶ Start the band</button>
+            <div class="hm-progress" id="hmProgress"><div id="hmProgressFill"></div></div>
+            <button class="hm-dark-btn" id="hmAllOn" type="button">All on</button>
+            <button class="hm-dark-btn" id="hmAllOff" type="button">All off</button>
+            <span class="hm-key" id="hmKey">Major</span>
+          </div>
+          <div class="hm-mood">
+            <button class="hm-mood-btn" id="hmDark" type="button" aria-pressed="false">
+              <span class="hm-mood-ico" aria-hidden="true"></span>
+              <span class="hm-mood-text"><b id="hmMoodLabel">Change the mood</b><small id="hmMoodSub">Flip the whole song to a minor key</small></span>
+            </button>
+          </div>
+          <div class="hm-pads" id="hmPads"></div>
+          <div class="hm-orb" id="hmOrb"></div>
+          <p class="hm-hint" id="hmHint">Tap a layer to switch it on or off. Drag anywhere: left is dark, right is bright.</p>
+          <p class="hm-credit">"Hideout" was written by my good friend Micah. This recording is mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener">Hear the original on Spotify &rarr;</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">02 · Live</p>
       <h2 class="section-title">Facts About Aaron</h2>
       <p class="section-desc">Small moments from my life. Click a pin to read the story.</p>
     </div>
@@ -504,7 +535,7 @@
     </div>
 
     <div class="section-head reveal" style="margin-top:12px;">
-      <p class="section-kicker">02 · Live</p>
+      <p class="section-kicker">03 · Live</p>
       <h2 class="section-title">Toys I Grew Up With</h2>
       <p class="section-desc">Eighteen toys, one bin. Fling them around, or click one to hear the story.</p>
     </div>
@@ -534,7 +565,7 @@
     </div>
 
     <div class="section-head reveal">
-      <p class="section-kicker">03 · Live</p>
+      <p class="section-kicker">04 · Live</p>
       <h2 class="section-title">Logo Playground</h2>
       <p class="section-desc">The McGinnis Creative mark, live. Recolor it, drop in your own color, flip the backdrop, or watch it draw itself in.</p>
     </div>
@@ -601,7 +632,7 @@
     </div>
 
     <div class="section-head reveal" style="margin-top:12px;">
-      <p class="section-kicker">04 · Live</p>
+      <p class="section-kicker">05 · Live</p>
       <h2 class="section-title">Fly Through Rochester</h2>
       <p class="section-desc">A short history of Rochester, the way a peregrine falcon sees it: fast, from above, wingtip to wingtip. Scroll, drag, or hit fly.</p>
     </div>
@@ -648,37 +679,6 @@
           <div class="map-modal-city" id="falconModalYear"></div>
           <div class="falcon-modal-title" id="falconModalTitle"></div>
           <p class="map-modal-text" id="falconModalText"></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-head reveal" style="margin-top:12px;">
-      <p class="section-kicker">05 · Live</p>
-      <h2 class="section-title">Hideout: Stem Mixer</h2>
-      <p class="section-desc">Every sound in this song is a layer I recorded myself. Switch layers on and off, flip the whole song into a minor key, and drag across the stage to darken or brighten the sound.</p>
-    </div>
-
-    <div class="reveal playground">
-      <div class="hm-card" id="hmCard">
-        <div class="hm-stage" id="hmStage">
-          <canvas id="hmCanvas"></canvas>
-          <div class="hm-top">
-            <button class="hm-start" id="hmStart" type="button">▶ Start the band</button>
-            <div class="hm-progress" id="hmProgress"><div id="hmProgressFill"></div></div>
-            <button class="hm-dark-btn" id="hmAllOn" type="button">All on</button>
-            <button class="hm-dark-btn" id="hmAllOff" type="button">All off</button>
-            <span class="hm-key" id="hmKey">Major</span>
-          </div>
-          <div class="hm-mood">
-            <button class="hm-mood-btn" id="hmDark" type="button" aria-pressed="false">
-              <span class="hm-mood-ico" aria-hidden="true"></span>
-              <span class="hm-mood-text"><b id="hmMoodLabel">Change the mood</b><small id="hmMoodSub">Flip the whole song to a minor key</small></span>
-            </button>
-          </div>
-          <div class="hm-pads" id="hmPads"></div>
-          <div class="hm-orb" id="hmOrb"></div>
-          <p class="hm-hint" id="hmHint">Tap a layer to switch it on or off. Drag anywhere: left is dark, right is bright.</p>
-          <p class="hm-credit">"Hideout" was written by my good friend Micah. This recording is mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener">Hear the original on Spotify &rarr;</a></p>
         </div>
       </div>
     </div>
@@ -1552,7 +1552,7 @@
     });
 
     var AC = window.AudioContext || window.webkitAudioContext;
-    var ctx = null, filter = null, master = null, loaded = false, playing = false, isMinor = false;
+    var ctx = null, filter = null, limiter = null, master = null, loaded = false, playing = false, isMinor = false;
     var suppressClick = false;
 
     function loadBuffer(url){
@@ -1588,9 +1588,19 @@
       filter.type = 'lowpass';
       filter.frequency.value = 16000;
       filter.Q.value = 0.7;
+      /* master safety: soften harsh top end, then a fast limiter so stacking every layer never clips */
+      var soften = ctx.createBiquadFilter();
+      soften.type = 'highshelf'; soften.frequency.value = 5000; soften.gain.value = -2.5;
+      limiter = ctx.createDynamicsCompressor();
+      limiter.threshold.value = -12; limiter.knee.value = 10; limiter.ratio.value = 12;
+      limiter.attack.value = 0.003; limiter.release.value = 0.2;
       master = ctx.createGain();
       master.gain.value = 0.85;
-      filter.connect(master);
+      var trim = ctx.createGain(); trim.gain.value = 0.5;
+      filter.connect(trim);
+      trim.connect(soften);
+      soften.connect(limiter);
+      limiter.connect(master);
       master.connect(ctx.destination);
 
       var jobs = [], done = 0;
@@ -1610,10 +1620,10 @@
           s.majorGain.gain.value = isMinor ? 0 : 1;
           s.minorGain.gain.value = isMinor ? 1 : 0;
           s.majorGain.connect(s.onGain); s.minorGain.connect(s.onGain);
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=2').then(function(buf){ s.majorBuf = buf; tick(); }));
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=2').then(function(buf){ s.minorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=3').then(function(buf){ s.majorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=3').then(function(buf){ s.minorBuf = buf; tick(); }));
         } else {
-          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=2').then(function(buf){ s.buf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=3').then(function(buf){ s.buf = buf; tick(); }));
         }
       });
 
@@ -1690,7 +1700,7 @@
       if(!ctx || !filter) return;
       var t = ctx.currentTime;
       filter.frequency.setTargetAtTime(250 * Math.pow(16000 / 250, x), t, 0.03);
-      filter.Q.setTargetAtTime(0.7 + (1 - y) * 5.3, t, 0.05);
+      filter.Q.setTargetAtTime(0.7 + (1 - y) * 3.3, t, 0.05);
     }
     stage.addEventListener('pointerdown', function(e){
       if(e.target.closest('.hm-start, .hm-dark-btn, .hm-mood-btn, .hm-credit a')) return;
