@@ -1480,15 +1480,15 @@
 
     var STEMS = [
       {id:'strings', name:'Strings', color:'#786ae4', keys:true, on:true},
-      {id:'vibes', name:'Vibraphone', color:'#2bb5c4', keys:true},
+      {id:'vibes', name:'Vibraphone', color:'#2bb5c4', keys:true, vol:0.7},
       {id:'bass', name:'Bass', color:'#4152e8', keys:true},
       {id:'softgtr', name:'Soft Guitar', color:'#f0994a', keys:true, on:true},
-      {id:'rockgtr', name:'Rock Guitar', color:'#e8506a', keys:true},
+      {id:'rockgtr', name:'Rock Guitar', color:'#e8506a', keys:true, vol:0.7},
       {id:'lead', name:'Lead Vocal', color:'#ff6f6f', keys:true, on:true},
       {id:'backing', name:'Backing Vocals', color:'#b46df2', keys:true, on:true},
       {id:'drums', name:'Drums', color:'#e9b520', keys:false},
-      {id:'beatz', name:'Beatz', color:'#2fbf85', keys:false},
-      {id:'shaker', name:'Shaker', color:'#5aa9ea', keys:false},
+      {id:'beatz', name:'Beatz', color:'#2fbf85', keys:false, vol:0.7},
+      {id:'shaker', name:'Shaker', color:'#5aa9ea', keys:false, vol:0.7},
       {id:'cymbal', name:'Cymbal Swell', color:'#ee6fae', keys:false, on:true}
     ];
 
@@ -1525,7 +1525,7 @@
 
     function applyOn(s){
       if(!ctx || !s.onGain) return;
-      s.onGain.gain.setTargetAtTime(s.on ? 1 : 0, ctx.currentTime, 0.08);
+      s.onGain.gain.setTargetAtTime(s.on ? (s.vol || 1) : 0, ctx.currentTime, 0.08);
     }
 
     function applyKey(){
@@ -1564,7 +1564,7 @@
         s.analyser.fftSize = 256;
         s.data = new Uint8Array(s.analyser.fftSize);
         s.onGain = ctx.createGain();
-        s.onGain.gain.value = s.on ? 1 : 0;
+        s.onGain.gain.value = s.on ? (s.vol || 1) : 0;
         s.onGain.connect(s.analyser);
         s.analyser.connect(filter);
         if(s.keys){
