@@ -343,6 +343,9 @@
     100%{box-shadow:0 8px 26px -6px rgba(28,18,163,.6),0 0 0 22px rgba(120,106,228,0);}
   }
   @media (prefers-reduced-motion: reduce){.hm-mood-btn{animation:none;}}
+  .hm-credit{position:relative;z-index:2;margin:10px 0 0;font-size:12.5px;line-height:1.6;color:var(--hm-soft);text-align:center;transition:color .4s ease;}
+  .hm-credit a{color:#786ae4;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .hm-credit a:hover{text-decoration:underline;}
   .hm-orb{
     position:absolute;z-index:3;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle,rgba(255,255,255,.9),rgba(120,106,228,.35) 55%,transparent 72%);
@@ -675,6 +678,7 @@
           <div class="hm-pads" id="hmPads"></div>
           <div class="hm-orb" id="hmOrb"></div>
           <p class="hm-hint" id="hmHint">Tap a layer to switch it on or off. Drag anywhere: left is dark, right is bright.</p>
+          <p class="hm-credit">"Hideout" was written by my good friend Micah. This recording is mine. <a href="https://open.spotify.com/track/1fovfYAKcOZAFG9O1qRWO8" target="_blank" rel="noopener">Hear the original on Spotify &rarr;</a></p>
         </div>
       </div>
     </div>
@@ -1689,7 +1693,7 @@
       filter.Q.setTargetAtTime(0.7 + (1 - y) * 5.3, t, 0.05);
     }
     stage.addEventListener('pointerdown', function(e){
-      if(e.target.closest('.hm-start, .hm-dark-btn, .hm-mood-btn')) return;
+      if(e.target.closest('.hm-start, .hm-dark-btn, .hm-mood-btn, .hm-credit a')) return;
       dragging = true; sx = e.clientX; sy = e.clientY; moved = 0;
       orb.classList.add('on');
       setTone(e);
