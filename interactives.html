@@ -73,8 +73,10 @@
   /* ---- bounce pit ---- */
   .bp-stage{
     position:relative;border-radius:18px;overflow:hidden;
-    height:420px;background:var(--bg);touch-action:none;cursor:grab;
+    height:420px;background:var(--bg);touch-action:pan-y;cursor:grab;
   }
+  .bp-stage.bp-fling{touch-action:none;}
+  .pg-btn[aria-pressed="true"]{background:linear-gradient(135deg,#ff8585,#786ae4);color:#fff;border-color:transparent;}
   .bp-stage:active{cursor:grabbing;}
   .bp-stage canvas{display:block;width:100%;height:100%;}
   .bp-hint{
@@ -556,6 +558,7 @@
       </div>
       <div class="pg-controls">
         <button class="pg-btn" id="bpReplay">↺ Drop them again</button>
+        <button class="pg-btn" id="bpMode" type="button" aria-pressed="false" hidden>Fling mode: off</button>
         <div class="pg-spacer"></div>
       </div>
     </div>
@@ -942,6 +945,34 @@
       constraint:{stiffness:0.2, damping:0.1, render:{visible:false}}
     });
     World.add(engine.world, mouseConstraint);
+
+    /* touch: Matter's touch handlers block page scrolling, so on touch devices they only run in "Fling mode".
+       Taps (story cards) keep working either way through the tap handlers below. */
+    var bpModeBtn = document.getElementById('bpMode');
+    var touchOn = true;
+    function setMatterTouch(on){
+      if(on === touchOn) return;
+      touchOn = on;
+      var fn = on ? 'addEventListener' : 'removeEventListener';
+      var opt = on ? {passive:false} : false;
+      canvas[fn]('touchmove', mouse.mousemove, opt);
+      canvas[fn]('touchstart', mouse.mousedown, opt);
+      canvas[fn]('touchend', mouse.mouseup, opt);
+    }
+    if(window.matchMedia('(pointer: coarse)').matches){
+      setMatterTouch(false);
+      bpModeBtn.hidden = false;
+      hint.textContent = 'Tap a toy for its story. Turn on Fling mode to throw them around.';
+      bpModeBtn.addEventListener('click', function(){
+        var on = bpModeBtn.getAttribute('aria-pressed') !== 'true';
+        bpModeBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        bpModeBtn.textContent = on ? 'Fling mode: on (tap to scroll again)' : 'Fling mode: off';
+        stage.classList.toggle('bp-fling', on);
+        setMatterTouch(on);
+        hint.textContent = on ? 'Drag a toy to fling it. Switch Fling mode off to scroll the page.' : 'Tap a toy for its story. Turn on Fling mode to throw them around.';
+        hint.classList.remove('hide');
+      });
+    }
 
     var runner = Runner.create();
     Runner.run(runner, engine);
