@@ -314,6 +314,35 @@
     box-shadow:0 0 calc(10px + var(--lvl) * 46px) calc(var(--lvl) * 10px) color-mix(in srgb,var(--c) 55%,transparent);
   }
   .hm-pad:focus-visible{outline:3px solid #786ae4;outline-offset:3px;}
+  .hm-mood{position:relative;z-index:2;display:flex;justify-content:center;margin:0 0 22px;}
+  .hm-mood-btn{
+    display:inline-flex;align-items:center;gap:14px;cursor:pointer;
+    padding:14px 30px 14px 22px;border-radius:100px;border:none;color:#fff;text-align:left;
+    background:linear-gradient(135deg,#1c12a3,#4152e8 55%,#786ae4);
+    box-shadow:0 8px 26px -6px rgba(28,18,163,.6);
+    transition:transform .2s ease,box-shadow .3s ease,background .5s ease;
+    animation:hmMoodPulse 2s ease-out infinite;
+  }
+  .hm-mood-btn:hover{transform:translateY(-2px) scale(1.03);}
+  .hm-mood-btn:focus-visible{outline:3px solid #ff8585;outline-offset:4px;}
+  .hm-mood-btn.seen{animation:none;}
+  .hm-mood-text{display:flex;flex-direction:column;gap:2px;}
+  .hm-mood-text b{font:700 17px/1.1 'Poppins',sans-serif;}
+  .hm-mood-text small{font:500 12px/1.2 'Poppins',sans-serif;opacity:.85;}
+  .hm-mood-ico{
+    flex:0 0 26px;width:26px;height:26px;border-radius:50%;
+    box-shadow:inset -9px -3px 0 0 #fff;transform:rotate(-20deg);transition:all .5s ease;
+  }
+  .hm-mood-btn[aria-pressed="true"]{
+    background:linear-gradient(135deg,#ff8585,#ffb35c);color:#2a1a08;
+    box-shadow:0 8px 30px -6px rgba(255,150,90,.7);
+  }
+  .hm-mood-btn[aria-pressed="true"] .hm-mood-ico{background:#fff6d6;box-shadow:0 0 0 4px rgba(255,255,255,.5),0 0 18px 6px rgba(255,246,214,.9);transform:none;}
+  @keyframes hmMoodPulse{
+    0%{box-shadow:0 8px 26px -6px rgba(28,18,163,.6),0 0 0 0 rgba(120,106,228,.65);}
+    100%{box-shadow:0 8px 26px -6px rgba(28,18,163,.6),0 0 0 22px rgba(120,106,228,0);}
+  }
+  @media (prefers-reduced-motion: reduce){.hm-mood-btn{animation:none;}}
   .hm-orb{
     position:absolute;z-index:3;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle,rgba(255,255,255,.9),rgba(120,106,228,.35) 55%,transparent 72%);
@@ -633,10 +662,15 @@
           <div class="hm-top">
             <button class="hm-start" id="hmStart" type="button">▶ Start the band</button>
             <div class="hm-progress" id="hmProgress"><div id="hmProgressFill"></div></div>
-            <button class="hm-dark-btn" id="hmDark" type="button" aria-pressed="false">Dark mode</button>
             <button class="hm-dark-btn" id="hmAllOn" type="button">All on</button>
             <button class="hm-dark-btn" id="hmAllOff" type="button">All off</button>
             <span class="hm-key" id="hmKey">Major</span>
+          </div>
+          <div class="hm-mood">
+            <button class="hm-mood-btn" id="hmDark" type="button" aria-pressed="false">
+              <span class="hm-mood-ico" aria-hidden="true"></span>
+              <span class="hm-mood-text"><b id="hmMoodLabel">Change the mood</b><small id="hmMoodSub">Flip the whole song to a minor key</small></span>
+            </button>
           </div>
           <div class="hm-pads" id="hmPads"></div>
           <div class="hm-orb" id="hmOrb"></div>
@@ -1631,6 +1665,9 @@
     darkBtn.addEventListener('click', function(){
       isMinor = !isMinor;
       darkBtn.setAttribute('aria-pressed', isMinor ? 'true' : 'false');
+      darkBtn.classList.add('seen');
+      document.getElementById('hmMoodLabel').textContent = isMinor ? 'Bring back the light' : 'Change the mood';
+      document.getElementById('hmMoodSub').textContent = isMinor ? 'Back to the major key' : 'Flip the whole song to a minor key';
       card.classList.toggle('hm-dark', isMinor);
       document.documentElement.classList.toggle('i-dark', isMinor);
       keyEl.textContent = isMinor ? 'Minor' : 'Major';
@@ -1652,7 +1689,7 @@
       filter.Q.setTargetAtTime(0.7 + (1 - y) * 5.3, t, 0.05);
     }
     stage.addEventListener('pointerdown', function(e){
-      if(e.target.closest('.hm-start, .hm-dark-btn')) return;
+      if(e.target.closest('.hm-start, .hm-dark-btn, .hm-mood-btn')) return;
       dragging = true; sx = e.clientX; sy = e.clientY; moved = 0;
       orb.classList.add('on');
       setTone(e);
