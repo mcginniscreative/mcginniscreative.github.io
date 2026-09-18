@@ -181,6 +181,82 @@
     font-size:13.5px;font-weight:600;color:var(--indigo-1);text-decoration:none;
   }
   .map-modal-link:hover{text-decoration:underline;}
+
+  /* ---- falcon flight timeline ---- */
+  .falcon-stage{
+    position:relative;height:460px;border-radius:18px;overflow:hidden;
+    background:linear-gradient(180deg,#dfe4fb 0%,#eef0fc 45%,#fbfbfd 100%);
+    touch-action:pan-y;
+  }
+  .falcon-layer{position:absolute;top:0;left:0;height:100%;width:260%;pointer-events:none;will-change:transform;}
+  .falcon-layer-clouds{opacity:.55;}
+  .falcon-cloud{
+    position:absolute;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
+               linear-gradient(135deg,#c9cffa,#e3d9fb);
+    filter:blur(1px);
+  }
+  .falcon-layer-skyline{bottom:0;height:130px;top:auto;opacity:.9;}
+  .falcon-skyline-strip{
+    position:absolute;bottom:0;left:0;height:100%;width:100%;
+    background-image:repeating-linear-gradient(90deg,
+      #b9c0f2 0 26px, #b9c0f2 26px 30px, transparent 30px 46px,
+      #cfd4f7 46px 78px, transparent 78px 96px);
+    background-position:bottom;
+    clip-path:polygon(0 100%, 0 55%, 3% 55%, 3% 30%, 7% 30%, 7% 65%, 12% 65%, 12% 15%, 16% 15%, 16% 60%, 21% 60%, 21% 40%, 26% 40%, 26% 70%, 31% 70%, 31% 20%, 36% 20%, 36% 58%, 41% 58%, 41% 35%, 46% 35%, 46% 75%, 51% 75%, 51% 25%, 56% 25%, 56% 62%, 61% 62%, 61% 10%, 66% 10%, 66% 55%, 71% 55%, 71% 30%, 76% 30%, 76% 68%, 81% 68%, 81% 18%, 86% 18%, 86% 60%, 91% 60%, 91% 38%, 96% 38%, 96% 72%, 100% 72%, 100% 100%);
+  }
+  .falcon-track-scroll{
+    position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab;
+  }
+  .falcon-track-scroll::-webkit-scrollbar{display:none;}
+  .falcon-track-scroll.grabbing{cursor:grabbing;}
+  .falcon-track{position:relative;height:100%;display:flex;align-items:flex-end;padding:0 8vw;}
+  .falcon-path-line{
+    position:absolute;left:0;right:0;bottom:96px;height:2px;
+    background:repeating-linear-gradient(90deg,rgba(65,82,232,.35) 0 10px,transparent 10px 20px);
+  }
+  .falcon-stop{position:relative;flex:0 0 340px;height:100%;display:flex;align-items:flex-end;justify-content:center;}
+  .falcon-stop-dot{
+    position:absolute;bottom:92px;left:50%;transform:translateX(-50%);
+    width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);
+    box-shadow:0 0 0 4px #fbfbfd, 0 2px 6px rgba(28,18,163,.3);
+  }
+  .falcon-card{
+    position:absolute;bottom:118px;left:50%;transform:translateX(-50%);
+    width:270px;background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:14px 16px;box-shadow:0 8px 24px rgba(22,24,28,.08);
+  }
+  .falcon-card-year{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--indigo-1);}
+  .falcon-card-title{font-size:15px;font-weight:700;margin:2px 0 4px;color:var(--ink);}
+  .falcon-card-text{font-size:12.5px;line-height:1.5;color:var(--ink-soft);}
+  .falcon-bird{
+    position:absolute;left:22%;top:38%;width:104px;z-index:5;pointer-events:none;
+    filter:drop-shadow(0 6px 10px rgba(28,18,163,.25));
+    transition:transform .12s ease-out;
+  }
+  .falcon-wing{transform-origin:63px 38px;animation:falconFlap .34s ease-in-out infinite alternate;}
+  @keyframes falconFlap{from{transform:rotate(-14deg);}to{transform:rotate(38deg);}}
+  .falcon-bob{animation:falconBob 2.6s ease-in-out infinite;}
+  @keyframes falconBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @media (prefers-reduced-motion: reduce){
+    .falcon-wing{animation:none;transform:rotate(10deg);}
+    .falcon-bob{animation:none;}
+  }
+  .falcon-year-badge{
+    position:absolute;top:16px;left:16px;z-index:6;
+    font-size:13px;font-weight:700;color:var(--ink);
+    background:rgba(255,255,255,.85);backdrop-filter:blur(4px);
+    padding:6px 14px;border-radius:100px;box-shadow:0 2px 8px rgba(22,24,28,.08);
+  }
+  .falcon-hint{
+    position:absolute;top:16px;right:16px;z-index:6;font-size:12px;font-weight:500;
+    color:var(--ink-faint);background:rgba(255,255,255,.75);backdrop-filter:blur(4px);
+    padding:5px 11px;border-radius:100px;pointer-events:none;transition:opacity .3s ease;
+  }
+  .falcon-hint.hide{opacity:0;}
+  .falcon-progress{height:6px;border-radius:100px;background:var(--bg);overflow:hidden;margin:14px 22px 0;}
+  .falcon-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff8585,#786ae4);}
 </style>
 </head>
 <body>
@@ -386,6 +462,44 @@
         <button class="pg-btn" id="pgReplay">↺ Draw it again</button>
       </div>
       <p class="pg-note">Tip: pick "brand gradient," then move your cursor over the mark, it shifts with you.</p>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">04 · Live</p>
+      <h2 class="section-title">Fly Through Rochester</h2>
+      <p class="section-desc">A short history of Rochester, the way a peregrine falcon sees it: fast, from above, wingtip to wingtip. Scroll, drag, or hit fly.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="falcon-stage" id="falconStage">
+        <div class="falcon-layer falcon-layer-clouds" id="falconClouds"></div>
+        <div class="falcon-layer falcon-layer-skyline" id="falconSkyline"><div class="falcon-skyline-strip"></div></div>
+        <div class="falcon-track-scroll" id="falconScroll">
+          <div class="falcon-track" id="falconTrack">
+            <div class="falcon-path-line"></div>
+          </div>
+        </div>
+        <svg class="falcon-bird falcon-bob" id="falconBird" viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="falcon-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#786ae4"></stop>
+              <stop offset="100%" stop-color="#1c12a3"></stop>
+            </linearGradient>
+          </defs>
+          <path class="falcon-wing" fill="url(#falcon-grad)" d="M63,38 C48,14 22,6 6,14 C22,20 44,29 57,43 Z"></path>
+          <ellipse cx="70" cy="41" rx="22" ry="9.5" fill="url(#falcon-grad)"></ellipse>
+          <path d="M48,41 L28,32 L28,50 Z" fill="url(#falcon-grad)"></path>
+          <circle cx="93" cy="37" r="7.5" fill="url(#falcon-grad)"></circle>
+          <path d="M99,36 L109,34 L99,40 Z" fill="#ff8585"></path>
+        </svg>
+        <span class="falcon-year-badge" id="falconYearBadge">1789</span>
+        <span class="falcon-hint" id="falconHint">Scroll or drag →</span>
+      </div>
+      <div class="falcon-progress"><div class="falcon-progress-fill" id="falconProgressFill"></div></div>
+      <div class="pg-controls">
+        <button class="pg-btn" id="falconPlay">▶ Fly through it</button>
+        <div class="pg-spacer"></div>
+      </div>
     </div>
 
     <div class="coming-soon reveal" style="padding:48px 40px;">
@@ -929,6 +1043,142 @@
       if(e.key === 'Escape') closeFact();
       if(e.key === 'ArrowLeft' && images.length > 1) showImage(imgIndex - 1);
       if(e.key === 'ArrowRight' && images.length > 1) showImage(imgIndex + 1);
+    });
+  })();
+
+  /* ---- fly through rochester ---- */
+  (function(){
+    var STOPS = [
+      {year:'1789', title:'The First Mill', text:'Ebenezer "Indian" Allan builds a mill at the Genesee Falls, the first seed of a city that doesn’t exist yet.'},
+      {year:'1803', title:'Rochester Founded', text:'Nathaniel Rochester and partners buy the "Hundred-Acre Tract" along the Genesee River.'},
+      {year:'1823', title:'The Erie Canal Arrives', text:'The canal reaches the city, and Rochester becomes "Flour City," the flour-milling capital of the world.'},
+      {year:'1847', title:'The North Star', text:'Frederick Douglass publishes his abolitionist newspaper from a print shop in Rochester.'},
+      {year:'1850', title:'University of Rochester', text:'The university is founded, part of a wave of institutions that turn the city into a regional hub.'},
+      {year:'1872', title:'Susan B. Anthony Votes', text:'She’s arrested in Rochester for voting illegally, a landmark moment for women’s suffrage.'},
+      {year:'1888', title:'The Kodak Camera', text:'George Eastman introduces the Kodak camera. Rochester becomes "The World’s Image Center."'},
+      {year:'1906', title:'Haloid Founded', text:'A small Rochester photo-paper company is founded, decades before it becomes Xerox.'},
+      {year:'1950s', title:'Boomtown', text:'Kodak, Xerox, and Bausch + Lomb make Rochester one of the most prosperous small cities in America.'},
+      {year:'1980s', title:'The Falcons Return', text:'Once nearly extinct, peregrine falcons begin nesting on the towers downtown, a comeback the whole city watches.'},
+      {year:'Today', title:'A New Rochester', text:'A hub for optics, imaging, and health care, and now, small creative studios like this one.'}
+    ];
+
+    var stage = document.getElementById('falconStage');
+    var scrollEl = document.getElementById('falconScroll');
+    var track = document.getElementById('falconTrack');
+    var clouds = document.getElementById('falconClouds');
+    var skyline = document.getElementById('falconSkyline');
+    var yearBadge = document.getElementById('falconYearBadge');
+    var hint = document.getElementById('falconHint');
+    var progressFill = document.getElementById('falconProgressFill');
+    var playBtn = document.getElementById('falconPlay');
+    var bird = document.getElementById('falconBird');
+    if(!stage) return;
+
+    STOPS.forEach(function(s){
+      var stop = document.createElement('div');
+      stop.className = 'falcon-stop';
+      stop.innerHTML =
+        '<span class="falcon-stop-dot"></span>' +
+        '<div class="falcon-card">' +
+          '<div class="falcon-card-year">' + s.year + '</div>' +
+          '<div class="falcon-card-title">' + s.title + '</div>' +
+          '<div class="falcon-card-text">' + s.text + '</div>' +
+        '</div>';
+      track.appendChild(stop);
+    });
+
+    var cloudSpecs = [
+      {top:'12%', left:'4%', w:70, h:38}, {top:'22%', left:'18%', w:46, h:26},
+      {top:'8%', left:'34%', w:90, h:46}, {top:'28%', left:'50%', w:56, h:30},
+      {top:'14%', left:'64%', w:74, h:40}, {top:'24%', left:'80%', w:50, h:28},
+      {top:'10%', left:'94%', w:84, h:44}, {top:'30%', left:'108%', w:60, h:32},
+      {top:'16%', left:'122%', w:70, h:38}, {top:'6%', left:'138%', w:94, h:48}
+    ];
+    cloudSpecs.forEach(function(c){
+      var el = document.createElement('div');
+      el.className = 'falcon-cloud';
+      el.style.top = c.top; el.style.left = c.left;
+      el.style.width = c.w + 'px'; el.style.height = c.h + 'px';
+      clouds.appendChild(el);
+    });
+
+    function maxScroll(){ return scrollEl.scrollWidth - scrollEl.clientWidth; }
+
+    var ticking = false;
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var sl = scrollEl.scrollLeft;
+        var m = Math.max(maxScroll(), 1);
+        var progress = Math.min(1, Math.max(0, sl / m));
+        clouds.style.transform = 'translateX(' + (-sl * 0.18) + 'px)';
+        skyline.style.transform = 'translateX(' + (-sl * 0.5) + 'px)';
+        progressFill.style.width = (progress * 100) + '%';
+        var idx = Math.round(progress * (STOPS.length - 1));
+        yearBadge.textContent = STOPS[idx].year;
+        if(sl > 10) hint.classList.add('hide');
+        ticking = false;
+      });
+    }
+    scrollEl.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    requestAnimationFrame(onScroll);
+
+    /* vertical wheel over the stage flies horizontally */
+    stage.addEventListener('wheel', function(e){
+      if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      scrollEl.scrollLeft += e.deltaY;
+    }, {passive:false});
+
+    /* click-drag to scroll */
+    var dragging = false, dragStartX = 0, dragStartScroll = 0;
+    scrollEl.addEventListener('mousedown', function(e){
+      dragging = true; dragStartX = e.clientX; dragStartScroll = scrollEl.scrollLeft;
+      scrollEl.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      scrollEl.scrollLeft = dragStartScroll - (e.clientX - dragStartX);
+    });
+    window.addEventListener('mouseup', function(){
+      dragging = false; scrollEl.classList.remove('grabbing');
+    });
+
+    /* fly-through autoplay */
+    var flying = false, flyFrame = null;
+    function cancelFly(){
+      flying = false;
+      if(flyFrame) cancelAnimationFrame(flyFrame);
+    }
+    ['mousedown','wheel','touchstart'].forEach(function(evt){
+      scrollEl.addEventListener(evt, cancelFly, {passive:true});
+    });
+
+    playBtn.addEventListener('click', function(){
+      cancelFly();
+      flying = true;
+      hint.classList.add('hide');
+      var start = scrollEl.scrollLeft;
+      var m = maxScroll();
+      var end = start >= m - 4 ? 0 : m;
+      if(end === 0) scrollEl.scrollLeft = 0;
+      start = scrollEl.scrollLeft;
+      var duration = 9000;
+      var t0 = performance.now();
+      function easeInOutQuad(t){ return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2; }
+      function step(now){
+        if(!flying) return;
+        var t = Math.min(1, (now - t0) / duration);
+        scrollEl.scrollLeft = start + (end - start) * easeInOutQuad(t);
+        if(t < 1){
+          flyFrame = requestAnimationFrame(step);
+        } else {
+          flying = false;
+        }
+      }
+      flyFrame = requestAnimationFrame(step);
     });
   })();
 </script>
