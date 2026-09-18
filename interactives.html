@@ -314,7 +314,7 @@
     box-shadow:0 0 calc(10px + var(--lvl) * 46px) calc(var(--lvl) * 10px) color-mix(in srgb,var(--c) 55%,transparent);
   }
   .hm-pad:focus-visible{outline:3px solid #786ae4;outline-offset:3px;}
-  .hm-mood{position:relative;z-index:2;display:flex;justify-content:center;margin:0 0 22px;}
+  .hm-mood{position:relative;z-index:2;display:flex;justify-content:center;margin:8px 0 46px;}
   .hm-mood-btn{
     display:inline-flex;align-items:center;gap:14px;cursor:pointer;
     padding:14px 30px 14px 22px;border-radius:100px;border:none;color:#fff;text-align:left;
@@ -1620,10 +1620,10 @@
           s.majorGain.gain.value = isMinor ? 0 : 1;
           s.minorGain.gain.value = isMinor ? 1 : 0;
           s.majorGain.connect(s.onGain); s.minorGain.connect(s.onGain);
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=3').then(function(buf){ s.majorBuf = buf; tick(); }));
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=3').then(function(buf){ s.minorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=4').then(function(buf){ s.majorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=4').then(function(buf){ s.minorBuf = buf; tick(); }));
         } else {
-          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=3').then(function(buf){ s.buf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=4').then(function(buf){ s.buf = buf; tick(); }));
         }
       });
 
