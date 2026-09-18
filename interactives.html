@@ -1611,7 +1611,7 @@
       {id:'softgtr', name:'Soft Guitar', color:'#f0994a', keys:true, vol:0.6},
       {id:'rockgtr', name:'Rock Guitar', color:'#e8506a', keys:true, vol:0.26},
       {id:'lead', name:'Lead Vocal', color:'#ff6f6f', keys:true},
-      {id:'backing', name:'Backing Vocals', color:'#b46df2', keys:true},
+      {id:'backing', name:'Backing Vocals', color:'#b46df2', keys:true, majBoost:2},
       {id:'drums', name:'Drums', color:'#e9b520', keys:false},
       {id:'beatz', name:'Beatz', color:'#2fbf85', keys:false, vol:0.4},
       {id:'shaker', name:'Shaker', color:'#5aa9ea', keys:false, vol:0.4},
@@ -1658,7 +1658,7 @@
       var t = ctx.currentTime;
       STEMS.forEach(function(s){
         if(!s.keys) return;
-        s.majorGain.gain.setTargetAtTime(isMinor ? 0 : 1, t, 0.18);
+        s.majorGain.gain.setTargetAtTime(isMinor ? 0 : (s.majBoost || 1), t, 0.18);
         s.minorGain.gain.setTargetAtTime(isMinor ? 1 : 0, t, 0.18);
       });
     }
@@ -1704,7 +1704,7 @@
         s.analyser.connect(filter);
         if(s.keys){
           s.majorGain = ctx.createGain(); s.minorGain = ctx.createGain();
-          s.majorGain.gain.value = isMinor ? 0 : 1;
+          s.majorGain.gain.value = isMinor ? 0 : (s.majBoost || 1);
           s.minorGain.gain.value = isMinor ? 1 : 0;
           s.majorGain.connect(s.onGain); s.minorGain.connect(s.onGain);
           jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=5').then(function(buf){ s.majorBuf = buf; tick(); }));
