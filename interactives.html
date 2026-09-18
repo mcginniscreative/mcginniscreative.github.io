@@ -394,6 +394,25 @@
   html.night .falcon-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
   html.night .falcon-bird{filter:drop-shadow(0 6px 12px rgba(139,147,255,.45));}
   html.night .map-modal-backdrop{background:rgba(4,5,14,.65);}
+
+  /* ---- madlib ---- */
+  .ml{padding:26px 24px 28px;}
+  .ml-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
+  .ml-field label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px;}
+  .ml-field input{width:100%;font:500 15px/1.2 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;}
+  .ml-field input:focus{outline:none;border-color:var(--indigo-1);box-shadow:0 0 0 3px var(--indigo-soft);}
+  .ml-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px;}
+  .ml-go{font:700 14.5px/1 "Poppins",system-ui,sans-serif;color:#fff;border:none;border-radius:100px;padding:14px 26px;cursor:pointer;background:linear-gradient(135deg,#ff8585,#786ae4);box-shadow:0 8px 20px -10px rgba(120,106,228,.9);transition:transform .15s ease;}
+  .ml-go:hover{transform:translateY(-2px);}
+  .ml-count{font-size:12.5px;font-weight:600;color:var(--ink-faint);margin-left:auto;}
+  .ml-card{margin-top:22px;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:26px 28px;}
+  .ml-card[hidden]{display:none;}
+  .ml-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-1);margin:0 0 14px;}
+  .ml-story{font-size:17px;line-height:1.75;color:var(--ink);margin:0;white-space:pre-line;}
+  .ml-story mark{background:linear-gradient(135deg,rgba(255,133,133,.28),rgba(120,106,228,.28));color:inherit;font-weight:700;border-radius:6px;padding:1px 6px;}
+  .ml-card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  @media (prefers-reduced-motion:no-preference){.ml-card.pop{animation:mlPop .45s ease;}}
+  @keyframes mlPop{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
 </style>
 </head>
 <body>
@@ -689,6 +708,30 @@
           <p class="map-modal-text" id="falconModalText"></p>
         </div>
       </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">06 · Live</p>
+      <h2 class="section-title">Send Yourself a Madlib</h2>
+      <p class="section-desc">Fill in the blanks, don't peek at the story, and I'll write you a note. Hit "Do another" for a new one, there are ten.</p>
+    </div>
+
+    <div class="reveal playground">
+      <form class="ml" id="mlForm" autocomplete="off">
+        <div class="ml-form" id="mlFields"></div>
+        <div class="ml-actions">
+          <button class="ml-go" type="submit" id="mlGo">Write my note →</button>
+          <span class="ml-count" id="mlCount"></span>
+        </div>
+        <div class="ml-card" id="mlCard" hidden aria-live="polite">
+          <p class="ml-title" id="mlTitle"></p>
+          <p class="ml-story" id="mlStory"></p>
+          <div class="ml-card-actions">
+            <button class="pg-btn" type="button" id="mlAgain">Do another →</button>
+            <button class="pg-btn" type="button" id="mlCopy">Copy it</button>
+          </div>
+        </div>
+      </form>
     </div>
 
     <div class="coming-soon reveal" style="padding:48px 40px;">
@@ -1835,6 +1878,69 @@
       cctx.globalCompositeOperation = 'source-over';
       requestAnimationFrame(frame);
     }
+  })();
+
+  /* ---- madlib ---- */
+  (function(){
+    var FIELDS = [
+      {k:'name', label:'A name', ph:'Sam'},
+      {k:'adj', label:'An adjective', ph:'sparkly'},
+      {k:'adj2', label:'Another adjective', ph:'grumpy'},
+      {k:'noun', label:'A noun', ph:'toaster'},
+      {k:'noun2', label:'Another noun', ph:'canoe'},
+      {k:'plural', label:'A plural noun', ph:'sandwiches'},
+      {k:'animals', label:'A plural animal', ph:'penguins'},
+      {k:'verbed', label:'A verb ending in -ed', ph:'tackled'},
+      {k:'num', label:'A number', ph:'47'}
+    ];
+    var STORIES = [
+      {t:'A note from Aaron', s:"Hey my most {adj} friend, {name}!\nGlad you checked out my site instead of getting {verbed} by {num} {adj2} {animals}. Hope you have a lovely day and avoid any and all {noun} on the road and {plural} in your house.\n\nGood day!\nAaron"},
+      {t:'Breaking news', s:"Rochester, NY: Local hero {name} was seen this morning getting {verbed} by a {adj} {noun} outside a {adj2} {noun2}. Witnesses report {num} {animals} cheering while {plural} rained from the sky. More at eleven.\n\nStay tuned,\nAaron"},
+      {t:'A very official review', s:"Five stars for this website! {name} said it was more {adj} than a {noun} and twice as {adj2} as {num} {animals}. Would visit again. Would not recommend eating {plural} while browsing.\n\nSincerely,\nAaron"},
+      {t:'Weather report', s:"Good evening, {name}. Tonight's forecast is {adj} with a {num} percent chance of {plural}. Expect {adj2} winds, scattered {animals}, and one {noun} approaching from the {noun2}. Stay inside if you have been {verbed}.\n\nYour friend in the weather center,\nAaron"},
+      {t:'Recipe of the day', s:"{name}'s {adj} Surprise. Ingredients: {num} {plural}, one {adj2} {noun}, and a pinch of {noun2}. Get your {animals} to help stir. If anything gets {verbed}, start over.\n\nBon appétit,\nAaron"},
+      {t:'Dear future me', s:"Dear {name}, by the time you read this you will have {verbed} {num} {plural} and finally met a {adj} {noun}. Don't forget: {animals} are more {adj2} than they look, and a {noun2} is always a good idea.\n\nLove,\nAaron"},
+      {t:'Adventure trailer', s:"In a world of {adj} {plural}, one hero named {name} must face {num} {adj2} {animals}. Armed with only a {noun} and a {noun2}, no {plural} will be left {verbed}. Coming soon to a screen near you.\n\nDirected by,\nAaron"},
+      {t:'Job posting', s:"Now hiring: {adj} {noun} wrangler. Must be {adj2}, own at least {num} {plural}, and have {verbed} a {noun2} before. {animals} welcome on Fridays. Apply to {name}.\n\nTalk soon,\nAaron"},
+      {t:'Field guide', s:"The wild {name} is a {adj} creature, often found {verbed} near a {noun}. Herds of {num} {animals} have been spotted nearby. If you see one, stay {adj2}, offer some {plural}, and back away from the {noun2}.\n\nHappy trails,\nAaron"},
+      {t:'Bedtime story', s:"Once upon a time, a {adj} child named {name} found a {noun} under the {noun2}. It was {adj2}, it smelled like {plural}, and it had been {verbed} by {num} {animals}. And they all lived happily ever after.\n\nGoodnight,\nAaron"}
+    ];
+    var form = document.getElementById('mlForm'), fields = document.getElementById('mlFields');
+    var card = document.getElementById('mlCard'), storyEl = document.getElementById('mlStory'), titleEl = document.getElementById('mlTitle');
+    var countEl = document.getElementById('mlCount'), goBtn = document.getElementById('mlGo');
+    var idx = 0, plain = '';
+    FIELDS.forEach(function(f){
+      var d = document.createElement('div'); d.className = 'ml-field';
+      d.innerHTML = '<label for="ml_' + f.k + '">' + f.label + '</label><input id="ml_' + f.k + '" name="' + f.k + '" placeholder="' + f.ph + '" maxlength="30">';
+      fields.appendChild(d);
+    });
+    function upd(){ countEl.textContent = 'Story ' + (idx + 1) + ' of ' + STORIES.length; }
+    function reveal(){
+      var vals = {};
+      FIELDS.forEach(function(f){ vals[f.k] = (document.getElementById('ml_' + f.k).value || '').trim() || f.ph; });
+      var st = STORIES[idx]; plain = '';
+      storyEl.textContent = '';
+      st.s.split(/(\{\w+\})/).forEach(function(part){
+        var m = part.match(/^\{(\w+)\}$/);
+        if(m){ var mk = document.createElement('mark'); mk.textContent = vals[m[1]]; storyEl.appendChild(mk); plain += vals[m[1]]; }
+        else { storyEl.appendChild(document.createTextNode(part)); plain += part; }
+      });
+      titleEl.textContent = st.t;
+      card.hidden = false; card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+      goBtn.textContent = 'Rewrite it →';
+    }
+    form.addEventListener('submit', function(e){ e.preventDefault(); reveal(); });
+    document.getElementById('mlAgain').addEventListener('click', function(){
+      idx = (idx + 1) % STORIES.length;
+      form.reset(); card.hidden = true; goBtn.textContent = 'Write my note →'; upd();
+      var first = document.getElementById('ml_name'); if(first) first.focus({preventScroll:true});
+    });
+    document.getElementById('mlCopy').addEventListener('click', function(){
+      var b = this;
+      function done(){ b.textContent = 'Copied ✓'; setTimeout(function(){ b.textContent = 'Copy it'; }, 1500); }
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(plain).then(done, function(){});
+    });
+    upd();
   })();
 </script>
 </body>
