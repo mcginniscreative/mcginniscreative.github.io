@@ -1572,10 +1572,10 @@
           s.majorGain.gain.value = isMinor ? 0 : 1;
           s.minorGain.gain.value = isMinor ? 1 : 0;
           s.majorGain.connect(s.onGain); s.minorGain.connect(s.onGain);
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3').then(function(buf){ s.majorBuf = buf; tick(); }));
-          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3').then(function(buf){ s.minorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-major.mp3?v=2').then(function(buf){ s.majorBuf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '-minor.mp3?v=2').then(function(buf){ s.minorBuf = buf; tick(); }));
         } else {
-          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3').then(function(buf){ s.buf = buf; tick(); }));
+          jobs.push(loadBuffer('assets/audio/' + s.id + '.mp3?v=2').then(function(buf){ s.buf = buf; tick(); }));
         }
       });
 
