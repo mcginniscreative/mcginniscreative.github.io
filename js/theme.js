@@ -13,6 +13,11 @@
     if (meta) meta.setAttribute('content', night ? '#0f1020' : '#fbfbfd');
   }
   apply(saved() === 'night');
+  window.mcTheme = {set:function(night, persist){
+    document.documentElement.classList.add('theme-anim'); apply(night);
+    if(persist){ try { localStorage.setItem(KEY, night ? 'night' : 'day'); } catch(e){} }
+    setTimeout(function(){ root.classList.remove('theme-anim'); }, 700);
+  }};
   document.addEventListener('DOMContentLoaded', function(){
     apply(root.classList.contains('night'));
     var btns = document.querySelectorAll('.theme-toggle');

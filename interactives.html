@@ -150,7 +150,7 @@
     transform:translateY(14px) scale(.97);opacity:0;transition:transform .22s ease, opacity .22s ease;
   }
   .map-modal-backdrop.open .map-modal{transform:translateY(0) scale(1);opacity:1;}
-  .map-modal-photo{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--bg);}
+  .map-modal-photo{transition:opacity .2s ease;width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--bg);}
   .map-modal-carousel{position:relative;}
   .map-carousel-arrow{
     position:absolute;top:50%;transform:translateY(-50%);
@@ -1127,12 +1127,14 @@
     var toyName = document.getElementById('toyModalName');
     var toyText = document.getElementById('toyModalText');
     var toyBack = document.getElementById('toyModalBack');
-    var toyLastFocused = null;
+    var toyLastFocused = null, toyScroll = 0;
 
     function openToy(toy){
       toyName.textContent = toy.name;
       toyText.textContent = toy.fact;
       if(toy.img){
+        toyPhoto.style.opacity = 0; toyPhoto.removeAttribute('src');
+        toyPhoto.onload = function(){ toyPhoto.style.opacity = 1; };
         toyPhoto.src = toy.img;
         toyPhoto.alt = toy.name;
         toyCarousel.style.display = 'block';
@@ -1141,12 +1143,14 @@
         toyCarousel.style.display = 'none';
       }
       toyLastFocused = document.activeElement;
+      toyScroll = window.pageYOffset;
       toyBackdrop.classList.add('open');
-      toyBack.focus();
+      toyBack.focus({preventScroll:true});
     }
     function closeToy(){
       toyBackdrop.classList.remove('open');
-      if(toyLastFocused) toyLastFocused.focus();
+      setTimeout(function(){ if(Math.abs(window.pageYOffset - toyScroll) > 2) window.scrollTo({top:toyScroll, behavior:'instant'}); }, 0);
+      if(toyLastFocused) toyLastFocused.focus({preventScroll:true});
     }
     toyBack.addEventListener('click', closeToy);
     toyBackdrop.addEventListener('click', function(e){ if(e.target === toyBackdrop) closeToy(); });
@@ -1170,12 +1174,14 @@
     var textEl = document.getElementById('mapModalText');
     var linkEl = document.getElementById('mapModalLink');
     var backBtn = document.getElementById('mapModalBack');
-    var lastFocused = null;
+    var lastFocused = null, mapScroll = 0;
     var images = [];
     var imgIndex = 0;
 
     function showImage(i){
       imgIndex = (i + images.length) % images.length;
+      photo.style.opacity = 0; photo.removeAttribute('src');
+      photo.onload = function(){ photo.style.opacity = 1; };
       photo.src = images[imgIndex];
       dotsEl.querySelectorAll('span').forEach(function(dot, di){
         dot.classList.toggle('active', di === imgIndex);
@@ -1220,8 +1226,9 @@
         linkEl.style.display = 'none';
       }
       lastFocused = document.activeElement;
+      mapScroll = window.pageYOffset;
       backdrop.classList.add('open');
-      backBtn.focus();
+      backBtn.focus({preventScroll:true});
     }
 
     prevBtn.addEventListener('click', function(){ showImage(imgIndex - 1); });
@@ -1229,9 +1236,10 @@
 
     function closeFact(){
       backdrop.classList.remove('open');
+      setTimeout(function(){ if(Math.abs(window.pageYOffset - mapScroll) > 2) window.scrollTo({top:mapScroll, behavior:'instant'}); }, 0);
       pins.forEach(function(p){ p.classList.remove('active'); });
       legendBtns.forEach(function(b){ b.classList.remove('active'); });
-      if(lastFocused) lastFocused.focus();
+      if(lastFocused) lastFocused.focus({preventScroll:true});
     }
 
     pins.forEach(function(pin){
@@ -1498,12 +1506,12 @@
       markVisited(i);
       falconLastFocused = document.activeElement;
       falconBackdrop.classList.add('open');
-      falconBack.focus();
+      falconBack.focus({preventScroll:true});
     }
 
     function closeStopModal(){
       falconBackdrop.classList.remove('open');
-      if(falconLastFocused) falconLastFocused.focus();
+      if(falconLastFocused) falconLastFocused.focus({preventScroll:true});
       if(autoplayActive && !prefersReducedMotion){
         perchTimer = setTimeout(advanceLeg, PERCH_MS);
       }
@@ -1527,7 +1535,7 @@
       if(e.key === 'ArrowLeft') next = dotEls[Math.max(0, i - 1)];
       if(!next) return;
       e.preventDefault();
-      next.focus();
+      next.focus({preventScroll:true});
       next.scrollIntoView({behavior: prefersReducedMotion ? 'auto' : 'smooth', inline:'center', block:'nearest'});
     });
   })();
@@ -1585,7 +1593,7 @@
     });
 
     var AC = window.AudioContext || window.webkitAudioContext;
-    var ctx = null, filter = null, limiter = null, master = null, loaded = false, playing = false, isMinor = false;
+    var ctx = null, filter = null, limiter = null, master = null, loaded = false, playing = false, isMinor = false, moodPrev = false;
     var suppressClick = false;
 
     function loadBuffer(url){
@@ -1716,6 +1724,8 @@
       document.getElementById('hmMoodLabel').textContent = isMinor ? 'Bring back the light' : 'Change the mood';
       document.getElementById('hmMoodSub').textContent = isMinor ? 'Back to the major key' : 'Flip the whole song to a minor key';
       card.classList.toggle('hm-dark', isMinor);
+      if(isMinor){ moodPrev = document.documentElement.classList.contains('night'); window.mcTheme.set(true, false); }
+      else { window.mcTheme.set(moodPrev, false); }
       keyEl.textContent = isMinor ? 'Minor' : 'Major';
       applyKey();
     });

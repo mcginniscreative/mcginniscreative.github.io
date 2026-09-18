@@ -12,15 +12,16 @@
 <script src="js/theme.js"></script>
 <style>
   /* ---- reel wheel (scroll-driven, enhances the grid below; grid stays as fallback) ---- */
-  .wheel{position:relative;background:#16181c;--navh:68px;}
-  .wheel-stage{position:sticky;top:var(--navh);height:calc(100vh - var(--navh));height:calc(100svh - var(--navh));overflow:hidden;
-    background:radial-gradient(120% 90% at 50% 45%,#23252c 0%,#16181c 62%,#101114 100%);color:#fff;}
-  .wheel-orb{position:absolute;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.9;}
+  .wheel{position:relative;--navh:68px;--wbg:#f4f5fc;--wbg2:#fbfbfd;--wbg3:#e6e8f8;--wtext:var(--ink);--wsoft:var(--ink-soft);--wfaint:var(--ink-faint);--wtag:var(--coral-1);--wpill:rgba(22,24,28,.08);--wpill2:rgba(22,24,28,.16);--wbgrgb:244,245,252;background:var(--wbg);}
+  html.night .wheel{--wbg:#0f1020;--wbg2:#171a3d;--wbg3:#0b0c1a;--wpill:rgba(255,255,255,.14);--wpill2:rgba(255,255,255,.26);--wbgrgb:15,16,32;--wtag:#ff9a9a;}
+  .wheel-stage{position:sticky;top:var(--navh);height:calc(100vh - var(--navh));height:calc(100svh - var(--navh));overflow:hidden;isolation:isolate;
+    background:radial-gradient(120% 90% at 50% 45%,var(--wbg2) 0%,var(--wbg) 62%,var(--wbg3) 100%);color:var(--wtext);}
+  .wheel-orb{position:absolute;z-index:0;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.9;}
   .wheel-orb.o1{width:26px;height:26px;left:9%;top:16%;}
   .wheel-orb.o2{width:14px;height:14px;right:12%;bottom:24%;}
-  .wheel-items{position:absolute;left:0;right:0;top:0;bottom:118px;}
+  .wheel-items{position:absolute;z-index:1;left:0;right:0;top:0;bottom:118px;}
   .wheel-item{position:absolute;left:50%;top:50%;display:block;border-radius:16px;overflow:hidden;background:#0c0e0b;
-    box-shadow:0 24px 60px -22px rgba(0,0,0,.8);will-change:transform,filter,opacity;cursor:pointer;
+    box-shadow:0 24px 60px -22px rgba(28,18,163,.45);will-change:transform,filter,opacity;cursor:pointer;
     transition:box-shadow .3s ease;}
   .wheel-item img{width:100%;height:100%;object-fit:cover;display:block;}
   .wheel-item:focus-visible{outline:3px solid #ff8585;outline-offset:4px;}
@@ -28,12 +29,12 @@
     transition:opacity .3s ease,transform .3s ease;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5));}
   .wheel-play::before{content:"";position:absolute;left:16px;top:8px;border-style:solid;border-width:24px 0 24px 42px;border-color:transparent transparent transparent #fff;border-radius:4px;}
   .wheel-item.active .wheel-play{opacity:1;transform:scale(1);}
-  .wheel-caption{position:absolute;left:0;right:0;bottom:0;z-index:2001;text-align:center;padding:64px 20px 44px;background:linear-gradient(180deg,rgba(22,24,28,0) 0%,rgba(22,24,28,.92) 46%,#16181c 100%);pointer-events:none;}
-  .wheel-tag{margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#ff9a9a;}
+  .wheel-caption{position:absolute;left:0;right:0;bottom:0;z-index:2001;text-align:center;padding:64px 20px 44px;background:linear-gradient(180deg,rgba(var(--wbgrgb),0) 0%,rgba(var(--wbgrgb),.92) 46%,var(--wbg) 100%);pointer-events:none;}
+  .wheel-tag{margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--wtag);}
   .wheel-title{margin:0;font-size:clamp(18px,3.4vw,26px);font-weight:700;line-height:1.25;}
-  .wheel-org{margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.6);}
-  .wheel-meta{position:absolute;left:0;right:0;bottom:12px;z-index:2002;display:flex;justify-content:center;gap:16px;font-size:12px;color:rgba(255,255,255,.5);}
-  .wheel-count{font-weight:600;color:rgba(255,255,255,.8);}
+  .wheel-org{margin:4px 0 0;font-size:13px;color:var(--wsoft);}
+  .wheel-meta{position:absolute;left:0;right:0;bottom:12px;z-index:2002;display:flex;justify-content:center;gap:16px;font-size:12px;color:var(--wfaint);}
+  .wheel-count{font-weight:600;color:var(--wsoft);}
   .wheel-item iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;}
   .wheel-item.playing{cursor:default;}
   .wheel-item.playing .wheel-play{display:none;}
@@ -42,9 +43,9 @@
   .wheel-close:hover{background:rgba(22,24,28,.95);}
   .wheel-actions{display:none;gap:14px;align-items:center;}
   .wheel-actions.on{display:inline-flex;}
-  .wheel-actions button,.wheel-actions a{font:600 12px/1 "Poppins",system-ui,sans-serif;color:#fff;text-decoration:none;background:rgba(255,255,255,.14);
+  .wheel-actions button,.wheel-actions a{font:600 12px/1 "Poppins",system-ui,sans-serif;color:var(--wtext);text-decoration:none;background:var(--wpill);
     border:none;border-radius:100px;padding:8px 14px;cursor:pointer;}
-  .wheel-actions button:hover,.wheel-actions a:hover{background:rgba(255,255,255,.26);}
+  .wheel-actions button:hover,.wheel-actions a:hover{background:var(--wpill2);}
   .wheel-item:fullscreen{width:100vw!important;height:100vh!important;margin:0!important;transform:none!important;filter:none!important;border-radius:0;}
 </style>
 </head>
@@ -84,12 +85,12 @@
 <section class="section" style="padding-top:8px;">
   <div class="wrap">
     <div class="reel reveal">
-      <a class="reel-card" href="https://youtu.be/6iAzS2aPNh4" target="_blank" rel="noopener">
-        <div class="reel-thumb"><img src="thumbs/vid4.jpg" alt=""><span class="play-badge"></span></div>
+      <a class="reel-card" href="https://youtu.be/7MVGm8lQxqY" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid14.jpg" alt=""><span class="play-badge"></span></div>
         <div class="reel-body">
-          <p class="reel-tag">Event recap</p>
-          <p class="reel-title">Medved Madness</p>
-          <p class="reel-org">McGinnis Creative</p>
+          <p class="reel-tag">Festival trailer</p>
+          <p class="reel-title">Virginia Film Festival Trailer</p>
+          <p class="reel-org">Aaron McGinnis</p>
         </div>
       </a>
       <a class="reel-card" href="https://youtu.be/j3cT0fE-Emk" target="_blank" rel="noopener">
@@ -100,20 +101,20 @@
           <p class="reel-org">Aaron McGinnis</p>
         </div>
       </a>
-      <a class="reel-card" href="https://youtu.be/SFq5f_HO1b0" target="_blank" rel="noopener">
-        <div class="reel-thumb"><img src="thumbs/vid7.jpg" alt=""><span class="play-badge"></span></div>
+      <a class="reel-card featured" href="https://youtu.be/ImuMtFGYG8k" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid2.jpg" alt=""><span class="play-badge"></span></div>
         <div class="reel-body">
-          <p class="reel-tag">Camp</p>
-          <p class="reel-title">SB2W Counselor Promo</p>
-          <p class="reel-org">SB2w Adventure &amp; Sports Camp</p>
+          <p class="reel-tag">Human story</p>
+          <p class="reel-title">Becoming the Teacher She Needed, Vanessa Leddick Cole</p>
+          <p class="reel-org">Roberts Wesleyan University</p>
         </div>
       </a>
-      <a class="reel-card" href="https://youtu.be/7MVGm8lQxqY" target="_blank" rel="noopener">
-        <div class="reel-thumb"><img src="thumbs/vid14.jpg" alt=""><span class="play-badge"></span></div>
+      <a class="reel-card" href="https://youtu.be/6iAzS2aPNh4" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid4.jpg" alt=""><span class="play-badge"></span></div>
         <div class="reel-body">
-          <p class="reel-tag">Festival trailer</p>
-          <p class="reel-title">Virginia Film Festival Trailer</p>
-          <p class="reel-org">Aaron McGinnis</p>
+          <p class="reel-tag">Event recap</p>
+          <p class="reel-title">Medved Madness</p>
+          <p class="reel-org">McGinnis Creative</p>
         </div>
       </a>
       <a class="reel-card featured" href="https://youtu.be/1LGXij4pjcY" target="_blank" rel="noopener">
@@ -124,12 +125,12 @@
           <p class="reel-org">Roberts Wesleyan University</p>
         </div>
       </a>
-      <a class="reel-card featured" href="https://youtu.be/ImuMtFGYG8k" target="_blank" rel="noopener">
-        <div class="reel-thumb"><img src="thumbs/vid2.jpg" alt=""><span class="play-badge"></span></div>
+      <a class="reel-card" href="https://youtu.be/SFq5f_HO1b0" target="_blank" rel="noopener">
+        <div class="reel-thumb"><img src="thumbs/vid7.jpg" alt=""><span class="play-badge"></span></div>
         <div class="reel-body">
-          <p class="reel-tag">Human story</p>
-          <p class="reel-title">Becoming the Teacher She Needed, Vanessa Leddick Cole</p>
-          <p class="reel-org">Roberts Wesleyan University</p>
+          <p class="reel-tag">Camp</p>
+          <p class="reel-title">SB2W Counselor Promo</p>
+          <p class="reel-org">SB2w Adventure &amp; Sports Camp</p>
         </div>
       </a>
       <a class="reel-card" href="https://youtu.be/gZ7B6BsAr8s" target="_blank" rel="noopener">

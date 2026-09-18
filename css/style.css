@@ -179,7 +179,7 @@ h1 .accent{
 .section-desc{font-size:14.5px;line-height:1.65;color:var(--ink-soft);margin:0;}
 
 /* ---- about (home) ---- */
-.about{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.about{padding:88px 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 .about-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:52px;align-items:center;}
 .about-photo{border-radius:22px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 24px 50px -22px rgba(22,24,28,.3);}
 .about-photo img{width:100%;height:100%;object-fit:cover;}
