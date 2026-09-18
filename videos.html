@@ -7,7 +7,9 @@
 <meta name="description" content="Video work by Aaron McGinnis: human-interest interviews, brand films, camp and community video, and case studies.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<meta name="theme-color" content="#fbfbfd">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
 <style>
   /* ---- reel wheel (scroll-driven, enhances the grid below; grid stays as fallback) ---- */
   .wheel{position:relative;background:#16181c;--navh:68px;}
@@ -32,13 +34,30 @@
   .wheel-org{margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.6);}
   .wheel-meta{position:absolute;left:0;right:0;bottom:12px;z-index:2002;display:flex;justify-content:center;gap:16px;font-size:12px;color:rgba(255,255,255,.5);}
   .wheel-count{font-weight:600;color:rgba(255,255,255,.8);}
+  .wheel-item iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;}
+  .wheel-item.playing{cursor:default;}
+  .wheel-item.playing .wheel-play{display:none;}
+  .wheel-close{position:absolute;top:8px;right:8px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(22,24,28,.72);color:#fff;font-size:16px;line-height:1;backdrop-filter:blur(4px);}
+  .wheel-close:hover{background:rgba(22,24,28,.95);}
+  .wheel-actions{display:none;gap:14px;align-items:center;}
+  .wheel-actions.on{display:inline-flex;}
+  .wheel-actions button,.wheel-actions a{font:600 12px/1 "Poppins",system-ui,sans-serif;color:#fff;text-decoration:none;background:rgba(255,255,255,.14);
+    border:none;border-radius:100px;padding:8px 14px;cursor:pointer;}
+  .wheel-actions button:hover,.wheel-actions a:hover{background:rgba(255,255,255,.26);}
+  .wheel-item:fullscreen{width:100vw!important;height:100vh!important;margin:0!important;transform:none!important;filter:none!important;border-radius:0;}
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="index.html"><img src="assets/mc-logo.png" alt="McGinnis Creative"></a>
+    <a class="nav-logo" href="index.html"><img class="logo-day" src="assets/mc-logo.svg" alt="McGinnis Creative"><img class="logo-night" src="assets/mc-logo-light.svg" alt="" aria-hidden="true"></a>
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to night mode">
+      <svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M21 14.5A9 9 0 0 1 9.5 3a9 9 0 1 0 11.5 11.5z"/></svg>
+      <svg class="ic-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7"/></g></svg>
+      <span class="tt-label"><span class="tt-day">Night</span><span class="tt-night">Day</span></span>
+    </button>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -225,7 +244,7 @@
   wrap.innerHTML = '<div class="wheel-stage"><div class="wheel-orb o1"></div><div class="wheel-orb o2"></div>' +
     '<div class="wheel-items"></div>' +
     '<div class="wheel-caption"><p class="wheel-tag"></p><h2 class="wheel-title"></h2><p class="wheel-org"></p></div>' +
-    '<div class="wheel-meta"><span class="wheel-count"></span><span>Scroll or swipe to spin the reel</span></div></div>';
+    '<div class="wheel-meta"><span class="wheel-count"></span><span class="wheel-hint">Scroll or swipe to spin the reel · click the center card to play</span><span class="wheel-actions"><button type="button" class="wheel-fs">⛶ Full screen</button><a class="wheel-out" target="_blank" rel="noopener">Open on YouTube ↗</a></span></div></div>';
   gridSection.parentNode.insertBefore(wrap, gridSection);
   gridSection.hidden = true;
 
@@ -233,19 +252,71 @@
   var capTag = wrap.querySelector('.wheel-tag'), capTitle = wrap.querySelector('.wheel-title'), capOrg = wrap.querySelector('.wheel-org');
   var countEl = wrap.querySelector('.wheel-count'), caption = wrap.querySelector('.wheel-caption');
 
+  function embedUrl(href){
+    var m;
+    if((m = href.match(/youtu\.be\/([\w-]{6,})/)) || (m = href.match(/[?&]v=([\w-]{6,})/)))
+      return 'https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+    if((m = href.match(/vimeo\.com\/(\d+)/))) return 'https://player.vimeo.com/video/' + m[1] + '?autoplay=1';
+    return null;
+  }
+  var playing = -1;
+  var actions = wrap.querySelector('.wheel-actions'), hint = wrap.querySelector('.wheel-hint');
+  var fsBtn = wrap.querySelector('.wheel-fs'), outLink = wrap.querySelector('.wheel-out');
+
   var items = cards.map(function(c, i){
-    var a = document.createElement('a');
-    a.className = 'wheel-item'; a.href = c.href; a.target = '_blank'; a.rel = 'noopener';
+    var a = document.createElement('div');
+    a.className = 'wheel-item'; a.tabIndex = 0; a.setAttribute('role', 'button');
     var title = c.querySelector('.reel-title').textContent;
     a.setAttribute('aria-label', 'Play video: ' + title);
-    a.innerHTML = '<img src="' + c.querySelector('img').getAttribute('src') + '" alt=""><span class="wheel-play"></span>';
+    var thumb = '<img src="' + c.querySelector('img').getAttribute('src') + '" alt=""><span class="wheel-play"></span>';
+    a.innerHTML = thumb;
     a.addEventListener('click', function(e){
-      if(i !== current){ e.preventDefault(); goTo(i); }
+      if(e.target.closest('.wheel-close')) return;
+      if(i !== current){ goTo(i); return; }
+      if(playing !== i) play(i);
+    });
+    a.addEventListener('keydown', function(e){
+      if((e.key === 'Enter' || e.key === ' ') && e.target === a){ e.preventDefault(); a.click(); }
     });
     a.addEventListener('focus', function(){ if(i !== current) goTo(i); });
     holder.appendChild(a);
-    return {el:a, tag:c.querySelector('.reel-tag').textContent, title:title, org:c.querySelector('.reel-org').textContent};
+    return {el:a, thumb:thumb, href:c.href, embed:embedUrl(c.href), tag:c.querySelector('.reel-tag').textContent, title:title, org:c.querySelector('.reel-org').textContent};
   });
+
+  function play(i){
+    var it = items[i];
+    if(!it.embed){ window.open(it.href, '_blank', 'noopener'); return; }
+    stop();
+    playing = i;
+    it.el.classList.add('playing');
+    it.el.setAttribute('aria-label', it.title);
+    it.el.innerHTML = '<iframe src="' + it.embed + '" title="' + it.title.replace(/"/g, '&quot;') + '" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
+      '<button type="button" class="wheel-close" aria-label="Close video">✕</button>';
+    it.el.querySelector('.wheel-close').addEventListener('click', function(e){ e.stopPropagation(); stop(); });
+    showActions();
+  }
+  function stop(){
+    if(playing < 0) return;
+    if(document.fullscreenElement) { try { document.exitFullscreen(); } catch(e){} }
+    var it = items[playing];
+    it.el.classList.remove('playing');
+    it.el.setAttribute('aria-label', 'Play video: ' + it.title);
+    it.el.innerHTML = it.thumb;
+    playing = -1;
+    showActions();
+  }
+  function showActions(){
+    var on = playing >= 0;
+    actions.classList.toggle('on', on);
+    hint.style.display = on ? 'none' : '';
+    if(on) outLink.href = items[playing].href;
+  }
+  fsBtn.addEventListener('click', function(){
+    if(playing < 0) return;
+    var el = items[playing].el, fn = el.requestFullscreen || el.webkitRequestFullscreen;
+    if(fn) fn.call(el); else { var f = el.querySelector('iframe'); if(f && f.requestFullscreen) f.requestFullscreen(); }
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && playing >= 0 && !document.fullscreenElement) stop(); });
 
   var W = 600, H = 338, stepPx = 320, navH = 68, current = -1;
 
@@ -284,6 +355,7 @@
     }
     var idx = Math.round(p);
     if(idx !== current){
+      if(playing >= 0 && playing !== idx) stop();
       if(current >= 0) items[current].el.classList.remove('active');
       current = idx; items[idx].el.classList.add('active');
       capTag.textContent = items[idx].tag; capTitle.textContent = items[idx].title; capOrg.textContent = items[idx].org;

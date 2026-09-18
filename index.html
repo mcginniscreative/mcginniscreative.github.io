@@ -7,13 +7,20 @@
 <meta name="description" content="Brand identity, video, and web design by Aaron McGinnis of McGinnis Creative, based in Rochester, NY.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<meta name="theme-color" content="#fbfbfd">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="index.html"><img src="assets/mc-logo.png" alt="McGinnis Creative"></a>
+    <a class="nav-logo" href="index.html"><img class="logo-day" src="assets/mc-logo.svg" alt="McGinnis Creative"><img class="logo-night" src="assets/mc-logo-light.svg" alt="" aria-hidden="true"></a>
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to night mode">
+      <svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M21 14.5A9 9 0 0 1 9.5 3a9 9 0 1 0 11.5 11.5z"/></svg>
+      <svg class="ic-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7L7 17M17 7l1.7-1.7"/></g></svg>
+      <span class="tt-label"><span class="tt-day">Night</span><span class="tt-night">Day</span></span>
+    </button>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -48,25 +55,7 @@
   </div>
 </section>
 
-<section class="about">
-  <div class="wrap">
-    <div class="reveal about-text about-text-solo">
-      <p class="section-kicker">About</p>
-      <p><strong>I love telling stories through multimedia</strong>, especially when the work actually matters. For the past several years I've run McGinnis Creative, a one-person studio here in Rochester, where I've led full brand rebrands, built websites, and shot and edited video for clients ranging from a heating and cooling company to a youth sports camp.</p>
-      <p>Beyond client work, I've spent a lot of my career helping other people tell their own stories, whether it was my own students at Light House Studio, campers at Summer's Best 2 Weeks, students at my local church, or college students at Roberts Wesleyan University.</p>
-      <img class="about-signature" src="assets/aaron-signature.png" alt="Aaron McGinnis signature">
-      <div class="fact-row">
-        <span class="fact-chip">Rochester, NY</span>
-        <span class="fact-chip">Disc golf</span>
-        <span class="fact-chip">Gardening</span>
-        <span class="fact-chip">Hiking</span>
-        <span class="fact-chip">Home recording</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
+<section class="section" style="padding-top:36px;">
   <div class="wrap">
     <div class="section-head reveal">
       <p class="section-kicker">Explore</p>
@@ -93,6 +82,24 @@
         <p>Hands-on, playable pieces: a US map of personal facts, toys from my childhood, and a live logo playground.</p>
         <span class="explore-arrow">Take a look <span>→</span></span>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <div class="reveal about-text about-text-solo">
+      <p class="section-kicker">About</p>
+      <p><strong>I love telling stories through multimedia</strong>, especially when the work actually matters. For the past several years I've run McGinnis Creative, a one-person studio here in Rochester, where I've led full brand rebrands, built websites, and shot and edited video for clients ranging from a heating and cooling company to a youth sports camp.</p>
+      <p>Beyond client work, I've spent a lot of my career helping other people tell their own stories, whether it was my own students at Light House Studio, campers at Summer's Best 2 Weeks, students at my local church, or college students at Roberts Wesleyan University.</p>
+      <img class="about-signature" src="assets/aaron-signature.png" alt="Aaron McGinnis signature">
+      <div class="fact-row">
+        <span class="fact-chip">Rochester, NY</span>
+        <span class="fact-chip">Disc golf</span>
+        <span class="fact-chip">Gardening</span>
+        <span class="fact-chip">Hiking</span>
+        <span class="fact-chip">Home recording</span>
+      </div>
     </div>
   </div>
 </section>

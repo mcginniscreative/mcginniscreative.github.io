@@ -41,8 +41,9 @@ nav{
   display:flex;align-items:center;justify-content:space-between;gap:20px;
 }
 .nav-logo{display:flex;align-items:center;gap:0;}
-.nav-logo img{height:34px;width:auto;}
-.nav-links{display:flex;gap:26px;align-items:center;}
+.nav-logo img{height:54px;width:auto;margin:-6px 0;}
+.nav-logo .logo-night{display:none;}
+.nav-links{display:flex;gap:26px;align-items:center;margin-left:auto;order:2;}
 .nav-links a{
   font-size:14px;font-weight:500;text-decoration:none;color:var(--ink-soft);
   transition:color .15s ease;
@@ -61,7 +62,7 @@ nav{
   white-space:nowrap;
 }
 .nav-cta:hover{background:var(--indigo-2);transform:translateY(-1px);}
-.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;order:4;}
 .nav-toggle span{display:block;width:22px;height:2px;background:var(--ink);margin:4px 0;border-radius:2px;}
 @media (max-width:720px){
   .nav-links{
@@ -74,6 +75,9 @@ nav{
   .nav-links a{padding:14px 0;width:100%;border-bottom:1px solid var(--line);}
   .nav-cta{margin-top:14px;}
   .nav-toggle{display:block;}
+  .theme-toggle{margin-left:auto;}
+  .theme-toggle .tt-label{display:none;}
+  .theme-toggle{padding:9px;}
 }
 
 /* ---- decorative blobs (ambient drift) ---- */
@@ -116,7 +120,7 @@ nav{
 .back-link:hover{color:var(--indigo-1);}
 
 /* ---- hero (home) ---- */
-.hero{position:relative;padding:88px 0 84px;overflow:hidden;}
+.hero{position:relative;padding:72px 0 44px;overflow:hidden;}
 .hero .blob-indigo{width:420px;height:420px;top:-160px;right:-120px;opacity:.9;}
 .hero .blob-coral{width:260px;height:260px;top:60px;right:180px;opacity:.85;}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center;}
@@ -314,3 +318,47 @@ footer a:hover{color:#fff;}
   .hero{padding:68px 0 56px;}
   .section{padding:56px 0;}
 }
+
+/* ---- day / night toggle ---- */
+.theme-toggle{
+  order:3;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  font:600 12.5px/1 "Poppins",system-ui,sans-serif;color:#fff;border:none;border-radius:100px;padding:9px 15px 9px 12px;
+  background:linear-gradient(135deg,#ff8585,#786ae4);
+  box-shadow:0 6px 16px -8px rgba(120,106,228,.8);
+  transition:transform .15s ease, box-shadow .15s ease;white-space:nowrap;
+}
+.theme-toggle:hover{transform:translateY(-1px);box-shadow:0 10px 20px -8px rgba(120,106,228,.9);}
+.theme-toggle:focus-visible{outline:3px solid var(--coral-1);outline-offset:3px;}
+.theme-toggle .ic-sun,.theme-toggle .tt-night{display:none;}
+.theme-toggle .tt-label{display:inline-block;}
+
+/* ---- night theme (whole site) ---- */
+html.night{
+  color-scheme:dark;
+  --ink:#f2f3ff; --ink-soft:#b3b8dc; --ink-faint:#8a90bd;
+  --bg:#0f1020; --paper:#171930; --line:#2a2d52;
+  --indigo-1:#8b93ff; --indigo-2:#c4c9ff; --indigo-soft:#1f2350; --coral-soft:#3a2130;
+}
+html.theme-anim body,html.theme-anim nav,html.theme-anim .about,html.theme-anim .explore-card,
+html.theme-anim .project,html.theme-anim .reel-card,html.theme-anim .logo-plate{transition:background-color .5s ease,color .5s ease,border-color .5s ease;}
+html.night .nav-logo .logo-day{display:none;}
+html.night .nav-logo .logo-night{display:block;}
+html.night .theme-toggle .ic-moon,html.night .theme-toggle .tt-day{display:none;}
+html.night .theme-toggle .ic-sun{display:block;}
+html.night .theme-toggle .tt-night{display:inline;}
+/* rules that use the text color as a background must stay dark */
+html.night nav{background:rgba(15,16,32,.86);}
+html.night .nav-cta,html.night .btn-primary{background:#2a2d52;color:#fff;}
+html.night .nav-cta:hover{background:#3a3f7a;}
+html.night .contact{background:#080915;}
+html.night .contact .btn-primary{background:linear-gradient(135deg,#4152e8,#ff6f6f);}
+html.night .blob-coral{background:linear-gradient(135deg,#3a2a6a,var(--coral-1));}
+html.night .explore-card .tag{color:var(--indigo-2);}
+html.night .explore-card.branding .tag,html.night .explore-card.interactives .tag{color:#ff9a9a;}
+html.night .reel-thumb::before{border-left-color:#16181c;}
+html.night .logo-plate{background:#fff;border-color:transparent;}
+html.night .hero-photo-frame,html.night .about-photo{box-shadow:0 30px 60px -24px rgba(0,0,0,.6);}
+html.night .project:hover,html.night .explore-card:hover{box-shadow:0 26px 50px -26px rgba(0,0,0,.7);}
+html.night .project-gallery img{background:var(--paper);}
+html.night .project-mine b{color:var(--indigo-2);}
+html.night .swatch.active,html.night .bg-swatch.bg-active{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink);}
