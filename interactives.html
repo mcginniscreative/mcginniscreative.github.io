@@ -221,11 +221,22 @@
     position:absolute;bottom:92px;left:50%;transform:translateX(-50%);
     width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);
     box-shadow:0 0 0 4px #fbfbfd, 0 2px 6px rgba(28,18,163,.3);
+    border:none;padding:0;cursor:pointer;appearance:none;
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .falcon-stop-dot:hover{transform:translateX(-50%) scale(1.2);}
+  .falcon-stop.visited .falcon-stop-dot{
+    box-shadow:0 0 0 4px #fbfbfd, 0 0 0 6px rgba(120,106,228,.4), 0 2px 6px rgba(28,18,163,.3);
+  }
+  .falcon-stop.current .falcon-stop-dot{animation:falconPerchPulse 1.1s ease-in-out infinite;}
+  @keyframes falconPerchPulse{
+    0%,100%{box-shadow:0 0 0 4px #fbfbfd, 0 0 0 6px rgba(255,133,133,.5), 0 2px 6px rgba(28,18,163,.3);}
+    50%{box-shadow:0 0 0 4px #fbfbfd, 0 0 0 12px rgba(255,133,133,.18), 0 2px 6px rgba(28,18,163,.3);}
   }
   .falcon-card{
     position:absolute;bottom:118px;left:50%;transform:translateX(-50%);
     width:270px;background:var(--paper);border:1px solid var(--line);border-radius:16px;
-    padding:14px 16px;box-shadow:0 8px 24px rgba(22,24,28,.08);
+    padding:14px 16px;box-shadow:0 8px 24px rgba(22,24,28,.08);cursor:pointer;
   }
   .falcon-card-year{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--indigo-1);}
   .falcon-card-title{font-size:15px;font-weight:700;margin:2px 0 4px;color:var(--ink);}
@@ -242,6 +253,10 @@
   @media (prefers-reduced-motion: reduce){
     .falcon-wing{animation:none;transform:rotate(10deg);}
     .falcon-bob{animation:none;}
+    .falcon-stop.current .falcon-stop-dot{
+      animation:none;
+      box-shadow:0 0 0 4px #fbfbfd, 0 0 0 8px rgba(255,133,133,.4), 0 2px 6px rgba(28,18,163,.3);
+    }
   }
   .falcon-year-badge{
     position:absolute;top:16px;left:16px;z-index:6;
@@ -255,8 +270,11 @@
     padding:5px 11px;border-radius:100px;pointer-events:none;transition:opacity .3s ease;
   }
   .falcon-hint.hide{opacity:0;}
-  .falcon-progress{height:6px;border-radius:100px;background:var(--bg);overflow:hidden;margin:14px 22px 0;}
+  .falcon-progress-row{display:flex;align-items:center;gap:12px;margin:14px 22px 0;}
+  .falcon-progress{flex:1;height:6px;border-radius:100px;background:var(--bg);overflow:hidden;}
   .falcon-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff8585,#786ae4);}
+  .falcon-discovered{font-size:12px;font-weight:600;color:var(--ink-faint);white-space:nowrap;}
+  .falcon-modal-title{font-size:20px;font-weight:700;color:var(--ink);margin-top:4px;}
 </style>
 </head>
 <body>
@@ -495,10 +513,24 @@
         <span class="falcon-year-badge" id="falconYearBadge">1789</span>
         <span class="falcon-hint" id="falconHint">Scroll or drag →</span>
       </div>
-      <div class="falcon-progress"><div class="falcon-progress-fill" id="falconProgressFill"></div></div>
+      <div class="falcon-progress-row">
+        <div class="falcon-progress"><div class="falcon-progress-fill" id="falconProgressFill"></div></div>
+        <span class="falcon-discovered" id="falconDiscovered">0 of 11 discovered</span>
+      </div>
       <div class="pg-controls">
         <button class="pg-btn" id="falconPlay">▶ Fly through it</button>
         <div class="pg-spacer"></div>
+      </div>
+    </div>
+
+    <div class="map-modal-backdrop" id="falconModalBackdrop">
+      <div class="map-modal" id="falconModal">
+        <div class="map-modal-body">
+          <button class="map-back-btn" id="falconModalBack">← Back</button>
+          <div class="map-modal-city" id="falconModalYear"></div>
+          <div class="falcon-modal-title" id="falconModalTitle"></div>
+          <p class="map-modal-text" id="falconModalText"></p>
+        </div>
       </div>
     </div>
 
@@ -1070,21 +1102,30 @@
     var yearBadge = document.getElementById('falconYearBadge');
     var hint = document.getElementById('falconHint');
     var progressFill = document.getElementById('falconProgressFill');
+    var discoveredEl = document.getElementById('falconDiscovered');
     var playBtn = document.getElementById('falconPlay');
     var bird = document.getElementById('falconBird');
     if(!stage) return;
 
-    STOPS.forEach(function(s){
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var stopEls = [], dotEls = [];
+    var visited = STOPS.map(function(){ return false; });
+
+    STOPS.forEach(function(s, i){
       var stop = document.createElement('div');
       stop.className = 'falcon-stop';
       stop.innerHTML =
-        '<span class="falcon-stop-dot"></span>' +
+        '<button type="button" class="falcon-stop-dot" aria-label="' + s.year + ' — ' + s.title + '. Tap for details."></button>' +
         '<div class="falcon-card">' +
           '<div class="falcon-card-year">' + s.year + '</div>' +
           '<div class="falcon-card-title">' + s.title + '</div>' +
           '<div class="falcon-card-text">' + s.text + '</div>' +
         '</div>';
       track.appendChild(stop);
+      stopEls[i] = stop;
+      dotEls[i] = stop.querySelector('.falcon-stop-dot');
+      dotEls[i].addEventListener('click', function(){ openStopModal(i); });
+      stop.querySelector('.falcon-card').addEventListener('click', function(){ openStopModal(i); });
     });
 
     var cloudSpecs = [
@@ -1135,6 +1176,7 @@
     /* click-drag to scroll */
     var dragging = false, dragStartX = 0, dragStartScroll = 0;
     scrollEl.addEventListener('mousedown', function(e){
+      if(e.target.closest('.falcon-stop-dot, .falcon-card')) return;
       dragging = true; dragStartX = e.clientX; dragStartScroll = scrollEl.scrollLeft;
       scrollEl.classList.add('grabbing');
     });
@@ -1146,39 +1188,165 @@
       dragging = false; scrollEl.classList.remove('grabbing');
     });
 
-    /* fly-through autoplay */
-    var flying = false, flyFrame = null;
-    function cancelFly(){
-      flying = false;
-      if(flyFrame) cancelAnimationFrame(flyFrame);
+    /* ---- perch-and-go autoplay + tap-to-discover ---- */
+    var autoplayActive = false;
+    var legIndex = 0;
+    var legFrame = null;
+    var perchTimer = null;
+    var PERCH_MS = 2200;
+    var LEG_MS = 750;
+
+    function easeOutQuad(t){ return 1 - (1-t)*(1-t); }
+
+    function stopTargetScrollLeft(i){
+      var target = stopEls[i].offsetLeft - (scrollEl.clientWidth / 2);
+      return Math.max(0, Math.min(maxScroll(), target));
     }
+
+    function flyToStop(i, onArrive){
+      var target = stopTargetScrollLeft(i);
+      if(prefersReducedMotion){
+        scrollEl.scrollLeft = target;
+        requestAnimationFrame(onArrive);
+        return;
+      }
+      var start = scrollEl.scrollLeft;
+      var t0 = performance.now();
+      function step(now){
+        var t = Math.min(1, (now - t0) / LEG_MS);
+        scrollEl.scrollLeft = start + (target - start) * easeOutQuad(t);
+        if(t < 1){
+          legFrame = requestAnimationFrame(step);
+        } else {
+          onArrive();
+        }
+      }
+      legFrame = requestAnimationFrame(step);
+    }
+
+    function perchAt(i){
+      legIndex = i;
+      stopEls[i].classList.add('current');
+      if(prefersReducedMotion){
+        playBtn.textContent = '▶ Next stop';
+        return;
+      }
+      perchTimer = setTimeout(advanceLeg, PERCH_MS);
+    }
+
+    function advanceLeg(){
+      perchTimer = null;
+      stopEls[legIndex].classList.remove('current');
+      markVisited(legIndex);
+      if(legIndex + 1 < STOPS.length){
+        flyToStop(legIndex + 1, function(){ perchAt(legIndex + 1); });
+      } else {
+        autoplayActive = false;
+        playBtn.textContent = '▶ Fly through it';
+      }
+    }
+
+    function nearestStopIndexAtOrAfter(sl){
+      for(var i = 0; i < stopEls.length; i++){
+        if(stopTargetScrollLeft(i) >= sl - 2) return i;
+      }
+      return stopEls.length - 1;
+    }
+
+    function startAutoplay(){
+      autoplayActive = true;
+      playBtn.textContent = '⏸ Stop flying';
+      hint.classList.add('hide');
+      var m = maxScroll();
+      var sl = scrollEl.scrollLeft;
+      var startIndex = sl >= m - 4 ? 0 : nearestStopIndexAtOrAfter(sl);
+      flyToStop(startIndex, function(){ perchAt(startIndex); });
+    }
+
+    function cancelAutoplay(){
+      autoplayActive = false;
+      if(legFrame) cancelAnimationFrame(legFrame);
+      if(perchTimer) clearTimeout(perchTimer);
+      perchTimer = null;
+      stopEls.forEach(function(el){ el.classList.remove('current'); });
+      playBtn.textContent = '▶ Fly through it';
+    }
+
+    function markVisited(i){
+      if(visited[i]) return;
+      visited[i] = true;
+      stopEls[i].classList.add('visited');
+      var count = visited.filter(Boolean).length;
+      discoveredEl.textContent = count + ' of ' + STOPS.length + ' discovered';
+    }
+
     ['mousedown','wheel','touchstart'].forEach(function(evt){
-      scrollEl.addEventListener(evt, cancelFly, {passive:true});
+      scrollEl.addEventListener(evt, function(e){
+        if(e.target.closest('.falcon-stop-dot, .falcon-card')) return;
+        cancelAutoplay();
+      }, {passive:true});
     });
 
     playBtn.addEventListener('click', function(){
-      cancelFly();
-      flying = true;
-      hint.classList.add('hide');
-      var start = scrollEl.scrollLeft;
-      var m = maxScroll();
-      var end = start >= m - 4 ? 0 : m;
-      if(end === 0) scrollEl.scrollLeft = 0;
-      start = scrollEl.scrollLeft;
-      var duration = 9000;
-      var t0 = performance.now();
-      function easeInOutQuad(t){ return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2; }
-      function step(now){
-        if(!flying) return;
-        var t = Math.min(1, (now - t0) / duration);
-        scrollEl.scrollLeft = start + (end - start) * easeInOutQuad(t);
-        if(t < 1){
-          flyFrame = requestAnimationFrame(step);
-        } else {
-          flying = false;
-        }
+      if(prefersReducedMotion && autoplayActive){
+        advanceLeg();
+        return;
       }
-      flyFrame = requestAnimationFrame(step);
+      if(autoplayActive){
+        cancelAutoplay();
+        return;
+      }
+      startAutoplay();
+    });
+
+    /* ---- falcon detail modal ---- */
+    var falconBackdrop = document.getElementById('falconModalBackdrop');
+    var falconModalYear = document.getElementById('falconModalYear');
+    var falconModalTitle = document.getElementById('falconModalTitle');
+    var falconModalText = document.getElementById('falconModalText');
+    var falconBack = document.getElementById('falconModalBack');
+    var falconLastFocused = null;
+
+    function openStopModal(i){
+      if(perchTimer){ clearTimeout(perchTimer); perchTimer = null; }
+      var s = STOPS[i];
+      falconModalYear.textContent = s.year;
+      falconModalTitle.textContent = s.title;
+      falconModalText.textContent = s.text;
+      markVisited(i);
+      falconLastFocused = document.activeElement;
+      falconBackdrop.classList.add('open');
+      falconBack.focus();
+    }
+
+    function closeStopModal(){
+      falconBackdrop.classList.remove('open');
+      if(falconLastFocused) falconLastFocused.focus();
+      if(autoplayActive && !prefersReducedMotion){
+        perchTimer = setTimeout(advanceLeg, PERCH_MS);
+      }
+    }
+
+    falconBack.addEventListener('click', closeStopModal);
+    falconBackdrop.addEventListener('click', function(e){
+      if(e.target === falconBackdrop) closeStopModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && falconBackdrop.classList.contains('open')) closeStopModal();
+    });
+
+    /* ---- arrow-key roving focus across stops ---- */
+    track.addEventListener('keydown', function(e){
+      if(!document.activeElement || !document.activeElement.classList.contains('falcon-stop-dot')) return;
+      var i = dotEls.indexOf(document.activeElement);
+      if(i === -1) return;
+      var next = null;
+      if(e.key === 'ArrowRight') next = dotEls[Math.min(dotEls.length - 1, i + 1)];
+      if(e.key === 'ArrowLeft') next = dotEls[Math.max(0, i - 1)];
+      if(!next) return;
+      e.preventDefault();
+      next.focus();
+      next.scrollIntoView({behavior: prefersReducedMotion ? 'auto' : 'smooth', inline:'center', block:'nearest'});
     });
   })();
 </script>
