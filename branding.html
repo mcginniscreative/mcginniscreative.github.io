@@ -6,11 +6,51 @@
 <title>Brand & Web | McGinnis Creative</title>
 <meta name="description" content="Brand identity and website design by Aaron McGinnis of McGinnis Creative.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Fraunces:wght@600;700&family=Nunito:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=DM+Serif+Display&family=DM+Sans:wght@400;600&family=Baloo+2:wght@600;800&family=Lora:wght@600;700&family=Karla:wght@400;600&display=swap">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#fbfbfd">
 <link rel="stylesheet" href="css/style.css">
 <script src="js/theme.js"></script>
+<style>
+  .bf{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px;}
+  .bf button{font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--paper);border:1.5px solid var(--line);border-radius:100px;padding:11px 18px;cursor:pointer;transition:all .15s ease;}
+  .bf button:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .bf button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
+  .project.is-hidden{display:none;}
+  .project-gallery img{cursor:zoom-in;}
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(8,9,20,.92);display:none;align-items:center;justify-content:center;padding:24px;}
+  .lb.open{display:flex;}
+  .lb img{max-width:min(1100px,94vw);max-height:84vh;width:auto;height:auto;object-fit:contain;border-radius:12px;background:#fff;}
+  .lb-btn{position:absolute;width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;}
+  .lb-btn:hover{background:rgba(255,255,255,.28);}
+  .lb-x{top:18px;right:18px;} .lb-prev{left:18px;top:50%;margin-top:-24px;} .lb-next{right:18px;top:50%;margin-top:-24px;}
+  .lb-count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;}
+  /* brand mini-lab */
+  .bl{padding:26px 24px 28px;background:var(--paper);border:1px solid var(--line);border-radius:22px;margin:0 0 34px;}
+  .bl-top{display:grid;grid-template-columns:1fr 1.25fr;gap:26px;align-items:start;}
+  @media (max-width:820px){.bl-top{grid-template-columns:1fr;}}
+  .bl h3{margin:0 0 6px;font-size:22px;font-weight:800;}
+  .bl p.sub{margin:0 0 18px;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+  .bl label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px;}
+  .bl input[type=text]{width:100%;font:600 16px/1.2 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:18px;}
+  .bl input[type=text]:focus{outline:none;border-color:var(--indigo-1);box-shadow:0 0 0 3px var(--indigo-soft);}
+  .bl-vibes{display:flex;flex-wrap:wrap;gap:8px;}
+  .bl-vibes button{font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:100px;padding:11px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+  .bl-vibes button i{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .bl-vibes button.on{border-color:transparent;color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .bl-stage{border-radius:18px;padding:26px;transition:background .35s ease,color .35s ease;}
+  .bl-card{border-radius:16px;padding:22px;margin-bottom:14px;display:flex;align-items:center;gap:16px;transition:all .35s ease;}
+  .bl-mark{width:64px;height:64px;flex:none;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;transition:all .35s ease;}
+  .bl-name{font-size:24px;line-height:1.1;margin:0 0 4px;transition:font-family .2s;}
+  .bl-tag{font-size:14px;margin:0;opacity:.85;}
+  .bl-web{border-radius:16px;padding:22px;transition:all .35s ease;}
+  .bl-web h4{margin:0 0 8px;font-size:26px;line-height:1.15;}
+  .bl-web p{margin:0 0 14px;font-size:14.5px;line-height:1.55;max-width:44ch;}
+  .bl-btn{display:inline-block;font-weight:700;font-size:14px;padding:11px 20px;border:none;border-radius:100px;transition:all .35s ease;}
+  .bl-sw{display:flex;gap:8px;margin-top:14px;}
+  .bl-sw span{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.18);}
+  .bl-fonts{font-size:12px;color:var(--ink-faint);margin-top:12px;}
+</style>
 </head>
 <body>
 
@@ -47,8 +87,36 @@
 
 <section class="section" style="padding-top:8px;">
   <div class="wrap">
+    <div class="bl reveal" id="bl">
+      <div class="bl-top">
+        <div>
+          <p class="section-kicker">Try it</p>
+          <h3>Build a brand in 30 seconds</h3>
+          <p class="sub">Type a business name, pick a personality, and watch a color palette, a font pairing, and a logo shape come together. It's the same thinking behind every brand below, in miniature.</p>
+          <label for="blName">Your business name</label>
+          <input type="text" id="blName" maxlength="26" value="Maple &amp; Main" autocomplete="off">
+          <label>Pick a personality</label>
+          <div class="bl-vibes" id="blVibes"></div>
+        </div>
+        <div>
+          <div class="bl-stage" id="blStage">
+            <div class="bl-card" id="blCard"><div class="bl-mark" id="blMark"></div><div><p class="bl-name" id="blNameOut"></p><p class="bl-tag" id="blTag"></p></div></div>
+            <div class="bl-web" id="blWeb"><h4 id="blHead"></h4><p id="blCopy"></p><span class="bl-btn" id="blBtn"></span><div class="bl-sw" id="blSw"></div></div>
+          </div>
+          <p class="bl-fonts" id="blFonts"></p>
+        </div>
+      </div>
+    </div>
 
-    <div class="reveal project">
+    <div class="bf" id="bf">
+      <button type="button" class="on" data-f="all">All work</button>
+      <button type="button" data-f="brand">Brand identity</button>
+      <button type="button" data-f="web">Websites</button>
+      <button type="button" data-f="social">Social &amp; content</button>
+    </div>
+
+
+    <div class="reveal project" data-tags="brand web">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/ff-logo.png" alt="Frank and Frank Heating and Cooling logo"></div>
         <div>
@@ -66,7 +134,7 @@
       </div>
     </div>
 
-    <div class="reveal project">
+    <div class="reveal project" data-tags="brand web">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/flower-city-logo-2.png" alt="Flower City Custom Apparel logo"></div>
         <div>
@@ -89,7 +157,7 @@
       </div>
     </div>
 
-    <div class="reveal project">
+    <div class="reveal project" data-tags="brand web">
       <div class="project-head">
         <h3 class="project-title">Peter Englert</h3>
         <span class="project-role">Brand identity · website design · McGinnis Creative</span>
@@ -100,7 +168,7 @@
       <div class="project-gallery single"><img src="assets/peter-1.jpg" alt="Peter Englert website homepage"></div>
     </div>
 
-    <div class="reveal project">
+    <div class="reveal project" data-tags="brand web">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/robyn-logo.png" alt="Robyn Englert Counseling logo mark"></div>
         <div>
@@ -114,7 +182,7 @@
       <div class="project-gallery single"><img src="assets/robyn-overview.jpg" alt="Robyn Englert Counseling website homepage"></div>
     </div>
 
-    <div class="reveal project">
+    <div class="reveal project" data-tags="brand">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/thrive-garden-logo.png" alt="Thrive Garden logo"></div>
         <div>
@@ -130,7 +198,7 @@
       </div>
     </div>
 
-    <div class="reveal project">
+    <div class="reveal project" data-tags="social">
       <div class="project-top">
         <div class="logo-plate"><img src="assets/sgn-logo.jpg" alt="Small Group Network logo"></div>
         <div>
@@ -164,6 +232,8 @@
   </div>
 </section>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="lb-btn lb-x" id="lbX" aria-label="Close">&#10005;</button><button class="lb-btn lb-prev" id="lbP" aria-label="Previous">&#8249;</button><img id="lbImg" alt=""><button class="lb-btn lb-next" id="lbN" aria-label="Next">&#8250;</button><div class="lb-count" id="lbC"></div></div>
+
 <script>
   document.documentElement.classList.add('js');
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -186,6 +256,71 @@
   } else {
     els.forEach(function(el){ el.classList.add('in'); });
   }
+
+  /* ---- brand mini-lab ---- */
+  (function(){
+    var V = [
+      {n:'Warm & friendly', dot:'#e8735a', bg:'#fff4ec', ink:'#3a2a26', c:['#e8735a','#f6c9a8','#3a2a26'], hf:'"Fraunces",serif', bf:'"Nunito",sans-serif', hn:'Fraunces', bn:'Nunito', r:'50%', tag:'Good things, made with care.', head:'Welcome in. Pull up a chair.', copy:'A place that feels like home, from the very first click.', btn:'Say hello'},
+      {n:'Bold & modern', dot:'#111', bg:'#ffffff', ink:'#111111', c:['#111111','#ffd400','#ffffff'], hf:'"Space Grotesk",sans-serif', bf:'"Inter",sans-serif', hn:'Space Grotesk', bn:'Inter', r:'4px', tag:'Built to stand out.', head:'Make the first move.', copy:'Clear, confident, and impossible to scroll past.', btn:'Get started'},
+      {n:'Calm & trustworthy', dot:'#2b5d8a', bg:'#eef5fb', ink:'#1b2a38', c:['#2b5d8a','#cfe3f2','#1b2a38'], hf:'"DM Serif Display",serif', bf:'"DM Sans",sans-serif', hn:'DM Serif Display', bn:'DM Sans', r:'16px', tag:'Steady, honest, here for you.', head:'Clear answers, steady hands.', copy:'Professional without being cold. People feel safe here.', btn:'Book a visit'},
+      {n:'Playful', dot:'#7b5cff', bg:'#fff8d9', ink:'#2a1f5c', c:['#7b5cff','#ff7bb0','#fff4c2'], hf:'"Baloo 2",sans-serif', bf:'"Nunito",sans-serif', hn:'Baloo 2', bn:'Nunito', r:'42% 58% 46% 54% / 55% 45% 55% 45%', tag:'Fun is a serious business.', head:'Let\'s make something fun!', copy:'Bright, bouncy, and a little bit silly, in the best way.', btn:'Join the party'},
+      {n:'Natural & grounded', dot:'#3f7d58', bg:'#f0f5ea', ink:'#2c3a2e', c:['#3f7d58','#d9e6cf','#2c3a2e'], hf:'"Lora",serif', bf:'"Karla",sans-serif', hn:'Lora', bn:'Karla', r:'50% 50% 50% 0', tag:'Rooted in what matters.', head:'Grown with patience.', copy:'Earthy, honest, and made to last a long time.', btn:'Learn more'}
+    ];
+    var vibes = document.getElementById('blVibes'), name = document.getElementById('blName'), cur = 0;
+    var $ = function(id){ return document.getElementById(id); };
+    V.forEach(function(v, i){
+      var b = document.createElement('button'); b.type = 'button'; b.innerHTML = '<i style="background:' + v.dot + '"></i>'; b.appendChild(document.createTextNode(v.n));
+      b.addEventListener('click', function(){ cur = i; render(); }); vibes.appendChild(b);
+    });
+    function render(){
+      var v = V[cur], nm = (name.value || '').trim() || 'Your Brand';
+      vibes.querySelectorAll('button').forEach(function(b, i){ b.classList.toggle('on', i === cur); });
+      var st = $('blStage'); st.style.background = v.bg; st.style.color = v.ink; st.style.fontFamily = v.bf;
+      var card = $('blCard'); card.style.background = '#fff'; card.style.boxShadow = '0 14px 30px -18px rgba(0,0,0,.35)'; card.style.color = v.ink;
+      var mk = $('blMark'); mk.style.background = v.c[0]; mk.style.color = v.c[2] === '#ffffff' || v.c[2] === '#fff4c2' ? v.c[2] : '#fff'; mk.style.borderRadius = v.r; mk.style.fontFamily = v.hf; mk.textContent = nm.charAt(0).toUpperCase();
+      var n = $('blNameOut'); n.textContent = nm; n.style.fontFamily = v.hf; $('blTag').textContent = v.tag; $('blTag').style.fontFamily = v.bf;
+      var web = $('blWeb'); web.style.background = v.c[0]; web.style.color = v.c[2] === '#111111' || v.c[2] === '#1b2a38' || v.c[2] === '#2a1f5c' || v.c[2] === '#2c3a2e' ? '#fff' : v.c[2];
+      web.style.color = '#fff'; if(v.c[0] === '#111111'){ web.style.color = '#fff'; }
+      var h = $('blHead'); h.textContent = v.head; h.style.fontFamily = v.hf; $('blCopy').textContent = v.copy; $('blCopy').style.fontFamily = v.bf;
+      var bt = $('blBtn'); bt.textContent = v.btn; bt.style.background = v.c[1]; bt.style.color = v.ink; bt.style.fontFamily = v.bf;
+      var sw = $('blSw'); sw.textContent = ''; v.c.forEach(function(col){ var sp = document.createElement('span'); sp.style.background = col; sw.appendChild(sp); });
+      $('blFonts').textContent = 'Headline: ' + v.hn + '   |   Body: ' + v.bn + '   |   Colors: ' + v.c.join('  ');
+    }
+    name.addEventListener('input', render); render();
+  })();
+
+  /* ---- filter chips ---- */
+  (function(){
+    var bf = document.getElementById('bf'), projects = document.querySelectorAll('.project');
+    bf.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        bf.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+        var f = b.getAttribute('data-f');
+        projects.forEach(function(p){ var show = f === 'all' || (p.getAttribute('data-tags') || '').split(' ').indexOf(f) > -1; p.classList.toggle('is-hidden', !show); if(show) p.classList.add('in'); });
+      });
+    });
+  })();
+
+  /* ---- lightbox ---- */
+  (function(){
+    var lb = document.getElementById('lb'), img = document.getElementById('lbImg'), cnt = document.getElementById('lbC');
+    var set = [], idx = 0, tx = null;
+    function show(){ img.src = set[idx].src; img.alt = set[idx].alt; cnt.textContent = (idx + 1) + ' / ' + set.length; }
+    function open(list, i){ set = list; idx = i; show(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function close(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+    function step(d){ idx = (idx + d + set.length) % set.length; show(); }
+    document.querySelectorAll('.project').forEach(function(p){
+      var imgs = [].slice.call(p.querySelectorAll('.project-gallery img'));
+      imgs.forEach(function(im, i){ im.addEventListener('click', function(){ open(imgs, i); }); });
+    });
+    document.getElementById('lbX').addEventListener('click', close);
+    document.getElementById('lbP').addEventListener('click', function(){ step(-1); });
+    document.getElementById('lbN').addEventListener('click', function(){ step(1); });
+    lb.addEventListener('click', function(e){ if(e.target === lb) close(); });
+    document.addEventListener('keydown', function(e){ if(!lb.classList.contains('open')) return; if(e.key === 'Escape') close(); if(e.key === 'ArrowLeft') step(-1); if(e.key === 'ArrowRight') step(1); });
+    lb.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+    lb.addEventListener('touchend', function(e){ if(tx == null) return; var dx = e.changedTouches[0].clientX - tx; if(Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); tx = null; }, {passive:true});
+  })();
 </script>
 </body>
 </html>
