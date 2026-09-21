@@ -2674,8 +2674,8 @@
         p.addEventListener('click', function(){ pick(ci, null, null); });
         p.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, null, null); } });
         svg.appendChild(p); segs.core[ci] = p;
-        var m = pt(cx, cy, kidMode ? 166 : 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', kidMode ? '21' : '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
-        if(kidMode){ svg.appendChild(face(c, pt(cx, cy, 100, a1 + 30))); }
+        var m = pt(cx, cy, kidMode ? 138 : 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', kidMode ? m[1] + 24 : m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', kidMode ? '21' : '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
+        if(kidMode){ svg.appendChild(face(c, [m[0], m[1] - 20])); }
         segs.sec[ci] = []; segs.lab[ci] = [];
         c.s.forEach(function(s, si){
           var step = 60 / c.s.length, b1 = a1 + si * step, b2 = b1 + step;
