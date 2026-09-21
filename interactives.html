@@ -460,23 +460,61 @@
   .fl-whatif p{margin:0;font-size:14px;line-height:1.55;}
   .fl-whatif strong{font-size:17px;}
 
-  /* ---- choose your adventure ---- */
-  .adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;}
-  .adv-card{position:relative;text-align:left;font-family:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:26px 24px 24px;cursor:pointer;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;-webkit-tap-highlight-color:transparent;}
-  .adv-card:hover{transform:translateY(-5px);border-color:transparent;box-shadow:0 26px 46px -24px rgba(65,82,232,.45);}
-  .adv-card::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-50px;bottom:-60px;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.16;transition:transform .3s ease;}
-  .adv-card:hover::after{transform:scale(1.25);}
-  .adv-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);color:#fff;font-weight:800;font-size:16px;margin-bottom:14px;}
-  .adv-card h3{margin:0 0 8px;font-size:19px;font-weight:700;}
-  .adv-card p{margin:0 0 14px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
-  .adv-chips{display:flex;flex-wrap:wrap;gap:6px;position:relative;z-index:1;}
-  .adv-chips i{font-style:normal;font-size:11px;font-weight:600;color:var(--indigo-1);background:var(--indigo-soft);border-radius:100px;padding:4px 10px;}
-  .adv-bar{position:sticky;top:76px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:12px 18px;border-radius:100px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -18px rgba(28,18,163,.4);font-size:14px;color:var(--ink-soft);}
+  /* ---- family-tree picker ---- */
+  .tree{margin:6px 0 34px;text-align:center;}
+  .tree.is-off{display:none;}
+  .tree-head{margin:0 auto 22px;max-width:560px;}
+  .tree-head h2{margin:0 0 8px;font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;}
+  .tree-head p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.6;}
+  .tree-root{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:132px;height:132px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);box-shadow:0 22px 40px -18px rgba(120,106,228,.9);font-weight:800;font-size:17px;line-height:1.15;animation:treePop .6s ease both;}
+  .tree-root small{font-size:11px;font-weight:600;opacity:.9;margin-top:4px;letter-spacing:.04em;}
+  .tree-stem{width:3px;height:30px;margin:0 auto;background:linear-gradient(#786ae4,#ff8585);border-radius:3px;transform-origin:top;animation:treeGrow .5s .3s ease both;}
+  .tree-branches{display:grid;grid-template-columns:repeat(4,1fr);gap:0;align-items:start;}
+  .tree-col{position:relative;padding:30px 10px 0;}
+  .tree-col::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#b9a9f0;}
+  .tree-col:first-child::before{left:50%;}
+  .tree-col:last-child::before{right:50%;}
+  .tree-col::after{content:"";position:absolute;top:0;left:50%;width:3px;height:30px;margin-left:-1.5px;background:#b9a9f0;}
+  .tree-node{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:210px;margin:0 auto;padding:16px 12px 14px;font-family:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:22px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,opacity .25s ease;-webkit-tap-highlight-color:transparent;animation:treePop .5s both;}
+  .tree-col:nth-child(2) .tree-node{animation-delay:.08s;}.tree-col:nth-child(3) .tree-node{animation-delay:.16s;}.tree-col:nth-child(4) .tree-node{animation-delay:.24s;}
+  .tree-node:hover{transform:translateY(-4px);border-color:var(--indigo-1);box-shadow:0 22px 40px -22px rgba(65,82,232,.55);}
+  .tree-num{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);color:#fff;font-weight:800;font-size:18px;}
+  .tree-node b{font-size:15px;font-weight:700;line-height:1.25;}
+  .tree-node span.tree-sub{font-size:12px;color:var(--ink-soft);line-height:1.4;}
+  .tree-count{font-size:11px;font-weight:700;color:var(--indigo-1);background:var(--indigo-soft);border-radius:100px;padding:3px 10px;}
+  .tree-branches.has-open .tree-col:not(.open) .tree-node{opacity:.5;}
+  .tree-col.open .tree-node{border-color:transparent;box-shadow:0 0 0 2.5px #786ae4,0 22px 40px -22px rgba(65,82,232,.6);opacity:1;}
+  .tree-leaves{display:none;position:relative;flex-direction:column;gap:10px;align-items:center;margin-top:0;padding-top:26px;}
+  .tree-col.open .tree-leaves{display:flex;}
+  .tree-leaves::before{content:"";position:absolute;top:0;left:50%;width:3px;height:26px;margin-left:-1.5px;background:#b9a9f0;transform-origin:top;animation:treeGrow .35s ease both;}
+  .tree-leaf{position:relative;width:100%;max-width:200px;font:600 13px/1.3 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:100px;padding:12px 16px;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease,color .15s ease;animation:treePop .4s both;-webkit-tap-highlight-color:transparent;}
+  .tree-leaf:nth-child(2){animation-delay:.08s;}.tree-leaf:nth-child(3){animation-delay:.16s;}
+  .tree-leaf:hover{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;transform:translateY(-2px);}
+  @keyframes treePop{from{opacity:0;transform:translateY(12px) scale(.94);}to{opacity:1;transform:none;}}
+  @keyframes treeGrow{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  @media (prefers-reduced-motion:reduce){.tree *,.tree-root,.tree-stem{animation:none!important;}}
+  @media (max-width:820px){
+    .tree-branches{grid-template-columns:1fr;gap:14px;}
+    .tree-col{padding:0;}
+    .tree-col::before,.tree-col::after{display:none;}
+    .tree-node{max-width:none;flex-direction:row;text-align:left;padding:14px 16px;gap:14px;}
+    .tree-node .tree-text{display:flex;flex-direction:column;gap:3px;flex:1;}
+    .tree-leaves{align-items:stretch;padding:12px 0 0 34px;}
+    .tree-leaves::before{left:18px;top:0;height:100%;width:3px;}
+    .tree-leaf{max-width:none;text-align:left;}
+  }
+  .adv-bar{position:sticky;top:76px;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 20px;padding:12px 16px;border-radius:20px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -18px rgba(28,18,163,.4);font-size:13px;color:var(--ink-soft);}
   .adv-bar[hidden]{display:none;}
   .adv-bar b{color:var(--ink);}
+  .adv-crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600;}
+  .adv-crumb button{font:inherit;font-weight:700;color:var(--indigo-1);background:none;border:none;cursor:pointer;padding:0;}
+  .adv-crumb button:hover{text-decoration:underline;}
+  .adv-sibs{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;align-items:center;}
+  .adv-sibs button{font:600 12px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:8px 14px;cursor:pointer;}
+  .adv-sibs button:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .adv-sibs button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
   #advHost{position:relative;}
   .ix.is-off{position:absolute;left:-9999px;top:0;width:100%;visibility:hidden;pointer-events:none;}
-  .adv.is-off{display:none;}
 </style>
 </head>
 <body>
@@ -515,26 +553,10 @@
 <section class="section" style="padding-top:8px;">
   <div class="wrap" id="advHost">
 
-    <div class="adv" id="adv">
-      <div class="section-head" style="margin:8px 0 26px;">
-        <p class="section-kicker">Choose your adventure</p>
-        <h2 class="section-title">What do you want to see?</h2>
-        <p class="section-desc">Pick a path and I'll show you the pieces that answer it. You can switch any time.</p>
-      </div>
-      <div class="adv-grid">
-        <button type="button" class="adv-card" data-go="tools"><span class="adv-num">1</span><h3>Tools for your team</h3><p>Working tools a school or business could use tomorrow: a program finder and an enrollment forecaster.</p><span class="adv-chips"><i>Program Finder Quiz</i><i>Enrollment Funnel Lab</i></span></button>
-        <button type="button" class="adv-card" data-go="story"><span class="adv-num">2</span><h3>Storytelling &amp; history</h3><p>Stories you explore instead of read: a timeline, a map of my life, and a pit of toys.</p><span class="adv-chips"><i>Fly Through Rochester</i><i>Facts About Aaron</i><i>Toys I Grew Up With</i></span></button>
-        <button type="button" class="adv-card" data-go="brand"><span class="adv-num">3</span><h3>Brand &amp; voice</h3><p>Identity and copy people can play with, from a live logo to a madlib in my voice.</p><span class="adv-chips"><i>Logo Playground</i><i>Send Yourself a Madlib</i></span></button>
-        <button type="button" class="adv-card" data-go="audio"><span class="adv-num">4</span><h3>Audio &amp; production</h3><p>Real music I recorded, mixed live in your browser.</p><span class="adv-chips"><i>Hideout: Stem Mixer</i></span></button>
-        <button type="button" class="adv-card adv-all" data-go="all"><span class="adv-num">&infin;</span><h3>Show me everything</h3><p>All eight, in order. Scroll and poke around.</p></button>
-      </div>
-    </div>
-    <div class="adv-bar" id="advBar" hidden>
-      <span>Showing: <b id="advName"></b></span>
-      <button type="button" class="pg-btn" id="advChange">&larr; Choose another path</button>
-    </div>
+    <div class="tree" id="tree" aria-label="Choose an interactive"></div>
+    <div class="adv-bar" id="advBar" hidden></div>
 
-    <div class="ix" data-cat="audio">
+    <div class="ix" data-cat="audio" data-leaf="mixer">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">01 · Live</p>
       <h2 class="section-title">Hideout: Stem Mixer</h2>
@@ -569,7 +591,7 @@
 
     </div>
 
-    <div class="ix" data-cat="story">
+    <div class="ix" data-cat="story" data-leaf="map">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">02 · Live</p>
       <h2 class="section-title">Facts About Aaron</h2>
@@ -649,7 +671,7 @@
 
     </div>
 
-    <div class="ix" data-cat="story">
+    <div class="ix" data-cat="story" data-leaf="toys">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">03 · Live</p>
       <h2 class="section-title">Toys I Grew Up With</h2>
@@ -683,7 +705,7 @@
 
     </div>
 
-    <div class="ix" data-cat="brand">
+    <div class="ix" data-cat="brand" data-leaf="logo">
     <div class="section-head reveal">
       <p class="section-kicker">04 · Live</p>
       <h2 class="section-title">Logo Playground</h2>
@@ -753,7 +775,7 @@
 
     </div>
 
-    <div class="ix" data-cat="story">
+    <div class="ix" data-cat="story" data-leaf="falcon">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">05 · Live</p>
       <h2 class="section-title">Fly Through Rochester</h2>
@@ -808,7 +830,7 @@
 
     </div>
 
-    <div class="ix" data-cat="brand">
+    <div class="ix" data-cat="brand" data-leaf="madlib">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">06 · Live</p>
       <h2 class="section-title">Send Yourself a Madlib</h2>
@@ -835,7 +857,7 @@
 
     </div>
 
-    <div class="ix" data-cat="tools">
+    <div class="ix" data-cat="tools" data-leaf="quiz">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">07 · Live</p>
       <h2 class="section-title">Which Program Fits You?</h2>
@@ -848,7 +870,7 @@
 
     </div>
 
-    <div class="ix" data-cat="tools">
+    <div class="ix" data-cat="tools" data-leaf="funnel">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">08 · Live</p>
       <h2 class="section-title">The Enrollment Funnel Lab</h2>
@@ -1894,6 +1916,8 @@
       else { ctx.resume(); playing = true; startBtn.textContent = 'Pause'; requestAnimationFrame(frame); }
     });
 
+    window.hmPause = function(){ if(ctx && playing){ ctx.suspend(); playing = false; startBtn.textContent = 'Play'; } };
+
     function setAll(on){
       STEMS.forEach(function(s, i){
         if(s.on === on) return;
@@ -2223,33 +2247,87 @@
     update();
   })();
 
-  /* ---- choose your adventure ---- */
+  /* ---- family-tree picker ---- */
   (function(){
-    var NAMES = {tools:'Tools for your team', story:'Storytelling & history', brand:'Brand & voice', audio:'Audio & production', all:'Everything'};
-    var adv = document.getElementById('adv'), bar = document.getElementById('advBar'), nameEl = document.getElementById('advName');
+    var BRANCHES = [
+      {id:'tools', n:'Tools for your team', sub:'Working tools a school or business could use tomorrow', leaves:[['quiz','Program Finder Quiz'],['funnel','Enrollment Funnel Lab']]},
+      {id:'story', n:'Storytelling & history', sub:'Stories you explore instead of read', leaves:[['falcon','Fly Through Rochester'],['map','Facts About Aaron'],['toys','Toys I Grew Up With']]},
+      {id:'brand', n:'Brand & voice', sub:'Identity and copy people can play with', leaves:[['logo','Logo Playground'],['madlib','Send Yourself a Madlib']]},
+      {id:'audio', n:'Audio & production', sub:'Real music I recorded, mixed live in your browser', leaves:[['mixer','Hideout: Stem Mixer']]}
+    ];
+    var tree = document.getElementById('tree'), bar = document.getElementById('advBar');
     var blocks = document.querySelectorAll('.ix');
-    function choose(cat, scroll){
-      if(!NAMES[cat]) return;
-      blocks.forEach(function(b){
-        var c = b.getAttribute('data-cat');
-        b.classList.toggle('is-off', !(cat === 'all' || c === cat || (c === 'all' && cat === 'all')));
+    var cur = null;
+    function el(t, c, txt){ var e = document.createElement(t); if(c) e.className = c; if(txt != null) e.textContent = txt; return e; }
+    function branchOf(leaf){ for(var i = 0; i < BRANCHES.length; i++){ for(var j = 0; j < BRANCHES[i].leaves.length; j++){ if(BRANCHES[i].leaves[j][0] === leaf) return BRANCHES[i]; } } return null; }
+    function build(){
+      var head = el('div','tree-head');
+      head.innerHTML = '<p class="section-kicker" style="justify-content:center;">Choose your adventure</p><h2>Where do you want to start?</h2><p>Pick a branch, then pick something to try. One at a time, and you can hop to the next.</p>';
+      tree.appendChild(head);
+      var root = el('div','tree-root'); root.innerHTML = 'Interactives<small>start here</small>'; tree.appendChild(root);
+      tree.appendChild(el('div','tree-stem'));
+      var row = el('div','tree-branches'); tree.appendChild(row);
+      BRANCHES.forEach(function(b, i){
+        var col = el('div','tree-col'); col.setAttribute('data-branch', b.id);
+        var node = el('button','tree-node'); node.type = 'button';
+        node.innerHTML = '<span class="tree-num">' + (i + 1) + '</span><span class="tree-text"><b></b><span class="tree-sub"></span></span><span class="tree-count"></span>';
+        node.querySelector('b').textContent = b.n; node.querySelector('.tree-sub').textContent = b.sub;
+        node.querySelector('.tree-count').textContent = b.leaves.length + (b.leaves.length === 1 ? ' piece' : ' pieces');
+        var leaves = el('div','tree-leaves');
+        b.leaves.forEach(function(l){ var lb = el('button','tree-leaf',l[1]); lb.type = 'button'; lb.addEventListener('click', function(){ show(l[0], true); }); leaves.appendChild(lb); });
+        node.addEventListener('click', function(){
+          var open = col.classList.contains('open');
+          row.querySelectorAll('.tree-col').forEach(function(c){ c.classList.remove('open'); });
+          if(!open) col.classList.add('open');
+          row.classList.toggle('has-open', !open);
+        });
+        col.appendChild(node); col.appendChild(leaves); row.appendChild(col);
       });
-      adv.classList.add('is-off'); bar.hidden = false; nameEl.textContent = NAMES[cat];
-      try { history.replaceState(null, '', '#' + cat); } catch(e){}
+    }
+    function pauseAudio(){ if(window.hmPause) window.hmPause(); }
+    function openBranch(id){
+      var row = tree.querySelector('.tree-branches');
+      row.querySelectorAll('.tree-col').forEach(function(c){ c.classList.toggle('open', c.getAttribute('data-branch') === id); });
+      row.classList.toggle('has-open', !!id);
+    }
+    function showTree(branchId, scroll){
+      if(cur === 'mixer') pauseAudio();
+      cur = null;
+      blocks.forEach(function(b){ b.classList.add('is-off'); });
+      tree.classList.remove('is-off'); bar.hidden = true;
+      openBranch(branchId || null);
+      try { history.replaceState(null, '', branchId ? '#' + branchId : location.pathname); } catch(e){}
+      if(scroll) tree.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    function show(leaf, scroll){
+      var b = branchOf(leaf); if(!b) return;
+      if(cur === 'mixer' && leaf !== 'mixer') pauseAudio();
+      cur = leaf;
+      blocks.forEach(function(x){ x.classList.toggle('is-off', x.getAttribute('data-leaf') !== leaf); });
+      tree.classList.add('is-off');
+      bar.textContent = '';
+      var crumb = el('div','adv-crumb');
+      var home = el('button','','Interactives'); home.type = 'button'; home.addEventListener('click', function(){ showTree(null, true); });
+      var br = el('button','',b.n); br.type = 'button'; br.addEventListener('click', function(){ showTree(b.id, true); });
+      var nm = ''; b.leaves.forEach(function(l){ if(l[0] === leaf) nm = l[1]; });
+      crumb.appendChild(home); crumb.appendChild(el('span','','›')); crumb.appendChild(br); crumb.appendChild(el('span','','›')); crumb.appendChild(el('b','',nm));
+      bar.appendChild(crumb);
+      var sibs = el('div','adv-sibs');
+      if(b.leaves.length > 1){
+        b.leaves.forEach(function(l){ var sb = el('button', l[0] === leaf ? 'on' : '', l[1]); sb.type = 'button'; sb.addEventListener('click', function(){ show(l[0], true); }); sibs.appendChild(sb); });
+      }
+      var back = el('button','','← Back to the tree'); back.type = 'button'; back.addEventListener('click', function(){ showTree(b.id, true); });
+      sibs.appendChild(back); bar.appendChild(sibs);
+      bar.hidden = false;
+      try { history.replaceState(null, '', '#' + leaf); } catch(e){}
       setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 30);
       if(scroll) bar.scrollIntoView({behavior:'smooth', block:'start'});
     }
-    function reset(){
-      blocks.forEach(function(b){ b.classList.add('is-off'); });
-      adv.classList.remove('is-off'); bar.hidden = true;
-      try { history.replaceState(null, '', location.pathname); } catch(e){}
-      adv.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-    document.querySelectorAll('.adv-card').forEach(function(b){ b.addEventListener('click', function(){ choose(b.getAttribute('data-go'), true); }); });
-    document.getElementById('advChange').addEventListener('click', reset);
+    build();
     blocks.forEach(function(b){ b.classList.add('is-off'); });
     var h = (location.hash || '').replace('#','');
-    if(NAMES[h]) choose(h, false);
+    if(branchOf(h)) show(h, false);
+    else if(BRANCHES.some(function(b){ return b.id === h; })) showTree(h, false);
   })();
 </script>
 </body>
