@@ -25,6 +25,64 @@
   .lb-btn:hover{background:rgba(255,255,255,.28);}
   .lb-x{top:18px;right:18px;} .lb-prev{left:18px;top:50%;margin-top:-24px;} .lb-next{right:18px;top:50%;margin-top:-24px;}
   .lb-count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;}
+  /* ---- showcase canvas ---- */
+  .sc-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;}
+  .sc-seg{display:inline-flex;background:var(--paper);border:1.5px solid var(--line);border-radius:100px;padding:4px;}
+  .sc-seg button{font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:none;border:none;border-radius:100px;padding:10px 18px;cursor:pointer;}
+  .sc-seg button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .sc-hint{font-size:13px;color:var(--ink-faint);margin:0;}
+  .stage{position:relative;height:clamp(540px,80vh,780px);border-radius:26px;overflow:hidden;border:1px solid var(--line);
+    background:radial-gradient(circle at 50% 45%,var(--paper) 0%,var(--bg) 75%);}
+  .stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--line) 1.4px,transparent 1.5px);background-size:26px 26px;opacity:.9;pointer-events:none;}
+  .orbit{position:absolute;inset:0;transition:opacity .45s ease,transform .45s ease;}
+  .stage.in-board .orbit{opacity:0;transform:scale(1.35);pointer-events:none;}
+  .hub{position:absolute;left:50%;top:50%;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;border:none;padding:0;cursor:pointer;z-index:5;background:#fff;
+    box-shadow:0 26px 40px -16px rgba(120,106,228,.75),0 6px 14px rgba(22,24,28,.15);display:flex;align-items:center;justify-content:center;transition:transform .3s ease;-webkit-tap-highlight-color:transparent;}
+  .hub img{width:76%;height:76%;object-fit:contain;}
+  .hub:hover{transform:scale(1.06);}
+  .hub::before,.hub::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(120,106,228,.5);animation:hubPulse 2.4s ease-out infinite;}
+  .hub::after{animation-delay:1.2s;}
+  .orbit.open .hub::before,.orbit.open .hub::after{animation:none;opacity:0;}
+  @keyframes hubPulse{from{transform:scale(1);opacity:.9;}to{transform:scale(1.9);opacity:0;}}
+  .hub-label{position:absolute;left:0;right:0;top:calc(50% + 74px);text-align:center;font-size:13px;font-weight:600;color:var(--ink-soft);z-index:5;pointer-events:none;transition:opacity .3s ease;}
+  .orbit.open .hub-label{opacity:0;}
+  .bub{position:absolute;left:50%;top:50%;width:var(--bs,96px);height:var(--bs,96px);margin:calc(var(--bs,96px) / -2) 0 0 calc(var(--bs,96px) / -2);border:none;padding:0;background:none;cursor:pointer;z-index:4;
+    transform:translate(0,0) scale(.2);opacity:0;pointer-events:none;transition:transform .6s cubic-bezier(.2,.9,.25,1.15),opacity .35s ease;-webkit-tap-highlight-color:transparent;}
+  .orbit.open .bub{transform:translate(var(--tx),var(--ty)) scale(1);opacity:1;pointer-events:auto;transition-delay:var(--d,0s);}
+  .bub-in{width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    box-shadow:0 22px 30px -14px rgba(28,18,163,.5),0 5px 10px rgba(22,24,28,.14);animation:bubFloat 5s ease-in-out infinite;animation-delay:var(--fd,0s);transition:box-shadow .2s ease;}
+  .bub:hover .bub-in{box-shadow:0 30px 38px -14px rgba(28,18,163,.6),0 8px 14px rgba(22,24,28,.2);}
+  .bub-in img{width:70%;height:70%;object-fit:contain;}
+  .bub-in b{font:800 26px "Poppins",system-ui,sans-serif;color:#fff;}
+  @keyframes bubFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .bub-name{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:150px;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.25;pointer-events:none;}
+  @media (prefers-reduced-motion:reduce){.bub-in,.hub::before,.hub::after{animation:none;}}
+  .board{position:absolute;inset:0;opacity:0;pointer-events:none;transform:scale(.9);transition:opacity .45s ease,transform .45s ease;cursor:grab;touch-action:pan-y;}
+  .board.on{opacity:1;pointer-events:auto;transform:none;}
+  .board.drag{cursor:grabbing;}
+  .bd-canvas{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;}
+  .bd-text{position:absolute;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:78px 26px 26px;box-shadow:0 36px 50px -26px rgba(28,18,163,.45),0 6px 14px rgba(22,24,28,.1);}
+  .bd-logo{position:absolute;left:22px;top:-40px;width:104px;height:104px;border-radius:24px;background:#fff;display:flex;align-items:center;justify-content:center;padding:12px;transform:rotate(-4deg);box-shadow:0 20px 28px -12px rgba(22,24,28,.4),0 4px 8px rgba(22,24,28,.12);border:1px solid var(--line);}
+  .bd-logo img{max-width:100%;max-height:100%;object-fit:contain;}
+  .bd-logo b{font:800 34px "Poppins",system-ui,sans-serif;background:linear-gradient(135deg,#ff8585,#786ae4);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .bd-text h3{margin:0 0 6px;font-size:22px;font-weight:800;color:var(--ink);line-height:1.2;}
+  .bd-role{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-1);margin-bottom:12px;}
+  .bd-text p{margin:0 0 10px;font-size:13.5px;line-height:1.6;color:var(--ink-soft);}
+  .bd-mine{background:var(--indigo-soft);border-left:3px solid var(--indigo-1);border-radius:0 10px 10px 0;padding:10px 13px;color:var(--ink)!important;}
+  .bd-mine b{color:var(--indigo-1);}
+  .bd-link{display:inline-block;margin-top:4px;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);padding:10px 16px;border-radius:100px;text-decoration:none;}
+  .bd-img{position:absolute;border-radius:14px;background:#fff;box-shadow:0 34px 44px -22px rgba(22,24,28,.55),0 8px 16px -6px rgba(22,24,28,.22);border:5px solid #fff;cursor:zoom-in;transition:transform .25s ease,box-shadow .25s ease;user-select:none;-webkit-user-drag:none;}
+  .bd-img:hover{transform:translateY(-8px) scale(1.02) rotate(0deg)!important;box-shadow:0 46px 56px -24px rgba(22,24,28,.6),0 10px 18px -6px rgba(22,24,28,.25);z-index:5;}
+  .bd-ui{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;gap:10px;z-index:10;pointer-events:none;}
+  .bd-ui > *{pointer-events:auto;}
+  .bd-back,.bd-zoom button{font:700 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:11px 16px;cursor:pointer;box-shadow:0 8px 18px -10px rgba(22,24,28,.4);}
+  .bd-back:hover,.bd-zoom button:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .bd-zoom{display:flex;gap:8px;}
+  .bd-zoom button{min-width:44px;padding:11px 14px;}
+  .bd-tabs{position:absolute;left:14px;right:14px;bottom:14px;display:flex;gap:8px;overflow-x:auto;z-index:10;padding-bottom:2px;}
+  .bd-tabs button{flex:none;font:600 12px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:9px 14px;cursor:pointer;box-shadow:0 8px 18px -10px rgba(22,24,28,.4);}
+  .bd-tabs button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
+  #listView[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -60,6 +118,27 @@
   </div>
 </section>
 
+<section class="section" style="padding:8px 0 40px;">
+  <div class="wrap">
+    <div class="sc-bar">
+      <div class="sc-seg" id="scSeg"><button type="button" class="on" data-v="canvas">Explore</button><button type="button" data-v="list">List</button></div>
+      <p class="sc-hint" id="scHint">Tap the logo to open the work.</p>
+    </div>
+    <div class="stage" id="stage">
+      <div class="orbit" id="orbit">
+        <button class="hub" id="hub" type="button" aria-label="Open my work" aria-expanded="false"><img src="assets/favicon.svg" alt=""></button>
+        <div class="hub-label" id="hubLabel">Tap to open my work</div>
+      </div>
+      <div class="board" id="board" aria-live="polite">
+        <div class="bd-canvas" id="bdCanvas"></div>
+        <div class="bd-ui"><button type="button" class="bd-back" id="bdBack">&larr; Back to the circles</button><div class="bd-zoom"><button type="button" id="zOut" aria-label="Zoom out">&minus;</button><button type="button" id="zFit">Fit</button><button type="button" id="zIn" aria-label="Zoom in">+</button></div></div>
+        <div class="bd-tabs" id="bdTabs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="listView" hidden>
 <section class="section" style="padding-top:8px;">
   <div class="wrap">
     <div class="bf" id="bf">
@@ -172,6 +251,8 @@
   </div>
 </section>
 
+</div>
+
 <section class="contact" id="contact">
   <div class="blob blob-indigo"></div>
   <div class="blob blob-coral"></div>
@@ -229,6 +310,7 @@
     var set = [], idx = 0, tx = null;
     function show(){ img.src = set[idx].src; img.alt = set[idx].alt; cnt.textContent = (idx + 1) + ' / ' + set.length; }
     function open(list, i){ set = list; idx = i; show(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    window.mcLightbox = open;
     function close(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
     function step(d){ idx = (idx + d + set.length) % set.length; show(); }
     document.querySelectorAll('.project').forEach(function(p){
@@ -242,6 +324,131 @@
     document.addEventListener('keydown', function(e){ if(!lb.classList.contains('open')) return; if(e.key === 'Escape') close(); if(e.key === 'ArrowLeft') step(-1); if(e.key === 'ArrowRight') step(1); });
     lb.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
     lb.addEventListener('touchend', function(e){ if(tx == null) return; var dx = e.changedTouches[0].clientX - tx; if(Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); tx = null; }, {passive:true});
+  })();
+
+  /* ---- showcase canvas ---- */
+  (function(){
+    var CL = [
+      {id:'frank-and-frank', short:'Frank & Frank', name:'Frank & Frank Heating & Cooling', role:'Full rebrand · logo · website · vehicle wrap', logo:'assets/ff-logo.png',
+        desc:'Ground-up brand identity for a Rochester HVAC company. Nothing carried over from before.',
+        mine:'built the full rebrand from scratch, logo, color system, brand booklet, website, and the vehicle wrap carried across the van.',
+        imgs:[['assets/ff-overview.jpg','Frank and Frank brand overview'],['assets/ff-van-left.jpg','Frank and Frank branded van'],['assets/ff-sign.jpg','Frank and Frank yard sign'],['assets/ff-sticker.jpg','Frank and Frank PM sticker mockup']]},
+      {id:'flower-city', short:'Flower City', name:'Flower City Custom Apparel', role:'Full brand identity · ecommerce site · product customizer · owner', logo:'assets/flower-city-logo-2.png', link:'https://www.wearflowercity.com',
+        desc:'Founded start to finish: the logo and brand, the live storefront, and the step-by-step custom apparel designer, upload a logo, place it, choose a garment, checkout.',
+        mine:'founded and run Flower City Custom Apparel, built the brand, the logo, the social content that promotes it, and designed and built the site and product customizer.',
+        imgs:[['assets/flower-city-mockup.jpg','Flower City customizer and checkout flow on mobile'],['assets/flower-city-customizer.jpg','Flower City live product customizer'],['assets/flower-city-share1.jpg','Flower City share image'],['assets/flower-city-share2.jpg','Flower City share image']]},
+      {id:'peter-englert', short:'Peter Englert', name:'Peter Englert', role:'Brand identity · website design · McGinnis Creative', mono:'PE', link:'https://peterenglert.com/',
+        desc:'Brand and site design for a pastor\'s podcast, sermon library, and blog, practical theology content organized for a weekly audience.',
+        mine:'freelance through McGinnis Creative, designed his brand identity and built the site, organizing the content strategy across podcast, sermons, and blog.',
+        imgs:[['assets/peter-1.jpg','Peter Englert website homepage']]},
+      {id:'robyn-englert', short:'Robyn Englert', name:'Robyn Englert Counseling', role:'Brand mark · website design · McGinnis Creative', logo:'assets/robyn-logo.png', link:'https://robynenglertcounseling.com/',
+        desc:'Brand and site design for a mental health counseling practice, warm and credentialed at once.',
+        mine:'freelance through McGinnis Creative, designed her brand mark and built the site.',
+        imgs:[['assets/robyn-overview.jpg','Robyn Englert Counseling website homepage']]},
+      {id:'thrive-garden', short:'Thrive Garden', name:'Thrive Garden', role:'Brand identity · applied system', logo:'assets/thrive-garden-logo.png',
+        desc:'Visual brand for an online resource company supporting the social-emotional needs of elementary students, built to hold up across a full library of downloadable worksheets.',
+        mine:'designed the visual brand, logo, color palette, and illustration style, and applied it consistently across a full library of student resource worksheets.',
+        imgs:[['assets/thrive-cover-1.jpg','Thrive Garden Daily Feelings Tracker cover'],['assets/thrive-cover-2.jpg','Thrive Garden My Coping Toolbox cover']]},
+      {id:'small-group-network', short:'Small Group Network', name:'Small Group Network', role:'Social content · brand templates', logo:'assets/sgn-logo.jpg',
+        desc:'Social media posts built inside an existing brand system, keeping voice and visual identity consistent post to post.',
+        mine:'created social posts and built out the branded templates behind them.',
+        imgs:[['assets/sgn-question.jpg','Small Group Network question post'],['assets/sgn-photo.jpg','Small Group Network event photo post'],['assets/sgn-cover.jpg','Small Group Network cover post']]}
+    ];
+    var $ = function(id){ return document.getElementById(id); };
+    var stage = $('stage'), orbit = $('orbit'), hub = $('hub'), board = $('board'), cv = $('bdCanvas'), tabs = $('bdTabs'), hint = $('scHint');
+    var bubs = [], view = {x:0, y:0, s:1}, CW = 1200, CH = 800, curId = null, moved = false;
+    function el(t, c, txt){ var e = document.createElement(t); if(c) e.className = c; if(txt != null) e.textContent = txt; return e; }
+    /* ---- orbit ---- */
+    CL.forEach(function(c, i){
+      var b = el('button','bub'); b.type = 'button'; b.setAttribute('aria-label', 'Open ' + c.name);
+      var inn = el('div','bub-in'); if(c.logo){ var im = el('img'); im.src = c.logo; im.alt = ''; inn.appendChild(im); } else { inn.style.background = 'linear-gradient(135deg,#ff8585,#786ae4)'; inn.appendChild(el('b','',c.mono)); }
+      b.appendChild(inn); b.appendChild(el('span','bub-name',c.short)); b.style.setProperty('--fd', (i * 0.7) + 's'); b.style.setProperty('--d', (i * 0.06) + 's');
+      b.addEventListener('click', function(){ openBoard(c.id); });
+      orbit.appendChild(b); bubs.push(b);
+    });
+    function place(){
+      var w = stage.clientWidth, h = stage.clientHeight, small = w < 560, bs = small ? 78 : 104;
+      var rx = Math.min(w * 0.36, 330), ry = Math.min(h * 0.33, 250);
+      if(small){ rx = w * 0.34; ry = h * 0.3; }
+      bubs.forEach(function(b, i){
+        var a = (-90 + i * 360 / CL.length) * Math.PI / 180;
+        b.style.setProperty('--bs', bs + 'px'); b.style.setProperty('--tx', Math.round(Math.cos(a) * rx) + 'px'); b.style.setProperty('--ty', Math.round(Math.sin(a) * ry) + 'px');
+      });
+    }
+    function toggleOrbit(open){
+      var o = open == null ? !orbit.classList.contains('open') : open;
+      orbit.classList.toggle('open', o); hub.setAttribute('aria-expanded', o ? 'true' : 'false');
+      hint.textContent = o ? 'Pick a client to fly into their board.' : 'Tap the logo to open the work.';
+    }
+    hub.addEventListener('click', function(){ toggleOrbit(); });
+    /* ---- board ---- */
+    function apply(){ cv.style.transform = 'translate(' + view.x + 'px,' + view.y + 'px) scale(' + view.s + ')'; }
+    function fit(){
+      var sw = stage.clientWidth, sh = stage.clientHeight - 70, top = 52;
+      view.s = Math.min(sw / CW, sh / CH, 1.15) * 0.96; view.x = (sw - CW * view.s) / 2; view.y = top + (sh - CH * view.s) / 2 - 20; apply();
+    }
+    function zoomAt(cx, cy, f){ var ns = Math.max(0.2, Math.min(3, view.s * f)); var k = ns / view.s; view.x = cx - (cx - view.x) * k; view.y = cy - (cy - view.y) * k; view.s = ns; apply(); }
+    function loadSizes(list){ return Promise.all(list.map(function(p){ return new Promise(function(res){ var im = new Image(); im.onload = function(){ res({src:p[0], alt:p[1], w:im.naturalWidth, h:im.naturalHeight}); }; im.onerror = function(){ res({src:p[0], alt:p[1], w:4, h:3}); }; im.src = p[0]; }); })); }
+    var ROT = [-2.2, 1.6, -1.2, 2.1, -1.8];
+    function build(c){
+      cv.textContent = '';
+      var pad = 60, tw = 400, x0 = pad + tw + 70, maxW = 900;
+      var t = el('div','bd-text'); t.style.left = pad + 'px'; t.style.top = (pad + 40) + 'px'; t.style.width = tw + 'px';
+      var lg = el('div','bd-logo'); if(c.logo){ var li = el('img'); li.src = c.logo; li.alt = c.name + ' logo'; lg.appendChild(li); } else { lg.appendChild(el('b','',c.mono)); }
+      t.appendChild(lg); t.appendChild(el('h3','',c.name)); t.appendChild(el('span','bd-role',c.role)); t.appendChild(el('p','',c.desc));
+      var m = el('p','bd-mine'); m.appendChild(el('b','','My work: ')); m.appendChild(document.createTextNode(c.mine)); t.appendChild(m);
+      if(c.link){ var a = el('a','bd-link','Visit site →'); a.href = c.link; a.target = '_blank'; a.rel = 'noopener'; t.appendChild(a); }
+      cv.appendChild(t);
+      return loadSizes(c.imgs).then(function(list){
+        var rowH = list.length === 1 ? 460 : 300, gap = 30, x = x0, y = pad + 20, els = [];
+        list.forEach(function(p, i){
+          var asp = p.w / p.h, w = Math.min(asp * rowH, list.length === 1 ? 760 : 540), h = w / asp;
+          if(x + w > x0 + maxW && x > x0){ x = x0; y += rowH + gap + 10; }
+          var im = el('img','bd-img'); im.src = p.src; im.alt = p.alt; im.draggable = false; im.style.width = w + 'px'; im.style.height = h + 'px'; im.style.left = x + 'px'; im.style.top = (y + (rowH - h) / 2) + 'px'; im.style.transform = 'rotate(' + ROT[i % 5] + 'deg)';
+          cv.appendChild(im); els.push(im); x += w + gap;
+        });
+        els.forEach(function(im, i){ im.addEventListener('click', function(){ if(moved) return; if(window.mcLightbox) window.mcLightbox(els, i); }); });
+        CW = x0 + maxW + pad; CH = Math.max(t.offsetHeight + pad + 90, y + rowH + pad) ; cv.style.width = CW + 'px'; cv.style.height = CH + 'px';
+      });
+    }
+    function setTabs(){
+      tabs.textContent = '';
+      CL.forEach(function(c){ var b = el('button', c.id === curId ? 'on' : '', c.short); b.type = 'button'; b.addEventListener('click', function(){ if(c.id !== curId) openBoard(c.id, true); }); tabs.appendChild(b); });
+    }
+    function openBoard(id, quick){
+      var c = CL.filter(function(x){ return x.id === id; })[0]; if(!c) return; curId = id;
+      try { history.replaceState(null, '', '#' + id); } catch(e){}
+      build(c).then(function(){ setTabs(); stage.classList.add('in-board'); board.classList.add('on'); fit(); hint.textContent = 'Drag to move, scroll with Ctrl or use +/−, tap an image to enlarge.'; });
+    }
+    function closeBoard(){
+      curId = null; board.classList.remove('on'); stage.classList.remove('in-board'); toggleOrbit(true);
+      try { history.replaceState(null, '', location.pathname); } catch(e){}
+    }
+    $('bdBack').addEventListener('click', closeBoard);
+    $('zIn').addEventListener('click', function(){ zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 1.25); });
+    $('zOut').addEventListener('click', function(){ zoomAt(stage.clientWidth / 2, stage.clientHeight / 2, 0.8); });
+    $('zFit').addEventListener('click', fit);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && curId && !document.getElementById('lb').classList.contains('open')) closeBoard(); });
+    board.addEventListener('wheel', function(e){ if(!(e.ctrlKey || e.metaKey)) return; e.preventDefault(); var r = board.getBoundingClientRect(); zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.12 : 0.9); }, {passive:false});
+    var drag = null;
+    board.addEventListener('pointerdown', function(e){ if(e.target.closest('.bd-ui, .bd-tabs, .bd-link')) return; drag = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y, t:e.pointerType}; moved = false; });
+    window.addEventListener('pointermove', function(e){
+      if(!drag) return; var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if(!moved && Math.hypot(dx, dy) > 6){ moved = true; board.classList.add('drag'); }
+      if(moved){ view.x = drag.vx + dx; view.y = drag.t === 'touch' ? view.y : drag.vy + dy; apply(); }
+    });
+    window.addEventListener('pointerup', function(){ if(drag){ drag = null; board.classList.remove('drag'); setTimeout(function(){ moved = false; }, 0); } });
+    /* ---- list toggle ---- */
+    var list = $('listView'), seg = $('scSeg');
+    seg.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.getAttribute('data-v'); seg.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      stage.style.display = v === 'list' ? 'none' : ''; hint.style.display = v === 'list' ? 'none' : ''; list.hidden = v !== 'list';
+      if(v !== 'list'){ place(); if(curId) fit(); }
+    }); });
+    window.addEventListener('resize', function(){ place(); if(curId) fit(); });
+    place();
+    var h = (location.hash || '').replace('#','');
+    if(CL.some(function(c){ return c.id === h; })){ toggleOrbit(true); openBoard(h); }
   })();
 </script>
 </body>
