@@ -459,6 +459,24 @@
   .fl-whatif{margin-top:14px;border-radius:16px;padding:16px 18px;color:#fff;background:linear-gradient(135deg,#1c12a3,#4152e8 55%,#786ae4);}
   .fl-whatif p{margin:0;font-size:14px;line-height:1.55;}
   .fl-whatif strong{font-size:17px;}
+
+  /* ---- choose your adventure ---- */
+  .adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;}
+  .adv-card{position:relative;text-align:left;font-family:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:26px 24px 24px;cursor:pointer;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;-webkit-tap-highlight-color:transparent;}
+  .adv-card:hover{transform:translateY(-5px);border-color:transparent;box-shadow:0 26px 46px -24px rgba(65,82,232,.45);}
+  .adv-card::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;right:-50px;bottom:-60px;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.16;transition:transform .3s ease;}
+  .adv-card:hover::after{transform:scale(1.25);}
+  .adv-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);color:#fff;font-weight:800;font-size:16px;margin-bottom:14px;}
+  .adv-card h3{margin:0 0 8px;font-size:19px;font-weight:700;}
+  .adv-card p{margin:0 0 14px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+  .adv-chips{display:flex;flex-wrap:wrap;gap:6px;position:relative;z-index:1;}
+  .adv-chips i{font-style:normal;font-size:11px;font-weight:600;color:var(--indigo-1);background:var(--indigo-soft);border-radius:100px;padding:4px 10px;}
+  .adv-bar{position:sticky;top:76px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:12px 18px;border-radius:100px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -18px rgba(28,18,163,.4);font-size:14px;color:var(--ink-soft);}
+  .adv-bar[hidden]{display:none;}
+  .adv-bar b{color:var(--ink);}
+  #advHost{position:relative;}
+  .ix.is-off{position:absolute;left:-9999px;top:0;width:100%;visibility:hidden;pointer-events:none;}
+  .adv.is-off{display:none;}
 </style>
 </head>
 <body>
@@ -495,8 +513,28 @@
 </section>
 
 <section class="section" style="padding-top:8px;">
-  <div class="wrap">
+  <div class="wrap" id="advHost">
 
+    <div class="adv" id="adv">
+      <div class="section-head" style="margin:8px 0 26px;">
+        <p class="section-kicker">Choose your adventure</p>
+        <h2 class="section-title">What do you want to see?</h2>
+        <p class="section-desc">Pick a path and I'll show you the pieces that answer it. You can switch any time.</p>
+      </div>
+      <div class="adv-grid">
+        <button type="button" class="adv-card" data-go="tools"><span class="adv-num">1</span><h3>Tools for your team</h3><p>Working tools a school or business could use tomorrow: a program finder and an enrollment forecaster.</p><span class="adv-chips"><i>Program Finder Quiz</i><i>Enrollment Funnel Lab</i></span></button>
+        <button type="button" class="adv-card" data-go="story"><span class="adv-num">2</span><h3>Storytelling &amp; history</h3><p>Stories you explore instead of read: a timeline, a map of my life, and a pit of toys.</p><span class="adv-chips"><i>Fly Through Rochester</i><i>Facts About Aaron</i><i>Toys I Grew Up With</i></span></button>
+        <button type="button" class="adv-card" data-go="brand"><span class="adv-num">3</span><h3>Brand &amp; voice</h3><p>Identity and copy people can play with, from a live logo to a madlib in my voice.</p><span class="adv-chips"><i>Logo Playground</i><i>Send Yourself a Madlib</i></span></button>
+        <button type="button" class="adv-card" data-go="audio"><span class="adv-num">4</span><h3>Audio &amp; production</h3><p>Real music I recorded, mixed live in your browser.</p><span class="adv-chips"><i>Hideout: Stem Mixer</i></span></button>
+        <button type="button" class="adv-card adv-all" data-go="all"><span class="adv-num">&infin;</span><h3>Show me everything</h3><p>All eight, in order. Scroll and poke around.</p></button>
+      </div>
+    </div>
+    <div class="adv-bar" id="advBar" hidden>
+      <span>Showing: <b id="advName"></b></span>
+      <button type="button" class="pg-btn" id="advChange">&larr; Choose another path</button>
+    </div>
+
+    <div class="ix" data-cat="audio">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">01 · Live</p>
       <h2 class="section-title">Hideout: Stem Mixer</h2>
@@ -529,6 +567,9 @@
       </div>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="story">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">02 · Live</p>
       <h2 class="section-title">Facts About Aaron</h2>
@@ -606,6 +647,9 @@
       </div>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="story">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">03 · Live</p>
       <h2 class="section-title">Toys I Grew Up With</h2>
@@ -637,6 +681,9 @@
       </div>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="brand">
     <div class="section-head reveal">
       <p class="section-kicker">04 · Live</p>
       <h2 class="section-title">Logo Playground</h2>
@@ -704,6 +751,9 @@
       <p class="pg-note">Tip: pick "brand gradient," then move your cursor over the mark, it shifts with you.</p>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="story">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">05 · Live</p>
       <h2 class="section-title">Fly Through Rochester</h2>
@@ -756,6 +806,9 @@
       </div>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="brand">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">06 · Live</p>
       <h2 class="section-title">Send Yourself a Madlib</h2>
@@ -780,6 +833,9 @@
       </form>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="tools">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">07 · Live</p>
       <h2 class="section-title">Which Program Fits You?</h2>
@@ -790,6 +846,9 @@
       <div class="pq" id="pq"></div>
     </div>
 
+    </div>
+
+    <div class="ix" data-cat="tools">
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">08 · Live</p>
       <h2 class="section-title">The Enrollment Funnel Lab</h2>
@@ -817,7 +876,9 @@
       </div>
     </div>
 
-    <div class="coming-soon reveal" style="padding:48px 40px;">
+    </div>
+
+    <div class="coming-soon reveal ix" data-cat="all" style="padding:48px 40px;">
       <div class="glyph"></div>
       <h3>More coming</h3>
       <p>This page grows as I build more of these. Got an idea for something you'd want to play with? Let me know.</p>
@@ -2160,6 +2221,35 @@
     }
     ids.forEach(function(id){ $(id).addEventListener('input', update); });
     update();
+  })();
+
+  /* ---- choose your adventure ---- */
+  (function(){
+    var NAMES = {tools:'Tools for your team', story:'Storytelling & history', brand:'Brand & voice', audio:'Audio & production', all:'Everything'};
+    var adv = document.getElementById('adv'), bar = document.getElementById('advBar'), nameEl = document.getElementById('advName');
+    var blocks = document.querySelectorAll('.ix');
+    function choose(cat, scroll){
+      if(!NAMES[cat]) return;
+      blocks.forEach(function(b){
+        var c = b.getAttribute('data-cat');
+        b.classList.toggle('is-off', !(cat === 'all' || c === cat || (c === 'all' && cat === 'all')));
+      });
+      adv.classList.add('is-off'); bar.hidden = false; nameEl.textContent = NAMES[cat];
+      try { history.replaceState(null, '', '#' + cat); } catch(e){}
+      setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 30);
+      if(scroll) bar.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    function reset(){
+      blocks.forEach(function(b){ b.classList.add('is-off'); });
+      adv.classList.remove('is-off'); bar.hidden = true;
+      try { history.replaceState(null, '', location.pathname); } catch(e){}
+      adv.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    document.querySelectorAll('.adv-card').forEach(function(b){ b.addEventListener('click', function(){ choose(b.getAttribute('data-go'), true); }); });
+    document.getElementById('advChange').addEventListener('click', reset);
+    blocks.forEach(function(b){ b.classList.add('is-off'); });
+    var h = (location.hash || '').replace('#','');
+    if(NAMES[h]) choose(h, false);
   })();
 </script>
 </body>
