@@ -437,6 +437,28 @@
   .pq-card p{margin:0 0 8px;font-size:14px;line-height:1.6;color:var(--ink-soft);}
   .pq-card p b{color:var(--ink);}
   .pq-note{font-size:12.5px;color:var(--ink-faint);margin:16px 0 0;}
+
+  /* ---- enrollment funnel lab ---- */
+  .fl{padding:26px 24px 30px;display:grid;grid-template-columns:1fr 1.15fr;gap:34px;align-items:start;}
+  @media (max-width:820px){.fl{grid-template-columns:1fr;gap:26px;}}
+  .fl-ctl{display:grid;gap:18px;}
+  .fl-row label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px;}
+  .fl-row label output{font-weight:800;color:var(--indigo-1);font-size:15px;}
+  .fl-row input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:8px;background:linear-gradient(90deg,#ff8585 var(--p,50%),var(--line) var(--p,50%));outline:none;touch-action:pan-y;}
+  .fl-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:4px solid #786ae4;box-shadow:0 4px 10px -2px rgba(65,82,232,.5);cursor:grab;}
+  .fl-row input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid #786ae4;cursor:grab;}
+  .fl-row input[type=range]:focus-visible{outline:3px solid var(--indigo-soft);outline-offset:6px;}
+  .fl-funnel{display:grid;gap:10px;}
+  .fl-stage{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;font-size:12.5px;font-weight:600;color:var(--ink-soft);}
+  .fl-track{height:34px;border-radius:10px;background:var(--bg);border:1px solid var(--line);overflow:hidden;position:relative;}
+  .fl-fill{height:100%;min-width:64px;border-radius:9px;background:linear-gradient(90deg,#ff8585,#786ae4);color:#fff;font-weight:800;font-size:13.5px;display:flex;align-items:center;padding:0 12px;transition:width .35s ease;white-space:nowrap;}
+  .fl-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+  .fl-stat{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
+  .fl-stat b{display:block;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.01em;}
+  .fl-stat span{font-size:12px;color:var(--ink-faint);font-weight:600;}
+  .fl-whatif{margin-top:14px;border-radius:16px;padding:16px 18px;color:#fff;background:linear-gradient(135deg,#1c12a3,#4152e8 55%,#786ae4);}
+  .fl-whatif p{margin:0;font-size:14px;line-height:1.55;}
+  .fl-whatif strong{font-size:17px;}
 </style>
 </head>
 <body>
@@ -766,6 +788,33 @@
 
     <div class="reveal playground">
       <div class="pq" id="pq"></div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">08 · Live</p>
+      <h2 class="section-title">The Enrollment Funnel Lab</h2>
+      <p class="section-desc">Drag the sliders to see how small gains at each step of the funnel add up. Try nudging yield up two points and watch what happens to the class and the budget. Numbers here are a starting example, not any real school's.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="fl" id="fl">
+        <div class="fl-ctl">
+          <div class="fl-row"><label for="flInq">Inquiries per year<output id="flInqOut"></output></label><input type="range" id="flInq" min="500" max="12000" step="100" value="4000"></div>
+          <div class="fl-row"><label for="flApp">Inquiry to application rate<output id="flAppOut"></output></label><input type="range" id="flApp" min="5" max="40" step="1" value="18"></div>
+          <div class="fl-row"><label for="flAdm">Admit rate<output id="flAdmOut"></output></label><input type="range" id="flAdm" min="30" max="95" step="1" value="70"></div>
+          <div class="fl-row"><label for="flYld">Yield (admits who enroll)<output id="flYldOut"></output></label><input type="range" id="flYld" min="10" max="60" step="1" value="22"></div>
+          <div class="fl-row"><label for="flNet">Net tuition per student, per year<output id="flNetOut"></output></label><input type="range" id="flNet" min="8000" max="45000" step="500" value="24000"></div>
+          <div class="fl-row"><label for="flRet">Retention year to year<output id="flRetOut"></output></label><input type="range" id="flRet" min="60" max="98" step="1" value="82"></div>
+        </div>
+        <div>
+          <div class="fl-funnel" id="flFunnel"></div>
+          <div class="fl-stats">
+            <div class="fl-stat"><b id="flRev1"></b><span>First-year tuition revenue</span></div>
+            <div class="fl-stat"><b id="flRev4"></b><span>Four-year value of the class</span></div>
+          </div>
+          <div class="fl-whatif"><p id="flWhat"></p></div>
+        </div>
+      </div>
     </div>
 
     <div class="coming-soon reveal" style="padding:48px 40px;">
@@ -1989,18 +2038,17 @@
       bio:{n:'Biology & Health Sciences', why:'You like the why behind how things work, and you are comfortable in a lab.', ask:'Pre-med and pre-pharmacy pathways, undergraduate research, and combined-degree options.'},
       cs:{n:'Computer Science & Data', why:'You like solving puzzles that have a right answer, and building things that run.', ask:'Project-based courses, internships, and how many students land tech roles.'},
       sport:{n:'Sport & Exercise Science', why:'You love movement, performance, and helping people get stronger.', ask:'Athletic training pathways, facilities, and hands-on work with teams.'},
-      min:{n:'Ministry & Theology', why:'You are asking big questions, and you want a career built around meaning and community.', ask:'Mentoring, service and mission trips, and how faith and study connect on campus.'},
       art:{n:'Art & Design', why:'You see the world in shapes and color, and you make things people remember.', ask:'Studio space, portfolio reviews, and real client projects before graduation.'}
     };
     var Q = [
       {q:'Pick your ideal Tuesday.', o:[
-        ['Helping someone through a hard day',{nursing:3,psych:3,edu:1,min:1}],
-        ['Explaining something until it clicks',{edu:3,psych:1,min:1}],
+        ['Helping someone through a hard day',{nursing:3,psych:3,edu:1}],
+        ['Explaining something until it clicks',{edu:3,psych:1}],
         ['Building or fixing something that works',{cs:3,bio:1,biz:1}],
         ['Making something people will remember',{art:3,comm:3}],
         ['Running a plan with a team',{biz:3,sport:2,edu:1}]]},
       {q:'In a group project, you are the one who...', o:[
-        ['Keeps everyone calm and heard',{psych:3,nursing:2,min:2}],
+        ['Keeps everyone calm and heard',{psych:3,nursing:2,edu:1}],
         ['Makes the plan and the timeline',{biz:3,edu:2,cs:1}],
         ['Digs into the data and the details',{cs:3,bio:3}],
         ['Designs it and tells the story',{comm:3,art:3}],
@@ -2010,22 +2058,22 @@
         ['Child Development',{edu:3,psych:3}],
         ['Digital Storytelling',{comm:3,art:2}],
         ['Statistics and Programming',{cs:3,bio:1,biz:1}],
-        ['Ethics and Big Questions',{min:3,psych:1,biz:1}]]},
+        ['Ethics and Big Questions',{psych:2,biz:2,edu:1}]]},
       {q:'Where do you picture working?', o:[
         ['A hospital or clinic',{nursing:3,bio:2,psych:1,sport:1}],
-        ['A school or camp',{edu:3,psych:1,sport:1,min:1}],
+        ['A school or camp',{edu:3,psych:1,sport:1}],
         ['A company or startup',{biz:3,cs:2,comm:1}],
         ['A studio, newsroom, or agency',{comm:3,art:3}],
-        ['A church, nonprofit, or community organization',{min:3,psych:2,edu:1}]]},
+        ['A nonprofit or community organization',{psych:3,edu:1,comm:1}]]},
       {q:'What matters most in a college?', o:[
-        ['Small classes where professors know my name',{edu:2,psych:2,nursing:1,min:1}],
+        ['Small classes where professors know my name',{edu:2,psych:2,nursing:1}],
         ['Real hands-on experience before I graduate',{nursing:2,comm:1,biz:1,art:1,sport:1}],
-        ['A strong faith community',{min:3,edu:1,nursing:1}],
+        ['Tight-knit community and personal support',{edu:2,psych:2,nursing:1}],
         ['A great team and campus life',{sport:3,biz:1,comm:1}],
         ['A clear path to a good job',{nursing:2,cs:2,biz:2,bio:1}]]},
       {q:'How do you like to learn?', o:[
         ['By doing, in the real world',{nursing:2,edu:2,comm:2,sport:2}],
-        ['By reading and discussing',{min:2,psych:2,edu:1}],
+        ['By reading and discussing',{psych:3,edu:2,comm:1}],
         ['By experimenting in a lab',{bio:3,nursing:1}],
         ['By building projects on my own',{cs:3,art:2,comm:1}],
         ['By leading and presenting',{biz:3,edu:1,comm:1}]]}
@@ -2070,6 +2118,48 @@
       root.appendChild(el('p','pq-note','A sample built to show the idea. A real version would send matches to admissions, ask for an email, and tie into your CRM.'));
     }
     renderQ();
+  })();
+
+  /* ---- enrollment funnel lab ---- */
+  (function(){
+    var $ = function(id){ return document.getElementById(id); };
+    var ids = ['flInq','flApp','flAdm','flYld','flNet','flRet'];
+    var fmtN = new Intl.NumberFormat('en-US');
+    var fmtD = function(v){ return v >= 1e6 ? '$' + (v / 1e6).toFixed(2) + 'M' : '$' + fmtN.format(Math.round(v)); };
+    var stages = [['Inquiries','inq'],['Applicants','app'],['Admits','adm'],['Enrolled','enr']];
+    var funnel = $('flFunnel'), fills = {};
+    stages.forEach(function(s){
+      var row = document.createElement('div'); row.className = 'fl-stage';
+      row.innerHTML = '<span>' + s[0] + '</span><div class="fl-track"><div class="fl-fill"></div></div>';
+      funnel.appendChild(row); fills[s[1]] = row.querySelector('.fl-fill');
+    });
+    function v(id){ return +$(id).value; }
+    function calc(yld){
+      var inq = v('flInq'), app = inq * v('flApp') / 100, adm = app * v('flAdm') / 100, enr = adm * yld / 100;
+      var r = v('flRet') / 100, years = 1 + r + r * r + r * r * r;
+      return {inq:inq, app:app, adm:adm, enr:enr, rev1:enr * v('flNet'), rev4:enr * v('flNet') * years};
+    }
+    function label(id, val){
+      if(id === 'flInq') return fmtN.format(val);
+      if(id === 'flNet') return '$' + fmtN.format(val);
+      return val + '%';
+    }
+    function update(){
+      ids.forEach(function(id){
+        var el = $(id), p = (el.value - el.min) / (el.max - el.min) * 100;
+        el.style.setProperty('--p', p + '%'); $(id + 'Out').textContent = label(id, +el.value);
+      });
+      var r = calc(v('flYld')), top = r.inq;
+      stages.forEach(function(s){
+        var f = fills[s[1]]; f.style.width = Math.max(8, r[s[1]] / top * 100) + '%'; f.textContent = fmtN.format(Math.round(r[s[1]]));
+      });
+      $('flRev1').textContent = fmtD(r.rev1); $('flRev4').textContent = fmtD(r.rev4);
+      var up = calc(Math.min(100, v('flYld') + 2));
+      var ds = Math.round(up.enr - r.enr), d1 = up.rev1 - r.rev1, d4 = up.rev4 - r.rev4;
+      $('flWhat').innerHTML = 'What if yield went up just <strong>2 points</strong>? That is about <strong>' + fmtN.format(Math.max(ds, 0)) + ' more students</strong>, <strong>+' + fmtD(d1) + '</strong> in first-year revenue, and <strong>+' + fmtD(d4) + '</strong> over four years. Small moves, real money.';
+    }
+    ids.forEach(function(id){ $(id).addEventListener('input', update); });
+    update();
   })();
 </script>
 </body>
