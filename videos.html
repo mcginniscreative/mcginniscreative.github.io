@@ -48,6 +48,25 @@
     border:none;border-radius:100px;padding:8px 14px;cursor:pointer;}
   .wheel-actions button:hover,.wheel-actions a:hover{background:var(--wpill2);}
   .wheel-item:fullscreen{width:100vw!important;height:100vh!important;margin:0!important;transform:none!important;filter:none!important;border-radius:0;}
+  .wheel-chan{position:absolute;left:0;right:0;top:12px;z-index:2100;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:0 12px;}
+  .wheel-chan button{font:600 12px/1 "Poppins",system-ui,sans-serif;color:var(--wsoft);background:var(--wpill);border:1px solid transparent;border-radius:100px;padding:9px 14px;cursor:pointer;transition:all .15s ease;}
+  .wheel-chan button:hover{color:var(--wtext);background:var(--wpill2);}
+  .wheel-chan button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .wheel-stage.flip .wheel-items{animation:chanFlip .4s ease;}
+  @keyframes chanFlip{0%{opacity:0;transform:scale(.94);filter:blur(6px);}100%{opacity:1;transform:none;filter:none;}}
+  .wheel-role{margin:8px 0 0;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--wsoft);}
+  .slate{display:none;position:absolute;right:2.5%;top:50%;margin-top:-118px;width:232px;z-index:2000;transform:rotate(3deg);filter:drop-shadow(0 30px 30px rgba(8,9,20,.45));font-family:"Poppins",system-ui,sans-serif;}
+  @media (min-width:1180px){.slate{display:block;}}
+  .slate-arm{height:30px;border-radius:8px 8px 0 0;transform-origin:0 100%;background:repeating-linear-gradient(-55deg,#111 0 22px,#f4f4f4 22px 44px);border:2px solid #111;}
+  .slate.clap .slate-arm{animation:slateClap .38s ease-out;}
+  @keyframes slateClap{0%{transform:rotate(-24deg);}70%{transform:rotate(1.5deg);}100%{transform:none;}}
+  .slate-body{background:#1c1e26;border:2px solid #111;border-top:none;border-radius:0 0 10px 10px;padding:10px 14px 14px;color:#f3f3f7;}
+  .slate-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 12px;align-items:baseline;}
+  .slate-body dt{font-size:9.5px;font-weight:700;letter-spacing:.14em;color:#8f93a8;}
+  .slate-body dd{margin:0;font-size:12.5px;font-weight:600;line-height:1.3;}
+  .slate-note{grid-column:1/-1;margin:4px 0 0!important;font-style:italic;font-weight:500!important;color:#ffb4b4;}
+  .slate-num{display:flex;justify-content:space-between;border-top:1px dashed #3a3d4c;margin-top:9px;padding-top:9px;font-size:11px;font-weight:700;color:#8f93a8;letter-spacing:.1em;}
+  .slate-num b{color:#fff;font-size:15px;}
 </style>
 </head>
 <body>
@@ -236,24 +255,29 @@
   var grid = document.querySelector('.reel');
   if(!grid || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var cards = [].slice.call(grid.querySelectorAll('.reel-card'));
-  var N = cards.length; if(N < 3) return;
+  var NALL = cards.length; if(NALL < 3) return;
+  var N = NALL, vis = cards.map(function(c, i){ return i; });
   var gridSection = grid.closest('section');
   var nav = document.querySelector('nav');
 
   var wrap = document.createElement('section');
   wrap.className = 'wheel'; wrap.id = 'reelWheel';
   wrap.setAttribute('aria-label', 'Video reel');
-  wrap.innerHTML = '<div class="wheel-stage"><div class="wheel-orb o1"></div><div class="wheel-orb o2"></div>' +
+  wrap.innerHTML = '<div class="wheel-stage"><div class="wheel-orb o1"></div><div class="wheel-orb o2"></div><div class="wheel-chan" id="wChan"></div><div class="slate" id="slate" aria-hidden="true"></div>' +
     '<div class="wheel-items"></div>' +
-    '<div class="wheel-caption"><p class="wheel-tag"></p><h2 class="wheel-title"></h2><p class="wheel-org"></p></div>' +
+    '<div class="wheel-caption"><p class="wheel-tag"></p><h2 class="wheel-title"></h2><p class="wheel-org"></p><p class="wheel-role"></p></div>' +
     '<div class="wheel-meta"><span class="wheel-count"></span><span class="wheel-hint">Scroll or swipe to spin the reel · click the center card to play</span><span class="wheel-actions"><button type="button" class="wheel-fs">⛶ Full screen</button><a class="wheel-out" target="_blank" rel="noopener">Open on YouTube ↗</a></span></div></div>';
   gridSection.parentNode.insertBefore(wrap, gridSection);
   gridSection.hidden = true;
 
   var stage = wrap.querySelector('.wheel-stage'), holder = wrap.querySelector('.wheel-items');
-  var capTag = wrap.querySelector('.wheel-tag'), capTitle = wrap.querySelector('.wheel-title'), capOrg = wrap.querySelector('.wheel-org');
+  var capTag = wrap.querySelector('.wheel-tag'), capTitle = wrap.querySelector('.wheel-title'), capOrg = wrap.querySelector('.wheel-org'), capRole = wrap.querySelector('.wheel-role');
   var countEl = wrap.querySelector('.wheel-count'), caption = wrap.querySelector('.wheel-caption');
 
+  var CH = {'Human story':'people','Community':'people','Brand film':'brand','Festival trailer':'brand','Hype / promo':'brand','Event recap':'events','Camp':'events','Case study':'cases','Content series':'cases'};
+  var CHAN = [['all','All'],['people','People & stories'],['brand','Brand & promo'],['events','Events & camps'],['cases','Case studies & series']];
+  var ROLE = 'Produced · Shot · Edited';
+  var NOTES = {}; /* optional one-liners keyed by exact video title, shown on the slate */
   function embedUrl(href){
     var m;
     if((m = href.match(/youtu\.be\/([\w-]{6,})/)) || (m = href.match(/[?&]v=([\w-]{6,})/)))
@@ -274,15 +298,15 @@
     a.innerHTML = thumb;
     a.addEventListener('click', function(e){
       if(e.target.closest('.wheel-close')) return;
-      if(i !== current){ goTo(i); return; }
+      if(vis.indexOf(i) !== current){ goTo(vis.indexOf(i)); return; }
       if(playing !== i) play(i);
     });
     a.addEventListener('keydown', function(e){
       if((e.key === 'Enter' || e.key === ' ') && e.target === a){ e.preventDefault(); a.click(); }
     });
-    a.addEventListener('focus', function(){ if(i !== current) goTo(i); });
+    a.addEventListener('focus', function(){ if(vis.indexOf(i) !== current) goTo(vis.indexOf(i)); });
     holder.appendChild(a);
-    return {el:a, thumb:thumb, href:c.href, embed:embedUrl(c.href), tag:c.querySelector('.reel-tag').textContent, title:title, org:c.querySelector('.reel-org').textContent};
+    return {el:a, chan:CH[c.querySelector('.reel-tag').textContent] || 'brand', thumb:thumb, href:c.href, embed:embedUrl(c.href), tag:c.querySelector('.reel-tag').textContent, title:title, org:c.querySelector('.reel-org').textContent};
   });
 
   function play(i){
@@ -338,12 +362,20 @@
   function wrapAbsTop(){ return wrap.getBoundingClientRect().top + window.pageYOffset; }
   function goTo(i){ window.scrollTo({top: wrapAbsTop() - navH + i * stepPx, behavior: 'smooth'}); }
 
+  var slateEl = wrap.querySelector('#slate');
+  function updateSlate(it, k){
+    var letter = {people:'A', brand:'B', events:'C', cases:'D'}[it.chan] || 'A';
+    function row(dt, dd){ return '<dt>' + dt + '</dt><dd>' + dd + '</dd>'; }
+    var esc = function(t){ return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    slateEl.innerHTML = '<div class="slate-arm"></div><div class="slate-body"><dl>' + row('PROD', 'McGinnis Creative') + row('SCENE', esc(it.title)) + row('CLIENT', esc(it.org)) + row('TYPE', esc(it.tag)) + row('ROLE', ROLE) + (NOTES[it.title] ? '<dd class="slate-note">' + esc(NOTES[it.title]) + '</dd>' : '') + '</dl><div class="slate-num"><span>ROLL <b>' + letter + '</b></span><span>TAKE <b>' + (k + 1) + '</b></span></div></div>';
+    slateEl.classList.remove('clap'); void slateEl.offsetWidth; slateEl.classList.add('clap');
+  }
   function render(){
     var rect = wrap.getBoundingClientRect();
-    var p = Math.min(1, Math.max(0, (navH - rect.top) / ((N - 1) * stepPx))) * (N - 1);
+    var p = N > 1 ? Math.min(1, Math.max(0, (navH - rect.top) / ((N - 1) * stepPx))) * (N - 1) : 0;
     var S1 = H * 0.72, S2 = H * 0.42;
-    for(var i = 0; i < N; i++){
-      var d = i - p, ad = Math.abs(d), el = items[i].el;
+    for(var k = 0; k < N; k++){
+      var d = k - p, ad = Math.abs(d), el = items[vis[k]].el;
       if(ad > 3.6){ el.style.visibility = 'hidden'; el.style.opacity = 0; continue; }
       var off = ad < 1 ? ad * S1 : S1 + (ad - 1) * S2;
       var y = (d < 0 ? -1 : 1) * off;
@@ -357,14 +389,29 @@
     }
     var idx = Math.round(p);
     if(idx !== current){
-      if(playing >= 0 && playing !== idx) stop();
-      if(current >= 0) items[current].el.classList.remove('active');
-      current = idx; items[idx].el.classList.add('active');
-      capTag.textContent = items[idx].tag; capTitle.textContent = items[idx].title; capOrg.textContent = items[idx].org;
+      if(playing >= 0 && playing !== vis[idx]) stop();
+      items.forEach(function(x){ x.el.classList.remove('active'); });
+      current = idx; var it = items[vis[idx]]; it.el.classList.add('active');
+      capTag.textContent = it.tag; capTitle.textContent = it.title; capOrg.textContent = it.org; capRole.textContent = ROLE;
       countEl.textContent = (idx + 1) + ' / ' + N;
+      updateSlate(it, idx);
     }
     return p;
   }
+
+  var chanEl = wrap.querySelector('#wChan'), chanKey = 'all';
+  function setChannel(key){
+    chanKey = key; stop();
+    vis = []; items.forEach(function(it, i){ var on = key === 'all' || it.chan === key; it.el.style.display = on ? '' : 'none'; if(on) vis.push(i); });
+    N = vis.length; current = -1;
+    chanEl.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-k') === key || (b.getAttribute('data-k') === 'lucky' && false)); });
+    measure(); window.scrollTo({top: wrapAbsTop() - navH, behavior: 'instant'}); render();
+    stage.classList.remove('flip'); void stage.offsetWidth; stage.classList.add('flip');
+  }
+  CHAN.forEach(function(c){ var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-k', c[0]); b.textContent = c[1]; if(c[0] === 'all') b.classList.add('on'); b.addEventListener('click', function(){ setChannel(c[0]); }); chanEl.appendChild(b); });
+  var lucky = document.createElement('button'); lucky.type = 'button'; lucky.setAttribute('data-k', 'lucky'); lucky.textContent = 'Surprise me';
+  lucky.addEventListener('click', function(){ var k = Math.floor(Math.random() * N); if(k === current) k = (k + 1) % N; goTo(k); });
+  chanEl.appendChild(lucky);
 
   var ticking = false, idle = null;
   function onScroll(){
@@ -381,7 +428,7 @@
   measure(); render();
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', function(){ measure(); render(); });
-  window.wheelDebug = {render: render, measure: measure, items: items, N: N};
+  window.wheelDebug = {render: render, measure: measure, items: items, get N(){ return N; }, setChannel: setChannel};
 })();
 </script>
 </body>
