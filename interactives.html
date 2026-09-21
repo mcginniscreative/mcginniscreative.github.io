@@ -548,6 +548,20 @@
 
   /* ---- feelings wheel ---- */
   .fw{padding:22px 22px 26px;}
+  .fw-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;margin:0 0 16px;}
+  .fw-kid{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--ink);}
+  .fw-kid input{position:absolute;opacity:0;pointer-events:none;}
+  .fw-sw{width:46px;height:26px;border-radius:26px;background:var(--line);position:relative;transition:background .2s ease;flex:none;}
+  .fw-sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .2s ease;}
+  .fw-kid input:checked + .fw-sw{background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .fw-kid input:checked + .fw-sw::after{transform:translateX(20px);}
+  .fw-kid input:focus-visible + .fw-sw{outline:3px solid var(--indigo-soft);outline-offset:2px;}
+  .fw-kid small{color:var(--ink-faint);font-size:12px;}
+  .fw-priv{display:inline-flex;align-items:center;gap:7px;font-size:12px;line-height:1.4;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:7px 13px;}
+  .fw-priv svg{color:#3fa34d;flex:none;}
+  .fw.kid .fw-panel h4{font-size:28px;}
+  .fw.kid .fw-feels li,.fw.kid .fw-card span{font-size:16px;}
+  .fw.kid .fw-card b{font-size:18px;}
   .fw-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start;}
   @media (max-width:860px){.fw-body{grid-template-columns:1fr;}}
   .fw-wheel svg{width:100%;height:auto;display:block;max-width:640px;margin:0 auto;}
@@ -1007,6 +1021,7 @@
 
     <div class="reveal playground">
       <div class="fw" id="fw">
+        <div class="fw-top"><label class="fw-kid"><input type="checkbox" id="fwKid"><span class="fw-sw"></span><b>Kid mode</b><small>simpler words and faces</small></label><span class="fw-priv" title="Private"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"/></svg>Private: nothing you tap or answer is saved or sent anywhere, and there are no accounts to sign in to.</span></div>
         <div class="fw-body">
           <div class="fw-wheel" id="fwWheel"></div>
           <div class="fw-panel" id="fwPanel"></div>
@@ -2589,6 +2604,34 @@
         ]}
     ];
 
+
+    var KID = [
+      {id:'mad', n:'Mad', c:'#d7263d', dark:false, face:'mad', blurb:'Mad is a feeling that says, "Hey, that was not fair!" or "Something is in my way." Your body gets a lot of energy.',
+        help:['Take 3 slow dragon breaths: big breath in, long breath out','Squeeze your hands tight, then let go','Push against a wall or stomp your feet','Tell a grown-up, "I feel mad because..."'],
+        s:[S('Frustrated',['Your body feels tight and grumbly','You might say "ugh!" or throw down your pencil'],[]),S('Annoyed',['Something small keeps bugging you','You roll your eyes or sigh a lot'],[]),S('Jealous',['Your tummy feels twisty when someone else has what you want','You might say "That\'s not fair!"'],[]),S('Really mad',['Your face gets hot and your fists close','You want to yell or stomp'],[])]},
+      {id:'powerful', n:'Strong', c:'#f28c28', dark:false, face:'strong', blurb:'Feeling strong means you know you can do it. You feel steady inside.',
+        help:['Try something a little hard and see what happens','Say, "I can do hard things"','Use your strong feeling to help a friend','Tell someone what you did'],
+        s:[S('Brave',['Your heart beats fast, but you do it anyway','You raise your hand or try something new'],[]),S('Proud',['You want to smile and show someone','You say, "Look what I did!"'],[]),S('Confident',['You stand tall and talk in a big voice','You think, "I\'ve got this!"'],[]),S('Determined',['You keep trying, even when it is hard','You say, "I won\'t give up!"'],[])]},
+      {id:'joyful', n:'Happy', c:'#f7d51d', dark:true, face:'happy', blurb:'Happy is a bright, bubbly feeling. Good things are happening.',
+        help:['Tell someone what made you happy','Dance, jump, or sing','Draw a picture of it','Take a big breath and remember this feeling'],
+        s:[S('Excited',['Your body feels bouncy and full of energy','You jump up and down or talk fast'],[]),S('Silly',['You giggle and make funny faces','You try funny voices or dances'],[]),S('Hopeful',['You feel a little flutter, like good things are coming','You say, "I hope it works!"'],[]),S('Joyful',['You feel bubbly all over','You laugh out loud and smile big'],[])]},
+      {id:'peaceful', n:'Calm', c:'#3fa34d', dark:false, face:'calm', blurb:'Calm is a slow, cozy feeling. Your body is relaxed and you feel safe.',
+        help:['Notice your slow breathing','Stay in this feeling for one more minute','Give someone a hug','Tell someone what helped you feel calm'],
+        s:[S('Relaxed',['Your muscles feel soft and loose','You might yawn or stretch out'],[]),S('Safe',['You feel like nothing is going to hurt you','You can play or rest without worry'],[]),S('Loved',['Your heart feels warm','You snuggle close or smile at someone'],[]),S('Thankful',['You feel happy for what you have','You say "thank you" and mean it'],[])]},
+      {id:'sad', n:'Sad', c:'#2f6fdd', dark:false, face:'sad', blurb:'Sad is a feeling that comes when something hurts or when you miss something. It is okay to feel sad.',
+        help:['It is okay to cry','Ask for a hug','Draw it or tell someone how you feel','Do something gentle, like a quiet game or a walk'],
+        s:[S('Lonely',['You want someone to play with','You feel empty inside and wish someone was near'],[]),S('Disappointed',['You hoped for something and it did not happen','You might slump and say "Oh, man."'],[]),S('Hurt',['Your feelings got poked','You might cry or go quiet'],[]),S('Sorry',['Your tummy feels heavy because of something you did','You want to say sorry and fix it'],[])]},
+      {id:'scared', n:'Scared', c:'#7b3fb3', dark:false, face:'scared', blurb:'Scared is your body\'s alarm. It says, "Be careful!" It can show up for real danger or for new, big things.',
+        help:['Hug a stuffed animal or a grown-up','Name 3 things you can see right now','Smell the flower, blow out the candle: slow breaths','Tell a grown-up what is scary'],
+        s:[S('Nervous',['Butterflies in your tummy','Your hands feel wiggly or sweaty'],[]),S('Worried',['Your mind keeps thinking "What if?"','You ask again and again if it will be okay'],[]),S('Left out',['You feel like you don\'t belong','You stand off to the side and feel quiet'],[]),S('Confused',['Your brain feels foggy','You say, "I don\'t get it."'],[])]}
+    ];
+    var ADULT = CORES;
+    var KQZ = [
+      {q:'How does your body feel?', o:[['My tummy is tight or fluttery',{scared:3}],['I feel hot and stompy',{mad:3}],['I feel heavy, like I might cry',{sad:3}],['I feel bouncy and giggly',{joyful:3}],['I feel slow and cozy',{peaceful:3}],['I feel strong and ready',{powerful:3}]]},
+      {q:'What happened?', o:[['I lost something, or someone left',{sad:3}],['Something new or scary',{scared:3}],['Something was not fair',{mad:3}],['Something fun',{joyful:3}],['I am safe and loved',{peaceful:3}],['I did something hard',{powerful:3}]]},
+      {q:'What do you want to do?', o:[['Hide or cry',{sad:3}],['Run away or freeze',{scared:3}],['Yell or stomp',{mad:3}],['Jump, laugh, or dance',{joyful:3}],['Cuddle or rest',{peaceful:3}],['Try it or take charge',{powerful:3}]]}
+    ];
+    var AQZ = null, kidMode = false;
     var wheel = document.getElementById('fwWheel'), panel = document.getElementById('fwPanel');
     var sel = {core:null, sec:null, ter:null};
     var NS = 'http://www.w3.org/2000/svg';
@@ -2599,17 +2642,26 @@
       var p1 = pt(cx, cy, r2, a1), p2 = pt(cx, cy, r2, a2), p3 = pt(cx, cy, r1, a2), p4 = pt(cx, cy, r1, a1), big = (a2 - a1) > 180 ? 1 : 0;
       return 'M' + p1 + 'A' + r2 + ',' + r2 + ' 0 ' + big + ' 1 ' + p2 + 'L' + p3 + 'A' + r1 + ',' + r1 + ' 0 ' + big + ' 0 ' + p4 + 'Z';
     }
+    function face(c, p){
+      var g = document.createElementNS(NS, 'g'); g.setAttribute('transform', 'translate(' + p[0] + ' ' + p[1] + ')'); g.setAttribute('pointer-events', 'none');
+      var ink = c.dark ? '#16181c' : '#fff', mouth = {happy:'M-9,3 Q0,13 9,3', calm:'M-8,5 Q0,10 8,5', sad:'M-8,9 Q0,1 8,9', scared:'', mad:'M-8,8 L8,8', strong:'M-9,3 Q0,12 9,3'}[c.face];
+      var eyes = c.face === 'calm' ? '<path d="M-10,-4 Q-6,-8 -2,-4 M2,-4 Q6,-8 10,-4" stroke="' + ink + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' : '<circle cx="-6" cy="-4" r="2.4" fill="' + ink + '"/><circle cx="6" cy="-4" r="2.4" fill="' + ink + '"/>';
+      var brows = c.face === 'mad' ? '<path d="M-11,-11 L-3,-7 M11,-11 L3,-7" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round"/>' : (c.face === 'strong' ? '<path d="M-11,-9 L-3,-10 M11,-9 L3,-10" stroke="' + ink + '" stroke-width="2.4" stroke-linecap="round"/>' : '');
+      var m = c.face === 'scared' ? '<ellipse cx="0" cy="7" rx="3.6" ry="4.6" fill="' + ink + '"/>' : '<path d="' + mouth + '" stroke="' + ink + '" stroke-width="2.4" fill="none" stroke-linecap="round"/>';
+      g.innerHTML = '<circle r="19" fill="none" stroke="' + ink + '" stroke-width="2.4"/>' + eyes + brows + m;
+      return g;
+    }
     var segs = {core:[], sec:[], lab:[]};
     function buildWheel(){
       var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 720 720'); svg.setAttribute('role', 'group'); svg.setAttribute('aria-label', 'Feelings wheel');
-      var cx = 360, cy = 360;
+      var cx = 360, cy = 360, R1 = kidMode ? 196 : 168, R2 = R1 + 2;
       var defs = document.createElementNS(NS, 'defs');
       function stopEl(o, col){ var st = document.createElementNS(NS, 'stop'); st.setAttribute('offset', o); st.setAttribute('stop-color', col); return st; }
       CORES.forEach(function(c, ci){
-        var g1 = document.createElementNS(NS, 'radialGradient'); g1.setAttribute('id', 'fwc' + ci); g1.setAttribute('gradientUnits', 'userSpaceOnUse'); g1.setAttribute('cx', cx); g1.setAttribute('cy', cy); g1.setAttribute('r', 168);
-        g1.appendChild(stopEl(.46, mix(c.c, -0.0))); g1.appendChild(stopEl(1, mix(c.c, .22))); defs.appendChild(g1);
+        var g1 = document.createElementNS(NS, 'radialGradient'); g1.setAttribute('id', 'fwc' + ci); g1.setAttribute('gradientUnits', 'userSpaceOnUse'); g1.setAttribute('cx', cx); g1.setAttribute('cy', cy); g1.setAttribute('r', R1);
+        g1.appendChild(stopEl(78 / R1, mix(c.c, -0.0))); g1.appendChild(stopEl(1, mix(c.c, .22))); defs.appendChild(g1);
         var g2 = document.createElementNS(NS, 'radialGradient'); g2.setAttribute('id', 'fws' + ci); g2.setAttribute('gradientUnits', 'userSpaceOnUse'); g2.setAttribute('cx', cx); g2.setAttribute('cy', cy); g2.setAttribute('r', 350);
-        g2.appendChild(stopEl(.49, mix(c.c, .3))); g2.appendChild(stopEl(1, mix(c.c, .66))); defs.appendChild(g2);
+        g2.appendChild(stopEl(R2 / 350, mix(c.c, .3))); g2.appendChild(stopEl(1, mix(c.c, .66))); defs.appendChild(g2);
       });
       var bg = document.createElementNS(NS, 'linearGradient'); bg.setAttribute('id', 'fwBrand'); bg.setAttribute('x1', '0'); bg.setAttribute('y1', '0'); bg.setAttribute('x2', '1'); bg.setAttribute('y2', '1');
       bg.appendChild(stopEl(0, '#ff8585')); bg.appendChild(stopEl(1, '#786ae4')); defs.appendChild(bg);
@@ -2617,23 +2669,24 @@
       var ring = document.createElementNS(NS, 'circle'); ring.setAttribute('cx', cx); ring.setAttribute('cy', cy); ring.setAttribute('r', 355); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'url(#fwBrand)'); ring.setAttribute('stroke-width', '5'); svg.appendChild(ring);
       CORES.forEach(function(c, ci){
         var a1 = ci * 60, a2 = a1 + 60;
-        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', wedge(cx, cy, 78, 168, a1, a2)); p.setAttribute('fill', 'url(#fwc' + ci + ')'); p.setAttribute('class', 'w-seg');
+        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', wedge(cx, cy, 78, R1, a1, a2)); p.setAttribute('fill', 'url(#fwc' + ci + ')'); p.setAttribute('class', 'w-seg');
         p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button'); p.setAttribute('aria-label', c.n + ' feelings');
         p.addEventListener('click', function(){ pick(ci, null, null); });
         p.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, null, null); } });
         svg.appendChild(p); segs.core[ci] = p;
-        var m = pt(cx, cy, 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
+        var m = pt(cx, cy, kidMode ? 166 : 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', kidMode ? '21' : '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
+        if(kidMode){ svg.appendChild(face(c, pt(cx, cy, 100, a1 + 30))); }
         segs.sec[ci] = []; segs.lab[ci] = [];
         c.s.forEach(function(s, si){
-          var b1 = a1 + si * 10, b2 = b1 + 10;
-          var q = document.createElementNS(NS, 'path'); q.setAttribute('d', wedge(cx, cy, 170, 350, b1, b2)); q.setAttribute('fill', 'url(#fws' + ci + ')'); q.setAttribute('class', 'w-seg');
+          var step = 60 / c.s.length, b1 = a1 + si * step, b2 = b1 + step;
+          var q = document.createElementNS(NS, 'path'); q.setAttribute('d', wedge(cx, cy, R2, 350, b1, b2)); q.setAttribute('fill', 'url(#fws' + ci + ')'); q.setAttribute('class', 'w-seg');
           q.setAttribute('tabindex', '0'); q.setAttribute('role', 'button'); q.setAttribute('aria-label', s.n);
           q.addEventListener('click', function(){ pick(ci, si, null); });
           q.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, si, null); } });
           svg.appendChild(q); segs.sec[ci][si] = q;
-          var mid = b1 + 5, mp = pt(cx, cy, 262, mid), rot = mid - 90, flip = mid > 180;
+          var mid = b1 + step / 2, mp = pt(cx, cy, (R2 + 350) / 2 + 2, mid), rot = mid - 90, flip = mid > 180;
           var tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', mp[0]); tx.setAttribute('y', mp[1]); tx.setAttribute('text-anchor', 'middle'); tx.setAttribute('dominant-baseline', 'middle');
-          tx.setAttribute('transform', 'rotate(' + (flip ? rot + 180 : rot) + ' ' + mp[0] + ' ' + mp[1] + ')'); tx.setAttribute('font-size', '12.5'); tx.setAttribute('fill', '#16181c'); tx.setAttribute('class', 'w-lab'); tx.textContent = s.n; svg.appendChild(tx); segs.lab[ci][si] = tx;
+          tx.setAttribute('transform', 'rotate(' + (flip ? rot + 180 : rot) + ' ' + mp[0] + ' ' + mp[1] + ')'); tx.setAttribute('font-size', kidMode ? '17' : '12.5'); tx.setAttribute('fill', '#16181c'); tx.setAttribute('class', 'w-lab'); tx.textContent = s.n; svg.appendChild(tx); segs.lab[ci][si] = tx;
         });
       });
       var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'fw-center'); g.setAttribute('tabindex', '0'); g.setAttribute('role', 'button'); g.setAttribute('aria-label', 'Not sure what you are feeling? Take the quick quiz');
@@ -2668,9 +2721,14 @@
     function helpBox(c){ var w = el('div'); w.appendChild(el('h5','','What might help')); var ul = el('ul','fw-help'); c.help.forEach(function(h){ ul.appendChild(el('li','',h)); }); w.appendChild(ul); return w; }
     function intro(){
       panel.textContent = '';
-      panel.appendChild(el('h4','','Explore a feeling'));
-      panel.appendChild(el('p','','The wheel goes from big families of feeling in the center out to more specific ones at the edge. Naming a feeling precisely is a skill, and it gets easier with practice.'));
-      panel.appendChild(el('p','','Tap a color to begin, or tap the center circle for a short quiz that helps you find the right word.'));
+      if(kidMode){
+        panel.appendChild(el('h4','','How are you feeling?'));
+        panel.appendChild(el('p','','Tap a face on the wheel to find your feeling. Every feeling is okay to have! Not sure? Tap the middle circle and answer 3 easy questions.'));
+      } else {
+        panel.appendChild(el('h4','','Explore a feeling'));
+        panel.appendChild(el('p','','The wheel goes from big families of feeling in the center out to more specific ones at the edge. Naming a feeling precisely is a skill, and it gets easier with practice.'));
+        panel.appendChild(el('p','','Tap a color to begin, or tap the center circle for a short quiz that helps you find the right word.'));
+      }
       var chips = el('div','fw-chips');
       CORES.forEach(function(c, ci){ var b = el('button','fw-chip',c.n); b.type = 'button'; b.style.setProperty('--c', c.c); b.style.setProperty('--tc', c.dark ? '#16181c' : '#fff'); b.addEventListener('click', function(){ pick(ci, null, null); }); chips.appendChild(b); });
       panel.appendChild(chips);
@@ -2694,7 +2752,7 @@
         panel.appendChild(el('h4','',s.n));
         panel.appendChild(el('h5','','Feels like...'));
         panel.appendChild(feels(c, s.f));
-        panel.appendChild(el('h5','','More specific'));
+        if(s.t.length) panel.appendChild(el('h5','','More specific'));
         var chips = el('div','fw-chips');
         s.t.forEach(function(t, k){ var b = el('button','fw-chip',t.n); b.type = 'button'; b.style.setProperty('--c', c.c); b.style.setProperty('--tc', c.dark ? '#16181c' : '#fff'); b.addEventListener('click', function(){ pick(ci, si, k); }); chips.appendChild(b); });
         panel.appendChild(chips);
@@ -2713,7 +2771,7 @@
       panel.appendChild(helpBox(c));
     }
     /* ---- quiz: valence and arousal (Russell), body signals (interoception), appraisal, action tendency ---- */
-    var QZ = [
+    var QZ = AQZ = [
       {q:'Overall, how does this feeling land?', o:[['Pleasant, it feels good',{joyful:3,peaceful:3,powerful:2}],['Unpleasant, I would like it to go away',{mad:2,sad:2,scared:2}],['Mixed or hard to say',{sad:1,scared:1,mad:1,powerful:1}]]},
       {q:'How much energy does your body have right now?', o:[['Wired, keyed up',{mad:2,scared:2,joyful:2,powerful:2}],['Somewhere in the middle',{powerful:1,joyful:1,mad:1,sad:1}],['Low, heavy, or drained',{sad:3,peaceful:2}]]},
       {q:'Where do you notice it in your body?', o:[['Racing heart, tight chest, jittery',{scared:3,mad:1}],['Heat, clenched jaw or fists',{mad:3}],['Heavy, hollow, lump in the throat',{sad:3}],['Light, warm, buzzing, smiling',{joyful:3}],['Loose muscles, slow easy breathing',{peaceful:3}],['Strong, steady, upright',{powerful:3}]]},
@@ -2733,7 +2791,7 @@
       var ex = el('button','fw-link','Close quiz'); ex.type = 'button'; ex.addEventListener('click', function(){ qs = null; intro(); }); panel.appendChild(ex);
     }
     function renderQuiz(){
-      panel.textContent = ''; var total = QZ.length + 2, n = qs.ans.length;
+      panel.textContent = ''; var total = QZ.length + (CORES[0].s[0].t.length ? 2 : 1), n = qs.ans.length;
       if(n < QZ.length){
         var Q = QZ[n];
         panel.appendChild(prog(n, total)); panel.appendChild(el('h5','','Question ' + (n + 1) + ' of ' + total));
@@ -2745,8 +2803,8 @@
       var c = CORES[qs.ci];
       if(qs.si == null){
         panel.appendChild(prog(QZ.length, total)); panel.appendChild(el('h5','','Question ' + (QZ.length + 1) + ' of ' + total));
-        panel.appendChild(el('h4','fw-q','It sounds like it is in the ' + c.n.toLowerCase() + ' family. Which of these fits best?'));
-        c.s.forEach(function(s, k){ var b = el('button','fw-card'); b.type = 'button'; b.style.setProperty('--c', c.c); b.appendChild(el('b','',s.n)); b.appendChild(el('span','',s.f[0] + '. ' + s.f[1] + '.')); b.addEventListener('click', function(){ qs.si = k; renderQuiz(); }); panel.appendChild(b); });
+        panel.appendChild(el('h4','fw-q', kidMode ? 'It sounds like ' + c.n + '. Which one fits best?' : 'It sounds like it is in the ' + c.n.toLowerCase() + ' family. Which of these fits best?'));
+        c.s.forEach(function(s, k){ var b = el('button','fw-card'); b.type = 'button'; b.style.setProperty('--c', c.c); b.appendChild(el('b','',s.n)); b.appendChild(el('span','',s.f[0] + '. ' + s.f[1] + '.')); b.addEventListener('click', function(){ qs.si = k; if(!CORES[qs.ci].s[k].t.length){ var cc = qs.ci; qs = null; pick(cc, k, null); return; } renderQuiz(); }); panel.appendChild(b); });
         var other = el('button','fw-link','None of these, try a neighboring family'); other.type = 'button'; other.addEventListener('click', function(){ qs.ci = (qs.ci + 1) % CORES.length; renderQuiz(); }); panel.appendChild(other);
         quizFoot(true, function(){ qs.ans.pop(); qs.ci = null; renderQuiz(); });
         return;
@@ -2758,6 +2816,12 @@
       var gen = el('button','fw-link','Neither, just "' + s.n + '"'); gen.type = 'button'; gen.addEventListener('click', function(){ qs = null; pick(ci, si, null); }); panel.appendChild(gen);
       quizFoot(true, function(){ qs.si = null; renderQuiz(); });
     }
+    var kidBox = document.getElementById('fwKid'), fwEl = document.getElementById('fw');
+    kidBox.addEventListener('change', function(){
+      kidMode = kidBox.checked; CORES = kidMode ? KID : ADULT; QZ = kidMode ? KQZ : AQZ; qs = null;
+      fwEl.classList.toggle('kid', kidMode); sel = {core:null, sec:null, ter:null};
+      segs = {core:[], sec:[], lab:[]}; buildWheel(); intro();
+    });
     buildWheel(); intro();
   })();
 </script>
