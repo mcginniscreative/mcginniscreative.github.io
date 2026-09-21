@@ -545,6 +545,48 @@
   .fm-scale input{accent-color:#786ae4;}
   .fm-note{font-size:12px;line-height:1.5;color:var(--ink-faint);margin:16px 0 0;}
   .fm-legend{font-size:12px;color:var(--ink-faint);margin:8px 0 0;}
+
+  /* ---- feelings wheel ---- */
+  .fw{padding:22px 22px 26px;}
+  .fw-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start;}
+  @media (max-width:860px){.fw-body{grid-template-columns:1fr;}}
+  .fw-wheel svg{width:100%;height:auto;display:block;max-width:640px;margin:0 auto;}
+  .fw-wheel .w-seg{cursor:pointer;stroke:var(--paper);stroke-width:1.6;transition:opacity .2s ease,filter .2s ease;}
+  .fw-wheel .w-seg:hover{filter:brightness(1.08);}
+  .fw-wheel .w-dim{opacity:.28;}
+  .fw-wheel .w-on{stroke:var(--ink);stroke-width:3;}
+  .fw-wheel text{pointer-events:none;font-family:"Poppins",system-ui,sans-serif;font-weight:700;}
+  .fw-center{cursor:pointer;}
+  .fw-center circle{fill:var(--paper);stroke:var(--line);stroke-width:3;transition:stroke .2s ease;}
+  .fw-center:hover circle{stroke:#786ae4;}
+  .fw-center text{fill:var(--ink);font-size:14px;font-weight:800;}
+  .fw-center text.sm{font-size:10.5px;font-weight:600;fill:var(--ink-soft);}
+  .fw-panel{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:22px 22px 20px;min-height:340px;}
+  .fw-panel h4{margin:0 0 6px;font-size:24px;font-weight:800;color:var(--ink);}
+  .fw-panel h5{margin:16px 0 8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);}
+  .fw-panel p{margin:0 0 8px;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+  .fw-path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;font-weight:700;margin:0 0 10px;}
+  .fw-dot{width:12px;height:12px;border-radius:50%;display:inline-block;background:var(--c);}
+  .fw-path button{font:inherit;color:var(--indigo-1);background:none;border:none;cursor:pointer;padding:0;}
+  .fw-path button:hover{text-decoration:underline;}
+  .fw-feels{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;}
+  .fw-feels li{position:relative;font-size:14.5px;line-height:1.5;color:var(--ink);padding:10px 14px 10px 38px;background:var(--paper);border:1px solid var(--line);border-radius:14px;}
+  .fw-feels li::before{content:"";position:absolute;left:14px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--c);}
+  .fw-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .fw-chip{font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--c);border-radius:100px;padding:10px 15px;cursor:pointer;transition:transform .15s ease,background .15s ease,color .15s ease;-webkit-tap-highlight-color:transparent;}
+  .fw-chip:hover{transform:translateY(-2px);background:var(--c);color:var(--tc,#fff);}
+  .fw-card{display:block;width:100%;text-align:left;font-family:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-left:6px solid var(--c);border-radius:14px;padding:12px 16px;cursor:pointer;margin:0 0 10px;transition:transform .15s ease,border-color .15s ease;}
+  .fw-card:hover{transform:translateX(3px);border-color:var(--c);}
+  .fw-card b{display:block;font-size:15px;margin-bottom:3px;}
+  .fw-card span{font-size:13px;color:var(--ink-soft);line-height:1.45;}
+  .fw-go{font:700 14px/1 "Poppins",system-ui,sans-serif;color:#fff;border:none;border-radius:100px;padding:13px 22px;cursor:pointer;background:linear-gradient(135deg,#ff8585,#786ae4);margin-top:12px;}
+  .fw-link{font:600 13px "Poppins",system-ui,sans-serif;color:var(--indigo-1);background:none;border:none;cursor:pointer;padding:8px 0;margin-right:16px;}
+  .fw-link:hover{text-decoration:underline;}
+  .fw-q{font-size:20px;font-weight:700;line-height:1.3;margin:2px 0 14px;color:var(--ink);}
+  .fw-prog{height:5px;border-radius:5px;background:var(--line);overflow:hidden;margin-bottom:16px;}
+  .fw-prog div{height:100%;background:linear-gradient(90deg,#ff8585,#786ae4);transition:width .3s ease;}
+  .fw-help{margin:6px 0 0;padding:0 0 0 18px;font-size:13.5px;line-height:1.6;color:var(--ink-soft);}
+  .fw-note{font-size:12px;line-height:1.55;color:var(--ink-faint);margin:18px 0 0;}
 </style>
 </head>
 <body>
@@ -945,6 +987,24 @@
           <div class="fm-panel" id="fmPanel"></div>
         </div>
         <p class="fm-note">Source: USDA National Agricultural Statistics Service, 2022 Census of Agriculture, inventory counts (animals on farms). Some counts are withheld by the USDA to protect individual farms; those are left out. Chickens are split into laying hens and meat chickens.</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="ix" data-cat="tools" data-leaf="feelings">
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">10 · Live</p>
+      <h2 class="section-title">The Feelings Wheel</h2>
+      <p class="section-desc">Tap a color to explore a family of feelings, then a feeling to see what it feels like. Not sure what you're feeling? Tap the center and answer a few questions.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="fw" id="fw">
+        <div class="fw-body">
+          <div class="fw-wheel" id="fwWheel"></div>
+          <div class="fw-panel" id="fwPanel"></div>
+        </div>
+        <p class="fw-note">Built for learning and self-reflection, not diagnosis or therapy. The structure follows Gloria Willcox's Feeling Wheel (1982), with ideas from Plutchik's wheel of emotions, Russell's valence and arousal model, Lisa Feldman Barrett's work on emotional granularity, and Brené Brown's Atlas of the Heart. Research on affect labeling (Lieberman et al., 2007) suggests that putting precise words to a feeling can help settle it. If you are in crisis, call or text 988 in the US.</p>
       </div>
     </div>
     </div>
@@ -2299,7 +2359,7 @@
   /* ---- family-tree picker ---- */
   (function(){
     var BRANCHES = [
-      {id:'tools', n:'Tools for your team', sub:'Working tools a school or business could use tomorrow', leaves:[['quiz','Program Finder Quiz'],['funnel','Enrollment Funnel Lab']]},
+      {id:'tools', n:'Tools for your team', sub:'Working tools a school or business could use tomorrow', leaves:[['quiz','Program Finder Quiz'],['funnel','Enrollment Funnel Lab'],['feelings','The Feelings Wheel']]},
       {id:'story', n:'Storytelling & history', sub:'Stories you explore instead of read', leaves:[['falcon','Fly Through Rochester'],['map','Facts About Aaron'],['farm','Who Lives on the Farm?'],['toys','Toys I Grew Up With']]},
       {id:'brand', n:'Brand & voice', sub:'Identity and copy people can play with', leaves:[['logo','Logo Playground'],['madlib','Send Yourself a Madlib']]},
       {id:'audio', n:'Audio & production', sub:'Real music I recorded, mixed live in your browser', leaves:[['mixer','Hideout: Stem Mixer']]}
@@ -2448,6 +2508,230 @@
     Promise.all([fetch('assets/farm-data.json').then(function(r){ return r.json(); }), fetch('assets/us-states.json').then(function(r){ return r.json(); })])
       .then(function(r){ data = r[0]; shapes = r[1]; start(); })
       .catch(function(){ mapEl.textContent = 'The map could not load. Try reloading the page.'; });
+  })();
+
+  /* ---- feelings wheel ---- */
+  (function(){
+    function S(n, f, t){ return {n:n, f:f, t:t.map(function(x){ return {n:x[0], f:x[1]}; })}; }
+    var CORES = [
+      {id:'mad', n:'Mad', c:'#d7263d', dark:false,
+        blurb:'Anger is a signal that something feels unfair, blocked, or crossed a line. It comes with energy to act.',
+        help:['Pause and name it: "I feel angry because..."','Breathe out longer than you breathe in, a few times','Move your body before you respond','Ask what need or boundary is underneath the anger'],
+        s:[
+          S('Frustrated',['Your jaw and shoulders tighten','You sigh, tap, or restart the same thing again','You think, "Why won\'t this just work?"'],[['Annoyed',['Small things get on your nerves','You roll your eyes or mutter under your breath']],['Infuriated',['Heat rises fast in your face and chest','You want to yell or slam something']]]),
+          S('Hurt',['A sting in your chest','You go quiet or pull away','You think, "How could they do that to me?"'],[['Betrayed',['Your stomach drops when you find out','You replay what happened and stop trusting']],['Disrespected',['You feel small and want to defend yourself','You bring it up, or you stew in silence']]]),
+          S('Critical',['You notice every flaw','You pick things apart or hold back praise','You think, "That is not good enough."'],[['Skeptical',['You question what you hear','You raise an eyebrow and stay guarded']],['Sarcastic',['Jokes come out sharp','You say the opposite of what you mean']]]),
+          S('Aggressive',['Your fists or teeth clench','You interrupt, raise your voice, or push back','You think, "I am not backing down."'],[['Provoked',['Every comment feels like a poke','You feel ready to fire back']],['Hostile',['You feel cold and combative','You give short answers and look for a fight']]]),
+          S('Jealous',['A tight, restless feeling','You compare yourself and check what others have','You think, "Why do they get that and I don\'t?"'],[['Envious',['You scroll and feel worse','You downplay other people\'s wins']],['Suspicious',['You watch for signs you are being replaced','You ask pointed questions, or check up on someone']]]),
+          S('Resentful',['An old hurt keeps replaying','You keep score and hold a grudge','You think, "I always end up doing more."'],[['Bitter',['A sour taste about the past','You bring old wrongs back into new conversations']],['Disgusted',['A recoil in your stomach','You turn away and want distance']]])
+        ]},
+      {id:'powerful', n:'Powerful', c:'#f28c28', dark:false,
+        blurb:'Feeling powerful is about capability and worth: I can handle this, and what I do matters.',
+        help:['Aim the energy at something that matters to you','Notice what built this feeling so you can repeat it','Check that your strength includes other people too','Say it out loud: "I did that."'],
+        s:[
+          S('Confident',['Shoulders back, steady breathing','You speak up without rehearsing','You think, "I\'ve got this."'],[['Self-assured',['You make decisions without second-guessing','You take up your space in the room']],['Capable',['You reach for the hard task first','You trust your skills to carry you']]]),
+          S('Courageous',['A rush, even with butterflies','You do the thing while still a little scared','You think, "I\'m doing this anyway."'],[['Brave',['You speak the hard truth kindly','You step forward when others hold back']],['Bold',['You take a risk on purpose','You say yes before you overthink it']]]),
+          S('Respected',['Warmth when people listen to you','You are asked for your opinion','You think, "My voice counts here."'],[['Valued',['You feel seen for what you bring','You relax because you belong']],['Appreciated',['A thank-you lands deeply','You want to keep contributing']]]),
+          S('Determined',['Focused energy, steady pulse','You block distractions and keep going','You think, "I will finish this."'],[['Driven',['You wake up with a plan','You push hard toward a goal']],['Focused',['Time disappears as you work','You say no to side quests']]]),
+          S('Purposeful',['A settled sense of direction','You choose tasks that match your values','You think, "This is what I am here to do."'],[['Meaningful',['Your work feels connected to something bigger','You stay late without minding']],['Needed',['You show up because someone counts on you','You feel useful and steady']]]),
+          S('Proud',['Chest lifts, a smile you can\'t hide','You share your win or keep replaying it','You think, "I worked hard for this."'],[['Accomplished',['You look at what you finished and nod','You want to set the next goal']],['Successful',['Things clicked and you feel lit up','You celebrate with people who helped']]])
+        ]},
+      {id:'joyful', n:'Joyful', c:'#f7d51d', dark:true,
+        blurb:'Joy is a bright, open feeling of things being good, whether a small moment or a big one.',
+        help:['Savor it: notice colors, sounds, and how your body feels','Share it with someone','Write down what made it good','Let yourself enjoy it without waiting for the other shoe to drop'],
+        s:[
+          S('Excited',['Energy buzzing in your body','You talk faster and bounce your leg','You think, "I can\'t wait!"'],[['Energized',['You have extra pep and can\'t sit still','You start three things at once']],['Eager',['You lean forward and ask questions','You count down to the event']]]),
+          S('Playful',['Loose, light movements','You joke, tease, and try silly things','You think, "Let\'s not take this so seriously."'],[['Silly',['You make goofy faces and voices','You laugh at yourself easily']],['Cheeky',['A mischievous grin','You tease in a way that makes people laugh']]]),
+          S('Hopeful',['A lift in your chest','You make plans and picture what could go well','You think, "This could work out."'],[['Optimistic',['You expect things to turn out okay','You see the bright side without forcing it']],['Inspired',['Ideas come easily','You want to make something or try something new']]]),
+          S('Delighted',['A wide smile and warm face','You laugh out loud or clap','You think, "This is wonderful!"'],[['Amused',['You chuckle at little things','You point things out to the people around you']],['Thrilled',['Your heart races in a good way','You want to tell everyone']]]),
+          S('Curious',['Eyes widen and you lean in','You ask "why" and follow tangents','You think, "I wonder how that works."'],[['Intrigued',['Something snags your attention','You keep circling back to the question']],['Fascinated',['You lose track of time','You read, watch, or ask for more']]]),
+          S('Cheerful',['A light, sunny mood','You smile at strangers and hum along to songs','You think, "Today is a good day."'],[['Upbeat',['Your steps have a bounce','You greet people warmly and mean it']],['Grateful for small things',['You notice the little good stuff','You stop and enjoy the moment']]])
+        ]},
+      {id:'peaceful', n:'Peaceful', c:'#3fa34d', dark:false,
+        blurb:'Peace is a calm, safe feeling. Your body is settled, and you are okay as you are.',
+        help:['Notice what helped you feel this way, and protect it','Keep a small ritual, like a walk or a quiet cup of tea','Let it be enough, without making it productive','Share the calm with someone who needs it'],
+        s:[
+          S('Content',['Loose shoulders, slow breathing','You are okay with how things are','You think, "This is enough."'],[['Satisfied',['You finish and feel settled about it','You don\'t need more right now']],['Comfortable',['You sink into the chair and stay a while','You feel at ease in your own skin']]]),
+          S('Grateful',['Warmth in your chest','You say thank you, or write it down','You think, "I\'m lucky to have this."'],[['Thankful',['You notice the good in your day','You tell someone what they mean to you']],['Appreciative',['You notice the effort behind things','You give credit out loud']]]),
+          S('Loving',['A soft, open feeling in your chest','You hug, listen, or check in','You think, "I care about you."'],[['Tender',['Your voice gets gentle','You move slowly and carefully around someone']],['Compassionate',['You feel with someone\'s pain','You want to help without fixing']]]),
+          S('Trusting',['Your body relaxes around someone','You share honestly without bracing','You think, "I am safe with you."'],[['Safe',['You stop scanning for threats','You sleep and breathe more easily']],['Secure',['You feel steady even if plans change','You ask for help without shame']]]),
+          S('Relaxed',['Muscles unwind and breathing slows','You yawn, stretch, and take your time','You think, "Nothing needs me right now."'],[['Calm',['Your mind slows down','You speak softly and take your time']],['Serene',['Everything feels quiet and clear','You watch clouds or water for a while']]]),
+          S('Reflective',['A quiet, thoughtful stillness','You sit with a question and don\'t rush an answer','You think, "I want to understand this."'],[['Thoughtful',['You weigh things carefully','You jot down notes or talk it through']],['Pensive',['You gaze off and drift through memories','You feel a gentle, wistful calm']]])
+        ]},
+      {id:'sad', n:'Sad', c:'#2f6fdd', dark:false,
+        blurb:'Sadness signals loss, disappointment, or unmet longing. It slows you down so you can take it in and reach for support.',
+        help:['Let yourself feel it; it usually passes faster when you don\'t fight it','Tell someone you trust, or write it out','Gentle movement or fresh air can loosen the heaviness','Talk to yourself the way you would talk to a friend. If it lasts weeks, or you feel hopeless, reach out to a professional.'],
+        s:[
+          S('Lonely',['A hollow ache, especially in the evening','You reach for your phone, or avoid people altogether','You think, "Nobody really gets me."'],[['Isolated',['You feel cut off even in a crowd','You cancel plans and then wish you hadn\'t']],['Abandoned',['You feel left behind','You check for a text that isn\'t there']]]),
+          S('Grieved',['Waves of heaviness, tears, tiredness','You look at photos, or avoid reminders','You think, "It\'s not fair that they\'re gone."'],[['Grieving',['You cry at unexpected moments','You go through the day on autopilot']],['Heartbroken',['A physical ache in your chest','You replay memories and can\'t eat much']]]),
+          S('Low',['Heavy limbs, low energy','You cancel plans, sleep more, or scroll to numb','You think, "What is the point?"'],[['Empty',['You feel flat instead of upset','Nothing sounds fun, even favorites']],['Discouraged',['You put down goals that felt possible last week','You think, "Why even try?"']]]),
+          S('Guilty',['A knot in your stomach','You replay what you did or didn\'t do','You think, "I should have done better."'],[['Ashamed',['You want to hide or disappear','You avoid eye contact and downplay yourself']],['Remorseful',['You want to apologize and make it right','You keep going over what you would do differently']]]),
+          S('Disappointed',['A sinking feeling','You sigh and let the plan go','You think, "That is not how it was supposed to go."'],[['Let down',['You expected more from someone','You pull back from trusting next time']],['Regretful',['You wish you could go back','You replay a choice and wonder about the other path']]]),
+          S('Vulnerable',['Raw and easily shaken','You tear up easily, or want to be alone','You think, "I feel exposed right now."'],[['Fragile',['A small comment could tip you over','You move gently through the day']],['Exposed',['You feel seen in a way that is uncomfortable','You wish you could pull a blanket over yourself']]])
+        ]},
+      {id:'scared', n:'Scared', c:'#7b3fb3', dark:false,
+        blurb:'Fear and anxiety are your alarm system, scanning for danger, real or imagined, and getting your body ready to respond.',
+        help:['Ground yourself: name 5 things you see, 4 you feel, 3 you hear','Slow your breathing, with a longer exhale','Write the worry down, then one small next step','Reach out to someone. Feelings shared are usually lighter.'],
+        s:[
+          S('Anxious',['A racing mind and a tight chest','You check, re-check, and imagine outcomes','You think, "What if it goes wrong?"'],[['Worried',['Your mind loops on the same worry','You ask for reassurance, or over-plan']],['Nervous',['Butterflies, shaky hands, dry mouth','You fidget and keep checking the clock']]]),
+          S('Insecure',['A shrinking feeling','You hold back, second-guess, and compare','You think, "Everyone else is better at this."'],[['Inadequate',['You feel like you fall short','You apologize before anyone asks']],['Self-conscious',['You feel watched','You replay how you came across']]]),
+          S('Overwhelmed',['Tension in your head and shoulders','You freeze, or jump between tasks','You think, "There is too much and I cannot do it all."'],[['Stressed',['A heavy to-do list and a short fuse','You skip meals or sleep and feel wired']],['Panicked',['Heart pounding, breath short and quick','You want to escape right now']]]),
+          S('Helpless',['A sinking, stuck feeling','You wait, freeze, or give in','You think, "There is nothing I can do."'],[['Powerless',['You feel like your choices don\'t matter','You stop trying to change things']],['Trapped',['You look for a way out and don\'t see one','You feel boxed in and tense']]]),
+          S('Rejected',['A sting and a tight throat','You pull away, or try harder to please','You think, "I don\'t belong."'],[['Left out',['You see others gather and you\'re not asked','You go quiet or leave early']],['Unwanted',['You feel like a burden','You stop reaching out first']]]),
+          S('Confused',['Fuzzy head, a stalled feeling','You ask others what they think, or stall','You think, "I don\'t know what is going on."'],[['Baffled',['Things don\'t add up','You reread the same message again']],['Uncertain',['You can\'t commit to a choice','You want more information before you move']]])
+        ]}
+    ];
+
+    var wheel = document.getElementById('fwWheel'), panel = document.getElementById('fwPanel');
+    var sel = {core:null, sec:null, ter:null};
+    var NS = 'http://www.w3.org/2000/svg';
+    function el(t, c, txt){ var e = document.createElement(t); if(c) e.className = c; if(txt != null) e.textContent = txt; return e; }
+    function mix(hex, pct){ var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; var m = function(v){ return Math.round(v + (255 - v) * pct); }; return 'rgb(' + m(r) + ',' + m(g) + ',' + m(b) + ')'; }
+    function pt(cx, cy, r, deg){ var a = (deg - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+    function wedge(cx, cy, r1, r2, a1, a2){
+      var p1 = pt(cx, cy, r2, a1), p2 = pt(cx, cy, r2, a2), p3 = pt(cx, cy, r1, a2), p4 = pt(cx, cy, r1, a1), big = (a2 - a1) > 180 ? 1 : 0;
+      return 'M' + p1 + 'A' + r2 + ',' + r2 + ' 0 ' + big + ' 1 ' + p2 + 'L' + p3 + 'A' + r1 + ',' + r1 + ' 0 ' + big + ' 0 ' + p4 + 'Z';
+    }
+    var segs = {core:[], sec:[]};
+    function buildWheel(){
+      var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 720 720'); svg.setAttribute('role', 'group'); svg.setAttribute('aria-label', 'Feelings wheel');
+      var cx = 360, cy = 360;
+      CORES.forEach(function(c, ci){
+        var a1 = ci * 60, a2 = a1 + 60;
+        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', wedge(cx, cy, 78, 168, a1, a2)); p.setAttribute('fill', c.c); p.setAttribute('class', 'w-seg');
+        p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button'); p.setAttribute('aria-label', c.n + ' feelings');
+        p.addEventListener('click', function(){ pick(ci, null, null); });
+        p.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, null, null); } });
+        svg.appendChild(p); segs.core[ci] = p;
+        var m = pt(cx, cy, 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
+        segs.sec[ci] = [];
+        c.s.forEach(function(s, si){
+          var b1 = a1 + si * 10, b2 = b1 + 10;
+          var q = document.createElementNS(NS, 'path'); q.setAttribute('d', wedge(cx, cy, 170, 350, b1, b2)); q.setAttribute('fill', mix(c.c, .38)); q.setAttribute('class', 'w-seg');
+          q.setAttribute('tabindex', '0'); q.setAttribute('role', 'button'); q.setAttribute('aria-label', s.n);
+          q.addEventListener('click', function(){ pick(ci, si, null); });
+          q.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, si, null); } });
+          svg.appendChild(q); segs.sec[ci][si] = q;
+          var mid = b1 + 5, mp = pt(cx, cy, 262, mid), rot = mid - 90, flip = mid > 180;
+          var tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', mp[0]); tx.setAttribute('y', mp[1]); tx.setAttribute('text-anchor', 'middle'); tx.setAttribute('dominant-baseline', 'middle');
+          tx.setAttribute('transform', 'rotate(' + (flip ? rot + 180 : rot) + ' ' + mp[0] + ' ' + mp[1] + ')'); tx.setAttribute('font-size', '12.5'); tx.setAttribute('fill', '#16181c'); tx.setAttribute('class', 'w-lab'); tx.textContent = s.n; svg.appendChild(tx);
+        });
+      });
+      var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'fw-center'); g.setAttribute('tabindex', '0'); g.setAttribute('role', 'button'); g.setAttribute('aria-label', 'Not sure what you are feeling? Take the quick quiz');
+      g.innerHTML = '<circle cx="360" cy="360" r="70"></circle><text x="360" y="345" text-anchor="middle">Not sure</text><text x="360" y="363" text-anchor="middle">what you feel?</text><text class="sm" x="360" y="385" text-anchor="middle">Tap here</text>';
+      g.addEventListener('click', function(){ startQuiz(); });
+      g.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startQuiz(); } });
+      svg.appendChild(g);
+      wheel.textContent = ''; wheel.appendChild(svg);
+    }
+    function paintSel(){
+      segs.core.forEach(function(p, ci){ p.classList.toggle('w-dim', sel.core != null && sel.core !== ci); p.classList.toggle('w-on', sel.core === ci && sel.sec == null); });
+      segs.sec.forEach(function(row, ci){ row.forEach(function(q, si){ q.classList.toggle('w-dim', sel.core != null && sel.core !== ci); q.classList.toggle('w-on', sel.core === ci && sel.sec === si); }); });
+    }
+    function path(c, s, t){
+      var d = el('div','fw-path'); d.style.setProperty('--c', c.c);
+      d.appendChild(el('span','fw-dot'));
+      var b0 = el('button','','All feelings'); b0.type = 'button'; b0.addEventListener('click', function(){ pick(null, null, null); }); d.appendChild(b0);
+      var b1 = el('button','',c.n); b1.type = 'button'; b1.addEventListener('click', function(){ pick(sel.core, null, null); }); d.appendChild(el('span','','›')); d.appendChild(b1);
+      if(s){ d.appendChild(el('span','','›')); var b2 = el('button','',s.n); b2.type = 'button'; b2.addEventListener('click', function(){ pick(sel.core, sel.sec, null); }); d.appendChild(b2); }
+      if(t){ d.appendChild(el('span','','›')); d.appendChild(el('span','',t.n)); }
+      return d;
+    }
+    function feels(c, lines){ var ul = el('ul','fw-feels'); ul.style.setProperty('--c', c.c); lines.forEach(function(l){ ul.appendChild(el('li','',l)); }); return ul; }
+    function helpBox(c){ var w = el('div'); w.appendChild(el('h5','','What might help')); var ul = el('ul','fw-help'); c.help.forEach(function(h){ ul.appendChild(el('li','',h)); }); w.appendChild(ul); return w; }
+    function intro(){
+      panel.textContent = '';
+      panel.appendChild(el('h4','','Explore a feeling'));
+      panel.appendChild(el('p','','The wheel goes from big families of feeling in the center out to more specific ones at the edge. Naming a feeling precisely is a skill, and it gets easier with practice.'));
+      panel.appendChild(el('p','','Tap a color to begin, or tap the center circle for a short quiz that helps you find the right word.'));
+      var chips = el('div','fw-chips');
+      CORES.forEach(function(c, ci){ var b = el('button','fw-chip',c.n); b.type = 'button'; b.style.setProperty('--c', c.c); b.style.setProperty('--tc', c.dark ? '#16181c' : '#fff'); b.addEventListener('click', function(){ pick(ci, null, null); }); chips.appendChild(b); });
+      panel.appendChild(chips);
+    }
+    function pick(ci, si, ti){
+      sel = {core:ci, sec:si, ter:ti}; paintSel();
+      if(ci == null){ intro(); return; }
+      var c = CORES[ci]; panel.textContent = '';
+      if(si == null){
+        panel.appendChild(path(c, null, null));
+        panel.appendChild(el('h4','',c.n));
+        panel.appendChild(el('p','',c.blurb));
+        panel.appendChild(el('h5','','Pick the one that fits best'));
+        c.s.forEach(function(s, k){ var b = el('button','fw-card'); b.type = 'button'; b.style.setProperty('--c', c.c); b.appendChild(el('b','',s.n)); b.appendChild(el('span','',s.f[0])); b.addEventListener('click', function(){ pick(ci, k, null); }); panel.appendChild(b); });
+        panel.appendChild(helpBox(c));
+        return;
+      }
+      var s = c.s[si];
+      if(ti == null){
+        panel.appendChild(path(c, s, null));
+        panel.appendChild(el('h4','',s.n));
+        panel.appendChild(el('h5','','Feels like...'));
+        panel.appendChild(feels(c, s.f));
+        panel.appendChild(el('h5','','More specific'));
+        var chips = el('div','fw-chips');
+        s.t.forEach(function(t, k){ var b = el('button','fw-chip',t.n); b.type = 'button'; b.style.setProperty('--c', c.c); b.style.setProperty('--tc', c.dark ? '#16181c' : '#fff'); b.addEventListener('click', function(){ pick(ci, si, k); }); chips.appendChild(b); });
+        panel.appendChild(chips);
+        panel.appendChild(helpBox(c));
+        return;
+      }
+      var t = s.t[ti];
+      panel.appendChild(path(c, s, t));
+      panel.appendChild(el('h4','',t.n));
+      panel.appendChild(el('h5','','Feels like...'));
+      panel.appendChild(feels(c, t.f));
+      panel.appendChild(el('h5','','Nearby feelings'));
+      var chips2 = el('div','fw-chips');
+      s.t.forEach(function(o, k){ if(k === ti) return; var b = el('button','fw-chip',o.n); b.type = 'button'; b.style.setProperty('--c', c.c); b.style.setProperty('--tc', c.dark ? '#16181c' : '#fff'); b.addEventListener('click', function(){ pick(ci, si, k); }); chips2.appendChild(b); });
+      panel.appendChild(chips2);
+      panel.appendChild(helpBox(c));
+    }
+    /* ---- quiz: valence and arousal (Russell), body signals (interoception), appraisal, action tendency ---- */
+    var QZ = [
+      {q:'Overall, how does this feeling land?', o:[['Pleasant, it feels good',{joyful:3,peaceful:3,powerful:2}],['Unpleasant, I would like it to go away',{mad:2,sad:2,scared:2}],['Mixed or hard to say',{sad:1,scared:1,mad:1,powerful:1}]]},
+      {q:'How much energy does your body have right now?', o:[['Wired, keyed up',{mad:2,scared:2,joyful:2,powerful:2}],['Somewhere in the middle',{powerful:1,joyful:1,mad:1,sad:1}],['Low, heavy, or drained',{sad:3,peaceful:2}]]},
+      {q:'Where do you notice it in your body?', o:[['Racing heart, tight chest, jittery',{scared:3,mad:1}],['Heat, clenched jaw or fists',{mad:3}],['Heavy, hollow, lump in the throat',{sad:3}],['Light, warm, buzzing, smiling',{joyful:3}],['Loose muscles, slow easy breathing',{peaceful:3}],['Strong, steady, upright',{powerful:3}]]},
+      {q:'What seems to be behind it?', o:[['Something I lost or missed',{sad:3}],['Something might go wrong, or I feel unsure',{scared:3}],['Something felt unfair, or a line was crossed',{mad:3}],['Something good happened or is coming',{joyful:3}],['I feel connected, safe, or okay',{peaceful:3}],['I did something well, or I am in charge',{powerful:3}],['I honestly don\'t know',{}]]},
+      {q:'What do you feel like doing?', o:[['Hide, cry, or curl up',{sad:3,scared:1}],['Run, avoid, or freeze',{scared:3}],['Push back, confront, or vent',{mad:3}],['Celebrate, move, or share it',{joyful:3}],['Rest, savor, or stay still',{peaceful:3}],['Take charge and make a move',{powerful:3}]]}
+    ];
+    var qs = null;
+    function startQuiz(){ qs = {ans:[], ci:null, si:null}; sel = {core:null, sec:null, ter:null}; paintSel(); renderQuiz(); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+    function prog(n, of){ var p = el('div','fw-prog'), f = el('div'); f.style.width = (n / of * 100) + '%'; p.appendChild(f); return p; }
+    function topCore(){
+      var sc = {}; CORES.forEach(function(c){ sc[c.id] = 0; });
+      qs.ans.forEach(function(ai, qi){ var w = QZ[qi].o[ai][1]; for(var k in w) sc[k] += w[k]; });
+      var best = -1, bi = 0; CORES.forEach(function(c, i){ if(sc[c.id] > best){ best = sc[c.id]; bi = i; } }); return bi;
+    }
+    function quizFoot(showBack, onBack){
+      if(showBack){ var bk = el('button','fw-link','← Back'); bk.type = 'button'; bk.addEventListener('click', onBack); panel.appendChild(bk); }
+      var ex = el('button','fw-link','Close quiz'); ex.type = 'button'; ex.addEventListener('click', function(){ qs = null; intro(); }); panel.appendChild(ex);
+    }
+    function renderQuiz(){
+      panel.textContent = ''; var total = QZ.length + 2, n = qs.ans.length;
+      if(n < QZ.length){
+        var Q = QZ[n];
+        panel.appendChild(prog(n, total)); panel.appendChild(el('h5','','Question ' + (n + 1) + ' of ' + total));
+        panel.appendChild(el('h4','fw-q',Q.q));
+        Q.o.forEach(function(o, oi){ var b = el('button','fw-card',o[0]); b.type = 'button'; b.style.setProperty('--c', '#786ae4'); b.style.fontWeight = '600'; b.addEventListener('click', function(){ qs.ans.push(oi); if(qs.ans.length === QZ.length) qs.ci = topCore(); renderQuiz(); }); panel.appendChild(b); });
+        quizFoot(n > 0, function(){ qs.ans.pop(); renderQuiz(); });
+        return;
+      }
+      var c = CORES[qs.ci];
+      if(qs.si == null){
+        panel.appendChild(prog(QZ.length, total)); panel.appendChild(el('h5','','Question ' + (QZ.length + 1) + ' of ' + total));
+        panel.appendChild(el('h4','fw-q','It sounds like it is in the ' + c.n.toLowerCase() + ' family. Which of these fits best?'));
+        c.s.forEach(function(s, k){ var b = el('button','fw-card'); b.type = 'button'; b.style.setProperty('--c', c.c); b.appendChild(el('b','',s.n)); b.appendChild(el('span','',s.f[0] + '. ' + s.f[1] + '.')); b.addEventListener('click', function(){ qs.si = k; renderQuiz(); }); panel.appendChild(b); });
+        var other = el('button','fw-link','None of these, try a neighboring family'); other.type = 'button'; other.addEventListener('click', function(){ qs.ci = (qs.ci + 1) % CORES.length; renderQuiz(); }); panel.appendChild(other);
+        quizFoot(true, function(){ qs.ans.pop(); qs.ci = null; renderQuiz(); });
+        return;
+      }
+      var s = c.s[qs.si], ci = qs.ci, si = qs.si;
+      panel.appendChild(prog(QZ.length + 1, total)); panel.appendChild(el('h5','','Question ' + total + ' of ' + total));
+      panel.appendChild(el('h4','fw-q','Almost there. Which is closer to what you are feeling?'));
+      s.t.forEach(function(t, k){ var b = el('button','fw-card'); b.type = 'button'; b.style.setProperty('--c', c.c); b.appendChild(el('b','',t.n)); b.appendChild(el('span','',t.f[0] + '. ' + t.f[1] + '.')); b.addEventListener('click', function(){ qs = null; pick(ci, si, k); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }); panel.appendChild(b); });
+      var gen = el('button','fw-link','Neither, just "' + s.n + '"'); gen.type = 'button'; gen.addEventListener('click', function(){ qs = null; pick(ci, si, null); }); panel.appendChild(gen);
+      quizFoot(true, function(){ qs.si = null; renderQuiz(); });
+    }
+    buildWheel(); intro();
   })();
 </script>
 </body>
