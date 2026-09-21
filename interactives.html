@@ -551,14 +551,21 @@
   .fw-body{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start;}
   @media (max-width:860px){.fw-body{grid-template-columns:1fr;}}
   .fw-wheel svg{width:100%;height:auto;display:block;max-width:640px;margin:0 auto;}
-  .fw-wheel .w-seg{cursor:pointer;stroke:var(--paper);stroke-width:1.6;transition:opacity .2s ease,filter .2s ease;}
-  .fw-wheel .w-seg:hover{filter:brightness(1.08);}
-  .fw-wheel .w-dim{opacity:.28;}
-  .fw-wheel .w-on{stroke:var(--ink);stroke-width:3;}
+  .fw-wheel .w-seg{cursor:pointer;stroke:var(--paper);stroke-width:1.6;outline:none;transition:opacity .2s ease,filter .2s ease;}
+  .fw-wheel .w-seg:hover{filter:brightness(1.07) saturate(1.1);}
+  .fw-wheel .w-seg:focus{outline:none;}
+  .fw-wheel .w-seg:focus-visible{stroke:#786ae4;stroke-width:4;}
+  .fw-wheel .w-dim{opacity:.3;}
+  .fw-wheel .w-soft{opacity:.62;}
+  .fw-wheel .w-on{stroke:#fff;stroke-width:3.5;filter:drop-shadow(0 4px 10px rgba(22,24,28,.4));}
+  .fw-wheel{position:relative;}
+  .fw-wheel::before{content:"";position:absolute;width:38%;height:38%;left:-8%;top:-4%;border-radius:50%;background:linear-gradient(135deg,#ff8585,#786ae4);opacity:.22;filter:blur(2px);}
+  .fw-wheel::after{content:"";position:absolute;width:20%;height:20%;right:-3%;bottom:-2%;border-radius:50%;background:linear-gradient(135deg,#786ae4,#4152e8);opacity:.22;}
+  .fw-wheel svg{position:relative;z-index:1;}
   .fw-wheel text{pointer-events:none;font-family:"Poppins",system-ui,sans-serif;font-weight:700;}
   .fw-center{cursor:pointer;}
-  .fw-center circle{fill:var(--paper);stroke:var(--line);stroke-width:3;transition:stroke .2s ease;}
-  .fw-center:hover circle{stroke:#786ae4;}
+  .fw-center circle{fill:var(--paper);stroke:url(#fwBrand);stroke-width:5;transition:filter .2s ease;}
+  .fw-center:hover circle{filter:drop-shadow(0 0 8px rgba(120,106,228,.6));}
   .fw-center text{fill:var(--ink);font-size:14px;font-weight:800;}
   .fw-center text.sm{font-size:10.5px;font-weight:600;fill:var(--ink-soft);}
   .fw-panel{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:22px 22px 20px;min-height:340px;}
@@ -2592,29 +2599,41 @@
       var p1 = pt(cx, cy, r2, a1), p2 = pt(cx, cy, r2, a2), p3 = pt(cx, cy, r1, a2), p4 = pt(cx, cy, r1, a1), big = (a2 - a1) > 180 ? 1 : 0;
       return 'M' + p1 + 'A' + r2 + ',' + r2 + ' 0 ' + big + ' 1 ' + p2 + 'L' + p3 + 'A' + r1 + ',' + r1 + ' 0 ' + big + ' 0 ' + p4 + 'Z';
     }
-    var segs = {core:[], sec:[]};
+    var segs = {core:[], sec:[], lab:[]};
     function buildWheel(){
       var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 720 720'); svg.setAttribute('role', 'group'); svg.setAttribute('aria-label', 'Feelings wheel');
       var cx = 360, cy = 360;
+      var defs = document.createElementNS(NS, 'defs');
+      function stopEl(o, col){ var st = document.createElementNS(NS, 'stop'); st.setAttribute('offset', o); st.setAttribute('stop-color', col); return st; }
+      CORES.forEach(function(c, ci){
+        var g1 = document.createElementNS(NS, 'radialGradient'); g1.setAttribute('id', 'fwc' + ci); g1.setAttribute('gradientUnits', 'userSpaceOnUse'); g1.setAttribute('cx', cx); g1.setAttribute('cy', cy); g1.setAttribute('r', 168);
+        g1.appendChild(stopEl(.46, mix(c.c, -0.0))); g1.appendChild(stopEl(1, mix(c.c, .22))); defs.appendChild(g1);
+        var g2 = document.createElementNS(NS, 'radialGradient'); g2.setAttribute('id', 'fws' + ci); g2.setAttribute('gradientUnits', 'userSpaceOnUse'); g2.setAttribute('cx', cx); g2.setAttribute('cy', cy); g2.setAttribute('r', 350);
+        g2.appendChild(stopEl(.49, mix(c.c, .3))); g2.appendChild(stopEl(1, mix(c.c, .66))); defs.appendChild(g2);
+      });
+      var bg = document.createElementNS(NS, 'linearGradient'); bg.setAttribute('id', 'fwBrand'); bg.setAttribute('x1', '0'); bg.setAttribute('y1', '0'); bg.setAttribute('x2', '1'); bg.setAttribute('y2', '1');
+      bg.appendChild(stopEl(0, '#ff8585')); bg.appendChild(stopEl(1, '#786ae4')); defs.appendChild(bg);
+      svg.appendChild(defs);
+      var ring = document.createElementNS(NS, 'circle'); ring.setAttribute('cx', cx); ring.setAttribute('cy', cy); ring.setAttribute('r', 355); ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'url(#fwBrand)'); ring.setAttribute('stroke-width', '5'); svg.appendChild(ring);
       CORES.forEach(function(c, ci){
         var a1 = ci * 60, a2 = a1 + 60;
-        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', wedge(cx, cy, 78, 168, a1, a2)); p.setAttribute('fill', c.c); p.setAttribute('class', 'w-seg');
+        var p = document.createElementNS(NS, 'path'); p.setAttribute('d', wedge(cx, cy, 78, 168, a1, a2)); p.setAttribute('fill', 'url(#fwc' + ci + ')'); p.setAttribute('class', 'w-seg');
         p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button'); p.setAttribute('aria-label', c.n + ' feelings');
         p.addEventListener('click', function(){ pick(ci, null, null); });
         p.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, null, null); } });
         svg.appendChild(p); segs.core[ci] = p;
         var m = pt(cx, cy, 123, a1 + 30), t = document.createElementNS(NS, 'text'); t.setAttribute('x', m[0]); t.setAttribute('y', m[1]); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'middle'); t.setAttribute('font-size', '19'); t.setAttribute('fill', c.dark ? '#16181c' : '#fff'); t.textContent = c.n; svg.appendChild(t);
-        segs.sec[ci] = [];
+        segs.sec[ci] = []; segs.lab[ci] = [];
         c.s.forEach(function(s, si){
           var b1 = a1 + si * 10, b2 = b1 + 10;
-          var q = document.createElementNS(NS, 'path'); q.setAttribute('d', wedge(cx, cy, 170, 350, b1, b2)); q.setAttribute('fill', mix(c.c, .38)); q.setAttribute('class', 'w-seg');
+          var q = document.createElementNS(NS, 'path'); q.setAttribute('d', wedge(cx, cy, 170, 350, b1, b2)); q.setAttribute('fill', 'url(#fws' + ci + ')'); q.setAttribute('class', 'w-seg');
           q.setAttribute('tabindex', '0'); q.setAttribute('role', 'button'); q.setAttribute('aria-label', s.n);
           q.addEventListener('click', function(){ pick(ci, si, null); });
           q.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(ci, si, null); } });
           svg.appendChild(q); segs.sec[ci][si] = q;
           var mid = b1 + 5, mp = pt(cx, cy, 262, mid), rot = mid - 90, flip = mid > 180;
           var tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', mp[0]); tx.setAttribute('y', mp[1]); tx.setAttribute('text-anchor', 'middle'); tx.setAttribute('dominant-baseline', 'middle');
-          tx.setAttribute('transform', 'rotate(' + (flip ? rot + 180 : rot) + ' ' + mp[0] + ' ' + mp[1] + ')'); tx.setAttribute('font-size', '12.5'); tx.setAttribute('fill', '#16181c'); tx.setAttribute('class', 'w-lab'); tx.textContent = s.n; svg.appendChild(tx);
+          tx.setAttribute('transform', 'rotate(' + (flip ? rot + 180 : rot) + ' ' + mp[0] + ' ' + mp[1] + ')'); tx.setAttribute('font-size', '12.5'); tx.setAttribute('fill', '#16181c'); tx.setAttribute('class', 'w-lab'); tx.textContent = s.n; svg.appendChild(tx); segs.lab[ci][si] = tx;
         });
       });
       var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'fw-center'); g.setAttribute('tabindex', '0'); g.setAttribute('role', 'button'); g.setAttribute('aria-label', 'Not sure what you are feeling? Take the quick quiz');
@@ -2626,7 +2645,15 @@
     }
     function paintSel(){
       segs.core.forEach(function(p, ci){ p.classList.toggle('w-dim', sel.core != null && sel.core !== ci); p.classList.toggle('w-on', sel.core === ci && sel.sec == null); });
-      segs.sec.forEach(function(row, ci){ row.forEach(function(q, si){ q.classList.toggle('w-dim', sel.core != null && sel.core !== ci); q.classList.toggle('w-on', sel.core === ci && sel.sec === si); }); });
+      segs.sec.forEach(function(row, ci){ row.forEach(function(q, si){
+        var c = CORES[ci], on = sel.core === ci && sel.sec === si, lab = segs.lab[ci][si];
+        q.classList.toggle('w-dim', sel.core != null && sel.core !== ci);
+        q.classList.toggle('w-soft', sel.core === ci && sel.sec != null && sel.sec !== si);
+        q.classList.toggle('w-on', on);
+        q.setAttribute('fill', on ? c.c : 'url(#fws' + ci + ')');
+        lab.setAttribute('fill', on && !c.dark ? '#fff' : '#16181c');
+        if(on && q.parentNode) q.parentNode.appendChild(q), q.parentNode.appendChild(lab);
+      }); });
     }
     function path(c, s, t){
       var d = el('div','fw-path'); d.style.setProperty('--c', c.c);
