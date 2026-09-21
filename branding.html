@@ -36,8 +36,8 @@
   .stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--line) 1.4px,transparent 1.5px);background-size:26px 26px;opacity:.9;pointer-events:none;}
   .orbit{position:absolute;inset:0;transition:opacity .45s ease,transform .45s ease;}
   .stage.in-board .orbit{opacity:0;transform:scale(1.35);pointer-events:none;}
-  .hub{position:absolute;left:50%;top:50%;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;border:none;padding:0;cursor:pointer;z-index:5;background:#fff;
-    box-shadow:0 26px 40px -16px rgba(120,106,228,.75),0 6px 14px rgba(22,24,28,.15);display:flex;align-items:center;justify-content:center;transition:transform .3s ease;-webkit-tap-highlight-color:transparent;}
+  .hub{position:absolute;left:50%;top:50%;width:110px;height:110px;margin:-55px 0 0 -55px;border-radius:50%;border:none;padding:0;cursor:pointer;z-index:5;background:linear-gradient(135deg,#ff8585,#786ae4);
+    box-shadow:0 26px 40px -16px rgba(120,106,228,.85),0 6px 14px rgba(22,24,28,.18);display:flex;align-items:center;justify-content:center;transition:transform .3s ease;-webkit-tap-highlight-color:transparent;}
   .hub img{width:76%;height:76%;object-fit:contain;}
   .hub:hover{transform:scale(1.06);}
   .hub::before,.hub::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(120,106,228,.5);animation:hubPulse 2.4s ease-out infinite;}
@@ -52,7 +52,7 @@
   .bub-in{width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;
     box-shadow:0 22px 30px -14px rgba(28,18,163,.5),0 5px 10px rgba(22,24,28,.14);animation:bubFloat 5s ease-in-out infinite;animation-delay:var(--fd,0s);transition:box-shadow .2s ease;}
   .bub:hover .bub-in{box-shadow:0 30px 38px -14px rgba(28,18,163,.6),0 8px 14px rgba(22,24,28,.2);}
-  .bub-in img{width:70%;height:70%;object-fit:contain;}
+  .bub-in img{width:76%;height:76%;object-fit:contain;}
   .bub-in b{font:800 26px "Poppins",system-ui,sans-serif;color:#fff;}
   @keyframes bubFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
   .bub-name{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:150px;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.25;pointer-events:none;}
@@ -126,7 +126,7 @@
     </div>
     <div class="stage" id="stage">
       <div class="orbit" id="orbit">
-        <button class="hub" id="hub" type="button" aria-label="Open my work" aria-expanded="false"><img src="assets/favicon.svg" alt=""></button>
+        <button class="hub" id="hub" type="button" aria-label="Open my work" aria-expanded="false"><img src="assets/mark-white.svg" alt=""></button>
         <div class="hub-label" id="hubLabel">Tap to open my work</div>
       </div>
       <div class="board" id="board" aria-live="polite">
@@ -191,9 +191,12 @@
     </div>
 
     <div class="reveal project" data-tags="brand web">
-      <div class="project-head">
-        <h3 class="project-title">Peter Englert</h3>
-        <span class="project-role">Brand identity · website design · McGinnis Creative</span>
+      <div class="project-top">
+        <div class="logo-plate" style="width:150px;"><img src="assets/peter-logo.png" alt="Peter Englert logo"></div>
+        <div>
+          <h3 class="project-title">Peter Englert</h3>
+          <span class="project-role">Brand identity · website design · McGinnis Creative</span>
+        </div>
       </div>
       <p class="project-desc">Brand and site design for a pastor's podcast, sermon library, and blog, practical theology content organized for a weekly audience.</p>
       <p class="project-mine"><b>My work:</b> freelance through McGinnis Creative, designed his brand identity and built the site, organizing the content strategy across podcast, sermons, and blog.</p>
@@ -233,7 +236,7 @@
 
     <div class="reveal project" data-tags="social">
       <div class="project-top">
-        <div class="logo-plate"><img src="assets/sgn-logo.jpg" alt="Small Group Network logo"></div>
+        <div class="logo-plate"><img src="assets/sgn-logo.png" alt="Small Group Network logo"></div>
         <div>
           <h3 class="project-title">Small Group Network</h3>
           <span class="project-role">Social content · brand templates</span>
@@ -337,7 +340,7 @@
         desc:'Founded start to finish: the logo and brand, the live storefront, and the step-by-step custom apparel designer, upload a logo, place it, choose a garment, checkout.',
         mine:'founded and run Flower City Custom Apparel, built the brand, the logo, the social content that promotes it, and designed and built the site and product customizer.',
         imgs:[['assets/flower-city-mockup.jpg','Flower City customizer and checkout flow on mobile'],['assets/flower-city-customizer.jpg','Flower City live product customizer'],['assets/flower-city-share1.jpg','Flower City share image'],['assets/flower-city-share2.jpg','Flower City share image']]},
-      {id:'peter-englert', short:'Peter Englert', name:'Peter Englert', role:'Brand identity · website design · McGinnis Creative', mono:'PE', link:'https://peterenglert.com/',
+      {id:'peter-englert', short:'Peter Englert', name:'Peter Englert', role:'Brand identity · website design · McGinnis Creative', logo:'assets/peter-logo.png', link:'https://peterenglert.com/',
         desc:'Brand and site design for a pastor\'s podcast, sermon library, and blog, practical theology content organized for a weekly audience.',
         mine:'freelance through McGinnis Creative, designed his brand identity and built the site, organizing the content strategy across podcast, sermons, and blog.',
         imgs:[['assets/peter-1.jpg','Peter Englert website homepage']]},
@@ -349,7 +352,7 @@
         desc:'Visual brand for an online resource company supporting the social-emotional needs of elementary students, built to hold up across a full library of downloadable worksheets.',
         mine:'designed the visual brand, logo, color palette, and illustration style, and applied it consistently across a full library of student resource worksheets.',
         imgs:[['assets/thrive-cover-1.jpg','Thrive Garden Daily Feelings Tracker cover'],['assets/thrive-cover-2.jpg','Thrive Garden My Coping Toolbox cover']]},
-      {id:'small-group-network', short:'Small Group Network', name:'Small Group Network', role:'Social content · brand templates', logo:'assets/sgn-logo.jpg',
+      {id:'small-group-network', short:'Small Group Network', name:'Small Group Network', role:'Social content · brand templates', logo:'assets/sgn-logo.png',
         desc:'Social media posts built inside an existing brand system, keeping voice and visual identity consistent post to post.',
         mine:'created social posts and built out the branded templates behind them.',
         imgs:[['assets/sgn-question.jpg','Small Group Network question post'],['assets/sgn-photo.jpg','Small Group Network event photo post'],['assets/sgn-cover.jpg','Small Group Network cover post']]}
