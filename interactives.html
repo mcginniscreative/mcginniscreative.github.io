@@ -6,7 +6,7 @@
 <title>Interactives | McGinnis Creative</title>
 <meta name="description" content="Interactive, playable work by Aaron McGinnis of McGinnis Creative, starting with a live logo playground.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Fraunces:wght@600;700&family=Nunito:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=DM+Serif+Display&family=DM+Sans:wght@400;600&family=Baloo+2:wght@600;800&family=Lora:wght@600;700&family=Karla:wght@400;600&display=swap">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <meta name="theme-color" content="#fbfbfd">
 <link rel="stylesheet" href="css/style.css">
@@ -608,6 +608,44 @@
   .fw-prog div{height:100%;background:linear-gradient(90deg,#ff8585,#786ae4);transition:width .3s ease;}
   .fw-help{margin:6px 0 0;padding:0 0 0 18px;font-size:13.5px;line-height:1.6;color:var(--ink-soft);}
   .fw-note{font-size:12px;line-height:1.55;color:var(--ink-faint);margin:18px 0 0;}
+
+  .bl{padding:26px 24px 28px;}
+  .bl-top{display:grid;grid-template-columns:1fr 1.25fr;gap:26px;align-items:start;}
+  @media (max-width:820px){.bl-top{grid-template-columns:1fr;}}
+  .bl h3{margin:0 0 6px;font-size:22px;font-weight:800;}
+  .bl p.sub{margin:0 0 18px;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+  .bl label,.bl .bl-lab{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px;}
+  .bl input[type=text]{width:100%;font:600 16px/1.2 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:18px;}
+  .bl input[type=text]:focus{outline:none;border-color:var(--indigo-1);box-shadow:0 0 0 3px var(--indigo-soft);}
+  .bl-vibes,.bl-icons,.bl-seg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .bl-vibes button,.bl-seg button{font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:100px;padding:11px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+  .bl-vibes button i{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .bl-vibes button.on,.bl-seg button.on{border-color:transparent;color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .bl-icons button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;}
+  .bl-icons button svg{width:24px;height:24px;}
+  .bl-icons button.on{border-color:transparent;color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .bl-stage{border-radius:18px;padding:26px;transition:background .35s ease,color .35s ease;}
+  .bl-card{border-radius:16px;padding:22px;margin-bottom:14px;display:flex;align-items:center;gap:16px;transition:all .35s ease;}
+  .bl-card.stack{flex-direction:column;text-align:center;}
+  .bl-mark{width:64px;height:64px;flex:none;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;transition:all .35s ease;}
+  .bl-mark svg{width:60%;height:60%;}
+  .bl-name{font-size:24px;line-height:1.1;margin:0 0 4px;}
+  .bl-tag{font-size:14px;margin:0;opacity:.85;}
+  .bl-web{border-radius:16px;padding:22px;transition:all .35s ease;color:#fff;}
+  .bl-web h4{margin:0 0 8px;font-size:26px;line-height:1.15;}
+  .bl-web p{margin:0 0 14px;font-size:14.5px;line-height:1.55;max-width:44ch;}
+  .bl-btn{display:inline-block;font-weight:700;font-size:14px;padding:11px 20px;border-radius:100px;transition:all .35s ease;}
+  .bl-sw{display:flex;gap:8px;margin-top:14px;}
+  .bl-sw span{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.18);}
+  .bl-where{display:flex;align-items:center;gap:14px;margin-top:14px;}
+  .bl-app{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:14px;box-shadow:0 8px 18px -8px rgba(0,0,0,.4);transition:all .35s ease;}
+  .bl-app svg{width:56%;height:56%;}
+  .bl-tab{display:flex;align-items:center;gap:8px;background:#fff;color:#333;border-radius:10px 10px 0 0;padding:8px 12px;font:600 12px "Poppins",system-ui,sans-serif;box-shadow:0 4px 12px -6px rgba(0,0,0,.3);max-width:190px;}
+  .bl-tab span{width:16px;height:16px;border-radius:4px;flex:none;display:flex;align-items:center;justify-content:center;}
+  .bl-tab span svg{width:70%;height:70%;}
+  .bl-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px rgba(0,0,0,.4);}
+  .bl-av svg{width:56%;height:56%;}
+  .bl-fonts{font-size:12px;color:var(--ink-faint);margin-top:12px;}
 </style>
 </head>
 <body>
@@ -1027,6 +1065,40 @@
           <div class="fw-panel" id="fwPanel"></div>
         </div>
         <p class="fw-note">Built for learning and self-reflection, not diagnosis or therapy. The structure follows Gloria Willcox's Feeling Wheel (1982), with ideas from Plutchik's wheel of emotions, Russell's valence and arousal model, Lisa Feldman Barrett's work on emotional granularity, and Brené Brown's Atlas of the Heart. Research on affect labeling (Lieberman et al., 2007) suggests that putting precise words to a feeling can help settle it. If you are in crisis, call or text 988 in the US.</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="ix" data-cat="brand" data-leaf="brandlab">
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">11 · Live</p>
+      <h2 class="section-title">Build a Brand in 10 Seconds</h2>
+      <p class="section-desc">Type a business name, pick a personality and an icon, and watch a logo, a palette, a font pairing and a website header come together. The same thinking behind every brand I build, in miniature.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="bl" id="bl">
+        <div class="bl-top">
+          <div>
+            <label for="blName">Your business name</label>
+            <input type="text" id="blName" maxlength="26" value="Maple &amp; Main" autocomplete="off">
+            <span class="bl-lab">Personality</span>
+            <div class="bl-vibes" id="blVibes"></div>
+            <span class="bl-lab">Logo mark</span>
+            <div class="bl-seg" id="blMarkType"><button type="button" class="on" data-m="icon">Icon</button><button type="button" data-m="letter">Initial</button></div>
+            <div class="bl-icons" id="blIcons"></div>
+            <span class="bl-lab">Layout</span>
+            <div class="bl-seg" id="blLayout"><button type="button" class="on" data-l="side">Side by side</button><button type="button" data-l="stack">Stacked</button></div>
+          </div>
+          <div>
+            <div class="bl-stage" id="blStage">
+              <div class="bl-card" id="blCard"><div class="bl-mark" id="blMark"></div><div><p class="bl-name" id="blNameOut"></p><p class="bl-tag" id="blTag"></p></div></div>
+              <div class="bl-web" id="blWeb"><h4 id="blHead"></h4><p id="blCopy"></p><span class="bl-btn" id="blBtn"></span><div class="bl-sw" id="blSw"></div></div>
+              <div class="bl-where"><div class="bl-app" id="blApp"></div><div class="bl-tab"><span id="blFav"></span><b id="blTabName"></b></div><div class="bl-av" id="blAv"></div></div>
+            </div>
+            <p class="bl-fonts" id="blFonts"></p>
+          </div>
+        </div>
       </div>
     </div>
     </div>
@@ -2383,7 +2455,7 @@
     var BRANCHES = [
       {id:'tools', n:'Tools for your team', sub:'Working tools a school or business could use tomorrow', leaves:[['quiz','Program Finder Quiz'],['feelings','The Feelings Wheel'],['funnel','Enrollment Funnel Lab']]},
       {id:'story', n:'Storytelling & history', sub:'Stories you explore instead of read', leaves:[['falcon','Fly Through Rochester'],['map','Facts About Aaron'],['farm','Who Lives on the Farm?'],['toys','Toys I Grew Up With']]},
-      {id:'brand', n:'Brand & voice', sub:'Identity and copy people can play with', leaves:[['logo','Logo Playground'],['madlib','Send Yourself a Madlib']]},
+      {id:'brand', n:'Brand & voice', sub:'Identity and copy people can play with', leaves:[['logo','Logo Playground'],['brandlab','Build a Brand in 10 Seconds'],['madlib','Send Yourself a Madlib']]},
       {id:'audio', n:'Audio & production', sub:'Real music I recorded, mixed live in your browser', leaves:[['mixer','Hideout: Stem Mixer']]}
     ];
     var tree = document.getElementById('tree'), bar = document.getElementById('advBar');
@@ -2823,6 +2895,62 @@
       segs = {core:[], sec:[], lab:[]}; buildWheel(); intro();
     });
     buildWheel(); intro();
+  })();
+
+  /* ---- brand builder ---- */
+  (function(){
+    var ICONS = {
+      star:'<path fill="currentColor" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>',
+      heart:'<path fill="currentColor" d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/>',
+      leaf:'<path fill="currentColor" d="M20 3C10 3 4 8 4 15c0 1.8.6 3.2 1.4 4.2C6.5 14 9.5 10.5 14 8c-3.2 3-5.2 6.4-6.2 11.2C9 20.3 10.4 21 12 21c6 0 8-6 8-18z"/>',
+      bolt:'<path fill="currentColor" d="M13 2L4.5 13.5H11L10 22l9-12h-6.5z"/>',
+      sun:'<circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g>',
+      drop:'<path fill="currentColor" d="M12 2.5C9 7 5.5 10.6 5.5 14.6A6.5 6.5 0 0 0 12 21a6.5 6.5 0 0 0 6.5-6.4C18.5 10.6 15 7 12 2.5z"/>',
+      mountain:'<path fill="currentColor" d="M2 20L9.5 6l4 7 2.5-3.6L22 20z"/>',
+      flower:'<g fill="currentColor"><circle cx="12" cy="6" r="3.4"/><circle cx="18" cy="12" r="3.4"/><circle cx="12" cy="18" r="3.4"/><circle cx="6" cy="12" r="3.4"/></g><circle cx="12" cy="12" r="2.6" fill="#fff" fill-opacity=".85"/>'
+    };
+    var V = [
+      {n:'Warm & friendly', dot:'#e8735a', bg:'#fff4ec', ink:'#3a2a26', c:['#e8735a','#f6c9a8','#3a2a26'], hf:'"Fraunces",serif', bf:'"Nunito",sans-serif', hn:'Fraunces', bn:'Nunito', r:'50%', tag:'Good things, made with care.', head:'Welcome in. Pull up a chair.', copy:'A place that feels like home, from the very first click.', btn:'Say hello', icon:'heart'},
+      {n:'Bold & modern', dot:'#111', bg:'#ffffff', ink:'#111111', c:['#111111','#ffd400','#ffffff'], hf:'"Space Grotesk",sans-serif', bf:'"Inter",sans-serif', hn:'Space Grotesk', bn:'Inter', r:'4px', tag:'Built to stand out.', head:'Make the first move.', copy:'Clear, confident, and impossible to scroll past.', btn:'Get started', icon:'bolt'},
+      {n:'Calm & trustworthy', dot:'#2b5d8a', bg:'#eef5fb', ink:'#1b2a38', c:['#2b5d8a','#cfe3f2','#1b2a38'], hf:'"DM Serif Display",serif', bf:'"DM Sans",sans-serif', hn:'DM Serif Display', bn:'DM Sans', r:'16px', tag:'Steady, honest, here for you.', head:'Clear answers, steady hands.', copy:'Professional without being cold. People feel safe here.', btn:'Book a visit', icon:'drop'},
+      {n:'Playful', dot:'#7b5cff', bg:'#fff8d9', ink:'#2a1f5c', c:['#7b5cff','#ff7bb0','#fff4c2'], hf:'"Baloo 2",sans-serif', bf:'"Nunito",sans-serif', hn:'Baloo 2', bn:'Nunito', r:'42% 58% 46% 54% / 55% 45% 55% 45%', tag:'Fun is a serious business.', head:'Let\'s make something fun!', copy:'Bright, bouncy, and a little bit silly, in the best way.', btn:'Join the party', icon:'star'},
+      {n:'Natural & grounded', dot:'#3f7d58', bg:'#f0f5ea', ink:'#2c3a2e', c:['#3f7d58','#d9e6cf','#2c3a2e'], hf:'"Lora",serif', bf:'"Karla",sans-serif', hn:'Lora', bn:'Karla', r:'50% 50% 50% 0', tag:'Rooted in what matters.', head:'Grown with patience.', copy:'Earthy, honest, and made to last a long time.', btn:'Learn more', icon:'leaf'}
+    ];
+    var $ = function(id){ return document.getElementById(id); };
+    var vibes = $('blVibes'), name = $('blName'), icons = $('blIcons'), cur = 0, icon = 'heart', mtype = 'icon', layout = 'side';
+    function svg(k){ return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[k] + '</svg>'; }
+    V.forEach(function(v, i){
+      var b = document.createElement('button'); b.type = 'button'; b.innerHTML = '<i style="background:' + v.dot + '"></i>'; b.appendChild(document.createTextNode(v.n));
+      b.addEventListener('click', function(){ cur = i; icon = v.icon; render(); }); vibes.appendChild(b);
+    });
+    Object.keys(ICONS).forEach(function(k){
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', k + ' icon'); b.innerHTML = svg(k); b.setAttribute('data-k', k);
+      b.addEventListener('click', function(){ icon = k; mtype = 'icon'; render(); }); icons.appendChild(b);
+    });
+    $('blMarkType').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ mtype = b.getAttribute('data-m'); render(); }); });
+    $('blLayout').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ layout = b.getAttribute('data-l'); render(); }); });
+    function markHTML(nm){ return mtype === 'icon' ? svg(icon) : nm.charAt(0).toUpperCase(); }
+    function render(){
+      var v = V[cur], nm = (name.value || '').trim() || 'Your Brand', onC = '#fff';
+      vibes.querySelectorAll('button').forEach(function(b, i){ b.classList.toggle('on', i === cur); });
+      icons.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-k') === icon && mtype === 'icon'); });
+      $('blMarkType').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-m') === mtype); });
+      $('blLayout').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-l') === layout); });
+      var st = $('blStage'); st.style.background = v.bg; st.style.color = v.ink; st.style.fontFamily = v.bf;
+      var card = $('blCard'); card.classList.toggle('stack', layout === 'stack'); card.style.background = '#fff'; card.style.boxShadow = '0 14px 30px -18px rgba(0,0,0,.35)'; card.style.color = v.ink;
+      var mk = $('blMark'); mk.style.background = v.c[0]; mk.style.color = onC; mk.style.borderRadius = v.r; mk.style.fontFamily = v.hf; mk.innerHTML = markHTML(nm);
+      var n = $('blNameOut'); n.textContent = nm; n.style.fontFamily = v.hf; $('blTag').textContent = v.tag; $('blTag').style.fontFamily = v.bf;
+      var web = $('blWeb'); web.style.background = v.c[0];
+      var h = $('blHead'); h.textContent = v.head; h.style.fontFamily = v.hf; $('blCopy').textContent = v.copy; $('blCopy').style.fontFamily = v.bf;
+      var bt = $('blBtn'); bt.textContent = v.btn; bt.style.background = v.c[1]; bt.style.color = v.ink; bt.style.fontFamily = v.bf;
+      var sw = $('blSw'); sw.textContent = ''; v.c.forEach(function(col){ var sp = document.createElement('span'); sp.style.background = col; sw.appendChild(sp); });
+      var app = $('blApp'); app.style.background = v.c[0]; app.style.color = onC; app.innerHTML = mtype === 'icon' ? svg(icon) : '<b style="font:700 26px ' + v.hf.replace(/"/g, '\'') + '">' + nm.charAt(0).toUpperCase() + '</b>';
+      var fav = $('blFav'); fav.style.background = v.c[0]; fav.style.color = onC; fav.innerHTML = mtype === 'icon' ? svg(icon) : '';
+      $('blTabName').textContent = nm;
+      var av = $('blAv'); av.style.background = v.c[1]; av.style.color = v.c[0]; av.innerHTML = mtype === 'icon' ? svg(icon) : '<b style="font:700 24px ' + v.hf.replace(/"/g, '\'') + '">' + nm.charAt(0).toUpperCase() + '</b>';
+      $('blFonts').textContent = 'Headline: ' + v.hn + '   |   Body: ' + v.bn + '   |   Colors: ' + v.c.join('  ');
+    }
+    name.addEventListener('input', render); render();
   })();
 </script>
 </body>
