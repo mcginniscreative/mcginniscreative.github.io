@@ -3058,7 +3058,13 @@
         {n:'Radio Social', hood:'East End', vibe:['playful','active'], budget:1, price:'$14–22', tip:'Bar food plus shuffleboard and darts, so dinner and the activity can happen in the same room.', drive:1},
         {n:'Lock 32 Brewing', hood:'Canal Towns', vibe:['casual','active'], budget:1, price:'$15–24', tip:'Canal-side brewpub in Fairport, easy patio hang if the weather is good.', drive:3},
         {n:'Simply Crepes', hood:'Canal Towns', vibe:['cozy','casual'], budget:2, price:'$16–26', tip:'A Pittsford classic on the canal, sweet or savory crepes with a view of the boats.', drive:3},
-        {n:'The Cheshire', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:2, price:'$25–36', tip:'A British-leaning gastropub feel near Monroe Ave, good for a quieter conversation.', drive:2}
+        {n:'The Cheshire', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:2, price:'$25–36', tip:'A British-leaning gastropub feel near Monroe Ave, good for a quieter conversation.', drive:2},
+        {n:'Tavos and Tequilas', hood:'North Winton Village', vibe:['playful','casual'], budget:2, price:'$18–28', tip:'Mexican plates and a serious margarita list, a North Winton Village neighborhood go-to.', drive:2},
+        {n:'Wildflower', hood:'North Winton Village', vibe:['cozy','casual'], budget:1, price:'$14–22', tip:'A cozy neighborhood cafe in North Winton Village, good for something low-key.', drive:2},
+        {n:'Merchants Wood Fire Pizza', hood:'North Winton Village', vibe:['cozy','casual'], budget:2, price:'$18–26', tip:'Wood-fired pizza in the heart of North Winton Village, easy to share.', drive:2},
+        {n:'Rizzis', hood:'North Winton Village', vibe:['casual','cozy'], budget:1, price:'$14–22', tip:'A North Winton Village neighborhood spot for a casual, no-fuss dinner.', drive:2},
+        {n:'Silver Iguana', hood:'North Winton Village', vibe:['playful','casual'], budget:2, price:'$18–28', tip:'A Mexican restaurant in North Winton Village, good for a lively dinner start to the night.', drive:2},
+        {n:'Boot Room', hood:'North Winton Village', vibe:['late','playful'], budget:1, price:'$10–18', tip:'A North Winton Village bar for a casual, low-key drink.', drive:2}
       ],
       activity: [
         {n:'Dryden Theatre at George Eastman Museum', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–12', tip:'A gorgeous old film palace showing classic and indie films most nights of the week.', drive:1},
@@ -3074,7 +3080,12 @@
         {n:'RocBoat Pedal Tours', hood:'East End', vibe:['playful','active'], budget:2, price:'$35–45', tip:'A pedal-powered boat cruise on the canal, seasonal and genuinely silly in the best way.', drive:1},
         {n:'Sam Patch Canal Boat Tour', hood:'Canal Towns', vibe:['cozy','active'], budget:2, price:'$18–22', tip:'A slow ride through a working canal lock in Pittsford, a nice change of pace.', drive:3},
         {n:'Strong National Museum of Play', hood:'East End', vibe:['playful'], budget:2, price:'$16–20', tip:'Evening hours some nights let you wander the exhibits and arcade without the daytime crowds.', drive:1},
-        {n:'Ted\'s Hot Dogs Drive', hood:'Canal Towns', vibe:['playful','casual'], budget:1, price:'$8–14', tip:'A silly, low-key detour: hot dogs and a drive-in feel on the way between spots.', drive:3}
+        {n:'Ted\'s Hot Dogs Drive', hood:'Canal Towns', vibe:['playful','casual'], budget:1, price:'$8–14', tip:'A silly, low-key detour: hot dogs and a drive-in feel on the way between spots.', drive:3},
+        {n:'Ellison Park', hood:'Anywhere', area:'Penfield / east side', vibe:['active'], budget:0, price:'Free', tip:'Wooded trails along Irondequoit Creek, and a disc golf course if you want to make a game of it.', drive:2},
+        {n:'Durand Eastman Park', hood:'Anywhere', area:'North Rochester, on Lake Ontario', vibe:['active','cozy'], budget:0, price:'Free', tip:'Hiking trails through the old arboretum, ending at a quiet beach on Lake Ontario.', drive:2},
+        {n:'Charlotte / Ontario Beach', hood:'Anywhere', area:'Charlotte, on Lake Ontario', vibe:['active','cozy'], budget:0, price:'Free', tip:'The classic Rochester beach walk, with the pier and the old carousel nearby.', drive:2},
+        {n:'Corbett\'s Glen Nature Park', hood:'Anywhere', area:'Penfield', vibe:['active','cozy'], budget:0, price:'Free', tip:'A short, pretty trail past a waterfall and an old rail bridge, easy to fit into any evening.', drive:2},
+        {n:'Mount Hope Cemetery', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:0, price:'Free', tip:'A quiet, historic walk past Susan B. Anthony\'s and Frederick Douglass\'s graves, especially nice at dusk.', drive:1}
       ],
       dessert: [
         {n:'Hedonist Artisan Chocolates', hood:'Park Ave', vibe:['cozy'], budget:2, price:'$10–20', tip:'Small-batch truffles and drinking chocolate in a cozy Park Ave shop, great for sharing.', drive:1},
@@ -3118,7 +3129,7 @@
       opts = opts || {};
       return SPOTS[course].filter(function(s){
         if(s.budget > state.budget + 1) return false;
-        if(!opts.anyHood && state.hood !== 'All Rochester' && s.hood !== state.hood) return false;
+        if(!opts.anyHood && s.hood !== 'Anywhere' && state.hood !== 'All Rochester' && s.hood !== state.hood) return false;
         if(!opts.anyVibe && state.vibe !== 'all' && s.vibe.indexOf(state.vibe) === -1) return false;
         return true;
       });
@@ -3152,7 +3163,7 @@
       var dollars = '$'.repeat(s.budget + 1) + '<span style="opacity:.3">' + '$'.repeat(3 - s.budget - 1) + '</span>';
       var q = encodeURIComponent(s.n + ' Rochester NY');
       box.innerHTML = '<h3 class="dn-name">' + s.n + '</h3>' +
-        '<div class="dn-meta"><span>' + svg('pin') + s.hood + '</span><span class="dn-price">' + dollars + '</span><span class="dn-vibe">' + s.price + '</span></div>' +
+        '<div class="dn-meta"><span>' + svg('pin') + (s.area || s.hood) + '</span><span class="dn-price">' + dollars + '</span><span class="dn-vibe">' + s.price + '</span></div>' +
         '<p class="dn-tip">' + s.tip + '</p>' +
         '<a class="dn-info" href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener">More info ' + svg('link') + '</a>';
     }
