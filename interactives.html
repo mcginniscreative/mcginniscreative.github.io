@@ -3065,7 +3065,6 @@
         {n:'Highland Park', hood:'Monroe/Highland', vibe:['active','cozy'], budget:1, price:'Free', tip:'A hillside stroll past the lilacs and the old reservoir, especially good at golden hour.', drive:2},
         {n:'Artisan Works', hood:'Monroe/Highland', vibe:['arts'], budget:1, price:'Free–$5', tip:'A sprawling, floor-to-ceiling gallery of art crammed into a converted factory, worth getting lost in.', drive:2},
         {n:'RocBoat Pedal Tours', hood:'East End', vibe:['playful','active'], budget:2, price:'$35–45', tip:'A pedal-powered boat cruise on the canal, seasonal and genuinely silly in the best way.', drive:1},
-        {n:'Rochester Public Market', hood:'South Wedge', vibe:['casual','playful'], budget:1, price:'$5–15', tip:'Saturday mornings only, but worth building an early date around the stalls and food trucks.', drive:1},
         {n:'Sam Patch Canal Boat Tour', hood:'Canal Towns', vibe:['cozy','active'], budget:2, price:'$18–22', tip:'A slow ride through a working canal lock in Pittsford, a nice change of pace.', drive:3},
         {n:'Strong National Museum of Play', hood:'East End', vibe:['playful'], budget:2, price:'$16–20', tip:'Evening hours some nights let you wander the exhibits and arcade without the daytime crowds.', drive:1},
         {n:'Ted\'s Hot Dogs Drive', hood:'Canal Towns', vibe:['playful','casual'], budget:1, price:'$8–14', tip:'A silly, low-key detour: hot dogs and a drive-in feel on the way between spots.', drive:3}
@@ -3084,7 +3083,7 @@
     };
     var HOODS = ['All Rochester','South Wedge','NOTA','Park Ave','East End','Monroe/Highland','Canal Towns'];
     var VIBES = [['all','All'],['cozy','Casual & Cozy'],['active','Active & Playful'],['arts','Arts & Culture'],['late','Late Night']];
-    var STEPS = [['food','Dinner / Drinks'],['activity','Activity'],['dessert','Dessert / Nightcap']];
+    var STEPS = [['food','1. Food & Drinks'],['activity','2. Fun'],['dessert','3. Afterparty']];
 
     var $ = function(id){ return document.getElementById(id); };
     var state = {budget:0, hood:'All Rochester', vibe:'all'};
@@ -3152,27 +3151,30 @@
     function roll(){
       if(!anyMatches()) return;
       rollBtn.disabled = true; rollBtn.classList.add('rolling'); $('dnRollLabel').textContent = 'Rolling...';
-      var spins = [], ticks = 14, done = 0;
-      STEPS.forEach(function(st, i){
-        if(locked[i]) { done++; return; }
+      var order = [0, 1, 2].filter(function(i){ return !locked[i]; });
+      function settle(k){
+        if(k >= order.length){
+          rollBtn.classList.remove('rolling'); rollBtn.disabled = false; $('dnRollLabel').textContent = 'Reroll';
+          updateSummary();
+          return;
+        }
+        var i = order[k], st = STEPS[i];
         cardsEl.children[i].classList.add('spin');
-        spins[i] = setInterval(function(){
+        var spin = setInterval(function(){
           var box = cardsEl.children[i].querySelector('.dn-body'), tmp = pick(st[0]);
           box.innerHTML = '<h3 class="dn-name">' + tmp.n + '</h3><div class="dn-meta"><span>' + svg('pin') + tmp.hood + '</span></div>';
-        }, 70);
-      });
-      setTimeout(function(){
-        STEPS.forEach(function(st, i){
-          if(locked[i]) return;
-          clearInterval(spins[i]);
+        }, 65);
+        setTimeout(function(){
+          clearInterval(spin);
           picks[i] = pick(st[0], picks[i]);
           cardBody(i);
           cardsEl.children[i].classList.remove('spin');
-        });
-        rollBtn.classList.remove('rolling'); rollBtn.disabled = false; $('dnRollLabel').textContent = 'Reroll';
-        updateSummary();
-      }, 900);
+          settle(k + 1);
+        }, 650);
+      }
+      settle(0);
     }
+    rollBtn.addEventListener('click', roll);
     rollBtn.addEventListener('click', roll);
 
     function priceMid(range){
