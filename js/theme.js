@@ -32,4 +32,24 @@
       });
     }
   });
+
+  /* On phones/tablets, hide the nav (and any bar marked .mc-autohide, like the
+     Interactives breadcrumb) while scrolling down, and bring it right back on
+     the first upward scroll, so a sticky bar doesn't eat the screen. */
+  (function(){
+    var lastY = window.pageYOffset, ticking = false;
+    function onScroll(){
+      ticking = false;
+      if (window.innerWidth > 820) { root.classList.remove('mc-scrolled-down'); lastY = window.pageYOffset; return; }
+      var y = window.pageYOffset, delta = y - lastY;
+      if (y < 60) root.classList.remove('mc-scrolled-down');
+      else if (delta > 6) root.classList.add('mc-scrolled-down');
+      else if (delta < -6) root.classList.remove('mc-scrolled-down');
+      lastY = y;
+    }
+    window.addEventListener('scroll', function(){
+      if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+    }, {passive:true});
+    window.addEventListener('resize', onScroll);
+  })();
 })();

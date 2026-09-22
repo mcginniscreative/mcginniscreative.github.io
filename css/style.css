@@ -36,6 +36,12 @@ nav{
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
+/* phones/tablets: slide the nav out of the way on scroll-down, back on scroll-up
+   (see the scroll listener in js/theme.js) so it doesn't eat the screen */
+@media (max-width:820px){
+  nav{transition:transform .25s ease;}
+  html.mc-scrolled-down nav{transform:translateY(-100%);}
+}
 .nav-inner{
   max-width:1120px;margin:0 auto;padding:14px 28px;
   display:flex;align-items:center;justify-content:space-between;gap:20px;
