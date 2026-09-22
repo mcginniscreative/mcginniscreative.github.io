@@ -646,6 +646,53 @@
   .bl-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px -8px rgba(0,0,0,.4);}
   .bl-av svg{width:56%;height:56%;}
   .bl-fonts{font-size:12px;color:var(--ink-faint);margin-top:12px;}
+
+  /* ---- date night roulette ---- */
+  .dn{padding:24px 22px 28px;}
+  .dn-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+  @media (max-width:760px){.dn-controls{grid-template-columns:1fr;}}
+  .dn-field label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px;}
+  .dn-seg{display:flex;flex-wrap:wrap;gap:6px;}
+  .dn-seg button{font:600 12.5px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--bg);border:1.5px solid var(--line);border-radius:100px;padding:8px 13px;cursor:pointer;transition:all .15s ease;}
+  .dn-seg button:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .dn-seg button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
+  .dn-roll-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:4px 0 24px;}
+  .dn-roll{display:inline-flex;align-items:center;gap:10px;font:700 15px/1 "Poppins",system-ui,sans-serif;color:#fff;border:none;border-radius:100px;padding:16px 28px;cursor:pointer;background:linear-gradient(135deg,#ff8585,#786ae4);box-shadow:0 14px 28px -14px rgba(120,106,228,.9);transition:transform .15s ease;}
+  .dn-roll:hover{transform:translateY(-2px);}
+  .dn-roll:disabled{opacity:.7;cursor:default;transform:none;}
+  .dn-roll svg{width:20px;height:20px;}
+  .dn-roll.rolling svg{animation:dnSpin .5s linear infinite;}
+  @keyframes dnSpin{to{transform:rotate(360deg);}}
+  .dn-empty{font-size:13.5px;color:var(--ink-faint);}
+  .dn-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px;}
+  @media (max-width:820px){.dn-cards{grid-template-columns:1fr;}}
+  .dn-card{position:relative;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;padding:20px 20px 18px;min-height:210px;overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease;}
+  .dn-card.locked{border-color:transparent;box-shadow:0 0 0 2.5px #786ae4;}
+  .dn-step{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .dn-step span{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--coral-1);}
+  .dn-lock{background:none;border:none;cursor:pointer;color:var(--ink-faint);padding:4px;border-radius:8px;}
+  .dn-lock:hover{color:var(--indigo-1);background:var(--indigo-soft);}
+  .dn-lock.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);}
+  .dn-lock svg{width:16px;height:16px;display:block;}
+  .dn-card.spin .dn-body{animation:dnRoll .12s linear infinite;}
+  @keyframes dnRoll{0%{opacity:1;}50%{opacity:.35;}100%{opacity:1;}}
+  .dn-name{margin:0 0 4px;font-size:18px;font-weight:800;color:var(--ink);line-height:1.2;}
+  .dn-meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:0 0 10px;font-size:12px;color:var(--ink-soft);}
+  .dn-meta span{display:inline-flex;align-items:center;gap:4px;}
+  .dn-meta svg{width:13px;height:13px;flex:none;}
+  .dn-price{font-weight:700;color:var(--indigo-1);}
+  .dn-vibe{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--indigo-soft);color:var(--indigo-1);border-radius:100px;padding:3px 9px;}
+  .dn-tip{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0;}
+  .dn-placeholder{display:flex;align-items:center;justify-content:center;height:100%;min-height:150px;color:var(--ink-faint);font-size:13px;}
+  .dn-summary{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding:18px 20px;border-radius:18px;background:var(--indigo-soft);}
+  .dn-sum-item{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);}
+  .dn-sum-item svg{width:17px;height:17px;color:var(--indigo-1);flex:none;}
+  .dn-sum-actions{display:flex;gap:10px;margin-left:auto;}
+  .dn-btn{display:inline-flex;align-items:center;gap:7px;font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:100px;padding:10px 16px;cursor:pointer;}
+  .dn-btn:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .dn-btn svg{width:15px;height:15px;}
+  .dn-btn.copied{color:#fff;background:#3fa34d;border-color:transparent;}
+  .dn-note{font-size:12px;color:var(--ink-faint);margin:16px 0 0;}
 </style>
 </head>
 <body>
@@ -1099,6 +1146,31 @@
             <p class="bl-fonts" id="blFonts"></p>
           </div>
         </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="ix" data-cat="story" data-leaf="datenight">
+    <div class="section-head reveal" style="margin-top:12px;">
+      <p class="section-kicker">12 · Live</p>
+      <h2 class="section-title">Rochester Date Night Roulette</h2>
+      <p class="section-desc">Set your budget, neighborhood, and vibe, then spin for a three-stop night out: dinner or drinks, an activity, and dessert or a nightcap. Lock any stop you like and reroll the rest.</p>
+    </div>
+
+    <div class="reveal playground">
+      <div class="dn" id="dn">
+        <div class="dn-controls">
+          <div class="dn-field"><label>Budget</label><div class="dn-seg" id="dnBudget"></div></div>
+          <div class="dn-field"><label>Neighborhood</label><div class="dn-seg" id="dnHood"></div></div>
+          <div class="dn-field"><label>Vibe</label><div class="dn-seg" id="dnVibe"></div></div>
+        </div>
+        <div class="dn-roll-row">
+          <button type="button" class="dn-roll" id="dnRoll"><span id="dnRollIcon"></span><span id="dnRollLabel">Spin the roulette</span></button>
+          <span class="dn-empty" id="dnEmpty"></span>
+        </div>
+        <div class="dn-cards" id="dnCards"></div>
+        <div class="dn-summary" id="dnSummary" hidden></div>
+        <p class="dn-note">A starting list of real Rochester-area spots, picked to show the idea. Hours, prices, and what is open change, so double-check before you go, and tell me your own favorites to add.</p>
       </div>
     </div>
     </div>
@@ -2454,7 +2526,7 @@
   (function(){
     var BRANCHES = [
       {id:'tools', n:'Tools for your team', sub:'Working tools a school or business could use tomorrow', leaves:[['quiz','Program Finder Quiz'],['feelings','The Feelings Wheel'],['funnel','Enrollment Funnel Lab']]},
-      {id:'story', n:'Storytelling & history', sub:'Stories you explore instead of read', leaves:[['falcon','Fly Through Rochester'],['map','Facts About Aaron'],['farm','Who Lives on the Farm?'],['toys','Toys I Grew Up With']]},
+      {id:'story', n:'Storytelling & history', sub:'Stories you explore instead of read', leaves:[['falcon','Fly Through Rochester'],['map','Facts About Aaron'],['farm','Who Lives on the Farm?'],['datenight','Rochester Date Night Roulette'],['toys','Toys I Grew Up With']]},
       {id:'brand', n:'Brand & voice', sub:'Identity and copy people can play with', leaves:[['logo','Logo Playground'],['brandlab','Build a Brand in 10 Seconds'],['madlib','Send Yourself a Madlib']]},
       {id:'audio', n:'Audio & production', sub:'Real music I recorded, mixed live in your browser', leaves:[['mixer','Hideout: Stem Mixer']]}
     ];
@@ -2951,6 +3023,181 @@
       $('blFonts').textContent = 'Headline: ' + v.hn + '   |   Body: ' + v.bn + '   |   Colors: ' + v.c.join('  ');
     }
     name.addEventListener('input', render); render();
+  })();
+
+  /* ---- date night roulette ---- */
+  (function(){
+    var ICONS = {
+      dice:'<rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="8" r="1.4" fill="currentColor"/><circle cx="8" cy="16" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/>',
+      lock:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="currentColor" stroke-width="2"/>',
+      unlock:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 8.6-1.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      pin:'<path d="M12 21s-7-6.3-7-11.5A7 7 0 0 1 19 9.5C19 14.7 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/>',
+      dollar:'<path d="M12 2.5v19M17 7.2c-.6-1.3-2.3-2.2-5-2.2-3 0-5 1.4-5 3.5s2 3 5 3.5c3 .5 5 1.5 5 3.5s-2 3.5-5 3.5c-2.7 0-4.4-.9-5-2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+      sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/><path d="M19 3.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" fill="currentColor"/>',
+      copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 8.5V6.7a2.2 2.2 0 0 0-2.2-2.2H6.7a2.2 2.2 0 0 0-2.2 2.2v6.6a2.2 2.2 0 0 0 2.2 2.2h1.8" fill="none" stroke="currentColor" stroke-width="2"/>',
+      check:'<path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+      car:'<path d="M4 16.5V12l2-5h12l2 5v4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 16.5h16" stroke="currentColor" stroke-width="2"/><circle cx="7.5" cy="16.5" r="1.6" fill="currentColor"/><circle cx="16.5" cy="16.5" r="1.6" fill="currentColor"/>'
+    };
+    function svg(k, cls){ return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[k] + '</svg>'; }
+
+    /* Real Rochester-area spots, grouped by course. hood/vibe/budget filter, $ shows tier, price is per-person estimate, drive is a rough travel-time band from downtown for the "vibe check". */
+    var SPOTS = {
+      food: [
+        {n:'Swillburger', hood:'South Wedge', vibe:['casual'], budget:1, price:'$12–18', tip:'Late-night burgers and a laid-back counter-service room, good for jumping straight into the night.', drive:1},
+        {n:'The Cub Room', hood:'South Wedge', vibe:['cozy','casual'], budget:2, price:'$20–30', tip:'A snug wine-and-small-plates spot on South Ave with a neighborhood-bar warmth.', drive:1},
+        {n:'Good Luck', hood:'NOTA', vibe:['arts','cozy'], budget:3, price:'$35–55', tip:'Inventive New American plates and a moody, art-filled room, a Rochester favorite for a reason.', drive:1},
+        {n:'2 Vine', hood:'East End', vibe:['arts','cozy'], budget:3, price:'$30–48', tip:'Wood-fired, farm-driven plates just off East Ave, easy to pair with a show downtown.', drive:1},
+        {n:'Cure', hood:'East End', vibe:['casual','late'], budget:2, price:'$22–34', tip:'A charcuterie-and-cocktails spot with a genuinely fun late-night bar scene.', drive:1},
+        {n:'MEZ Mexican Bistro', hood:'East End', vibe:['casual','playful'], budget:2, price:'$20–30', tip:'A big tequila list and a lively room, good for a date that wants some noise and energy.', drive:1},
+        {n:'Lento', hood:'Park Ave', vibe:['casual','cozy'], budget:2, price:'$18–28', tip:'Wood-fired pizza and small plates in a warm, low-key Park Ave storefront.', drive:1},
+        {n:'The Owl House', hood:'South Wedge', vibe:['playful','late'], budget:2, price:'$20–30', tip:'Playful, shareable plates and a strong cocktail menu with a fun, offbeat energy.', drive:1},
+        {n:'Radio Social', hood:'East End', vibe:['playful','active'], budget:1, price:'$14–22', tip:'Bar food plus shuffleboard and darts, so dinner and the activity can happen in the same room.', drive:1},
+        {n:'Lock 32 Brewing', hood:'Canal Towns', vibe:['casual','active'], budget:1, price:'$15–24', tip:'Canal-side brewpub in Fairport, easy patio hang if the weather is good.', drive:3},
+        {n:'Simply Crepes', hood:'Canal Towns', vibe:['cozy','casual'], budget:2, price:'$16–26', tip:'A Pittsford classic on the canal, sweet or savory crepes with a view of the boats.', drive:3},
+        {n:'The Cheshire', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:2, price:'$25–36', tip:'A British-leaning gastropub feel near Monroe Ave, good for a quieter conversation.', drive:2}
+      ],
+      activity: [
+        {n:'Dryden Theatre at George Eastman Museum', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–12', tip:'A gorgeous old film palace showing classic and indie films most nights of the week.', drive:1},
+        {n:'George Eastman Museum Grounds', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–18', tip:'Wander the gardens and photography galleries before or after dinner nearby.', drive:1},
+        {n:'The Little Theatre', hood:'Park Ave', vibe:['arts','cozy'], budget:1, price:'$10–13', tip:'An independent film house with a bar attached, easy to fold into a Park Ave evening.', drive:1},
+        {n:'Radio Social', hood:'East End', vibe:['playful','active'], budget:1, price:'$0–15', tip:'Shuffleboard, darts, and arcade games in one big room downtown.', drive:1},
+        {n:'Lamberton Conservatory', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:1, price:'$3–5', tip:'A warm glass conservatory in Highland Park, full of tropical plants, a nice slow wander.', drive:2},
+        {n:'Highland Park', hood:'Monroe/Highland', vibe:['active','cozy'], budget:1, price:'Free', tip:'A hillside stroll past the lilacs and the old reservoir, especially good at golden hour.', drive:2},
+        {n:'Artisan Works', hood:'Monroe/Highland', vibe:['arts'], budget:1, price:'Free–$5', tip:'A sprawling, floor-to-ceiling gallery of art crammed into a converted factory, worth getting lost in.', drive:2},
+        {n:'RocBoat Pedal Tours', hood:'East End', vibe:['playful','active'], budget:2, price:'$35–45', tip:'A pedal-powered boat cruise on the canal, seasonal and genuinely silly in the best way.', drive:1},
+        {n:'Rochester Public Market', hood:'South Wedge', vibe:['casual','playful'], budget:1, price:'$5–15', tip:'Saturday mornings only, but worth building an early date around the stalls and food trucks.', drive:1},
+        {n:'Sam Patch Canal Boat Tour', hood:'Canal Towns', vibe:['cozy','active'], budget:2, price:'$18–22', tip:'A slow ride through a working canal lock in Pittsford, a nice change of pace.', drive:3},
+        {n:'Strong National Museum of Play', hood:'East End', vibe:['playful'], budget:2, price:'$16–20', tip:'Evening hours some nights let you wander the exhibits and arcade without the daytime crowds.', drive:1},
+        {n:'Ted\'s Hot Dogs Drive', hood:'Canal Towns', vibe:['playful','casual'], budget:1, price:'$8–14', tip:'A silly, low-key detour: hot dogs and a drive-in feel on the way between spots.', drive:3}
+      ],
+      dessert: [
+        {n:'Hedonist Artisan Chocolates', hood:'Park Ave', vibe:['cozy'], budget:2, price:'$10–20', tip:'Small-batch truffles and drinking chocolate in a cozy Park Ave shop, great for sharing.', drive:1},
+        {n:'Chocolat', hood:'East End', vibe:['cozy','arts'], budget:1, price:'$8–14', tip:'A European-style patisserie downtown, good for a coffee-and-pastry nightcap.', drive:1},
+        {n:'Pittsford Dairy', hood:'Canal Towns', vibe:['casual','playful'], budget:1, price:'$6–10', tip:'Classic soft-serve stop after a canal walk, simple and a little nostalgic.', drive:3},
+        {n:'Custard Shoppe', hood:'Monroe/Highland', vibe:['casual','playful'], budget:1, price:'$6–10', tip:'A neighborhood custard stand, easy to end the night on something sweet and unfussy.', drive:2},
+        {n:'The Spirit Room', hood:'South Wedge', vibe:['late','cozy'], budget:2, price:'$12–18', tip:'A dark, plant-filled cocktail bar for a nightcap instead of dessert, low-key and intimate.', drive:1},
+        {n:'Good Luck Bar Seats', hood:'NOTA', vibe:['late','arts'], budget:3, price:'$16–24', tip:'Slide into the bar for a last round and dessert course if you want to stay a while.', drive:1},
+        {n:'Lux Lounge', hood:'South Wedge', vibe:['late','playful'], budget:1, price:'$8–14', tip:'A dive-y, pinball-filled bar for a playful last stop, open late.', drive:1},
+        {n:'The Rooney', hood:'East End', vibe:['late','arts'], budget:2, price:'$14–20', tip:'A stylish cocktail bar downtown with a solid late-night dessert-adjacent drinks list.', drive:1},
+        {n:'Fairport Ice Cream Parlour', hood:'Canal Towns', vibe:['cozy','casual'], budget:1, price:'$6–10', tip:'A classic small-town ice cream stop right on the canal in Fairport.', drive:3}
+      ]
+    };
+    var HOODS = ['All Rochester','South Wedge','NOTA','Park Ave','East End','Monroe/Highland','Canal Towns'];
+    var VIBES = [['all','All'],['cozy','Casual & Cozy'],['active','Active & Playful'],['arts','Arts & Culture'],['late','Late Night']];
+    var STEPS = [['food','Dinner / Drinks'],['activity','Activity'],['dessert','Dessert / Nightcap']];
+
+    var $ = function(id){ return document.getElementById(id); };
+    var state = {budget:0, hood:'All Rochester', vibe:'all'};
+    var picks = [null, null, null], locked = [false, false, false];
+    var budgetEl = $('dnBudget'), hoodEl = $('dnHood'), vibeEl = $('dnVibe'), cardsEl = $('dnCards'), rollBtn = $('dnRoll'), emptyEl = $('dnEmpty'), sumEl = $('dnSummary');
+
+    ['Any ($)', 'Moderate ($$)', 'Splurge ($$$)'].forEach(function(l, i){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = l; if(i === 0) b.classList.add('on');
+      b.addEventListener('click', function(){ state.budget = i; sync(budgetEl, b); });
+      budgetEl.appendChild(b);
+    });
+    HOODS.forEach(function(h, i){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = h; if(i === 0) b.classList.add('on');
+      b.addEventListener('click', function(){ state.hood = h; sync(hoodEl, b); });
+      hoodEl.appendChild(b);
+    });
+    VIBES.forEach(function(v, i){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = v[1]; if(i === 0) b.classList.add('on');
+      b.addEventListener('click', function(){ state.vibe = v[0]; sync(vibeEl, b); });
+      vibeEl.appendChild(b);
+    });
+    function sync(group, btn){ group.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); }); btn.classList.add('on'); }
+
+    function pool(course){
+      return SPOTS[course].filter(function(s){
+        if(s.budget > state.budget + 1) return false;
+        if(state.hood !== 'All Rochester' && s.hood !== state.hood) return false;
+        if(state.vibe !== 'all' && s.vibe.indexOf(state.vibe) === -1) return false;
+        return true;
+      });
+    }
+    function pick(course, avoid){
+      var list = pool(course).filter(function(s){ return s !== avoid; });
+      if(!list.length) list = pool(course);
+      if(!list.length) list = SPOTS[course];
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    STEPS.forEach(function(st, i){
+      var card = document.createElement('div'); card.className = 'dn-card'; card.setAttribute('data-i', i);
+      card.innerHTML = '<div class="dn-step"><span>' + st[1] + '</span><button type="button" class="dn-lock" aria-label="Lock this pick" aria-pressed="false">' + svg('unlock') + '</button></div><div class="dn-body"><div class="dn-placeholder">Spin to fill this stop</div></div>';
+      card.querySelector('.dn-lock').addEventListener('click', function(){
+        if(!picks[i]) return;
+        locked[i] = !locked[i]; this.classList.toggle('on', locked[i]); this.setAttribute('aria-pressed', locked[i] ? 'true' : 'false');
+        this.innerHTML = svg(locked[i] ? 'lock' : 'unlock'); card.classList.toggle('locked', locked[i]);
+      });
+      cardsEl.appendChild(card);
+    });
+
+    function cardBody(i){
+      var s = picks[i]; var box = cardsEl.children[i].querySelector('.dn-body');
+      if(!s){ box.innerHTML = '<div class="dn-placeholder">Spin to fill this stop</div>'; return; }
+      var dollars = '$'.repeat(s.budget + 1) + '<span style="opacity:.3">' + '$'.repeat(3 - s.budget - 1) + '</span>';
+      box.innerHTML = '<h3 class="dn-name">' + s.n + '</h3>' +
+        '<div class="dn-meta"><span>' + svg('pin') + s.hood + '</span><span class="dn-price">' + dollars + '</span><span class="dn-vibe">' + s.price + '</span></div>' +
+        '<p class="dn-tip">' + s.tip + '</p>';
+    }
+    $('dnRollIcon').innerHTML = svg('dice');
+
+    function anyMatches(){ return STEPS.every(function(st){ return pool(st[0]).length > 0; }); }
+    function updateEmpty(){ emptyEl.textContent = anyMatches() ? '' : 'No spots match that combo yet, try loosening a filter.'; rollBtn.disabled = !anyMatches(); }
+    [budgetEl, hoodEl, vibeEl].forEach(function(g){ g.addEventListener('click', function(){ updateEmpty(); }); });
+    updateEmpty();
+
+    function roll(){
+      if(!anyMatches()) return;
+      rollBtn.disabled = true; rollBtn.classList.add('rolling'); $('dnRollLabel').textContent = 'Rolling...';
+      var spins = [], ticks = 14, done = 0;
+      STEPS.forEach(function(st, i){
+        if(locked[i]) { done++; return; }
+        cardsEl.children[i].classList.add('spin');
+        spins[i] = setInterval(function(){
+          var box = cardsEl.children[i].querySelector('.dn-body'), tmp = pick(st[0]);
+          box.innerHTML = '<h3 class="dn-name">' + tmp.n + '</h3><div class="dn-meta"><span>' + svg('pin') + tmp.hood + '</span></div>';
+        }, 70);
+      });
+      setTimeout(function(){
+        STEPS.forEach(function(st, i){
+          if(locked[i]) return;
+          clearInterval(spins[i]);
+          picks[i] = pick(st[0], picks[i]);
+          cardBody(i);
+          cardsEl.children[i].classList.remove('spin');
+        });
+        rollBtn.classList.remove('rolling'); rollBtn.disabled = false; $('dnRollLabel').textContent = 'Reroll';
+        updateSummary();
+      }, 900);
+    }
+    rollBtn.addEventListener('click', roll);
+
+    function priceMid(range){
+      var nums = (range.match(/\d+/g) || []).map(Number);
+      if(!nums.length) return 0;
+      return nums.reduce(function(a, b){ return a + b; }, 0) / nums.length;
+    }
+    function updateSummary(){
+      if(picks.some(function(p){ return !p; })){ sumEl.hidden = true; return; }
+      var total = picks.reduce(function(a, s){ return a + priceMid(s.price); }, 0) * 2;
+      var drive = Math.max.apply(null, picks.map(function(s){ return s.drive; }));
+      var driveTxt = drive <= 1 ? 'All close together, easy walk or a five-minute drive' : (drive === 2 ? 'A short drive between stops' : 'Spread across town, plan for some driving');
+      sumEl.hidden = false;
+      sumEl.innerHTML = '<span class="dn-sum-item">' + svg('dollar') + '~$' + Math.round(total) + ' total for two</span>' +
+        '<span class="dn-sum-item">' + svg('car') + driveTxt + '</span>' +
+        '<span class="dn-sum-actions"><button type="button" class="dn-btn" id="dnCopy">' + svg('copy') + 'Copy itinerary</button><button type="button" class="dn-btn" id="dnReroll">' + svg('sparkle') + 'Reroll all</button></span>';
+      $('dnCopy').addEventListener('click', function(){
+        var lines = ['Rochester Date Night'].concat(STEPS.map(function(st, i){ return st[1] + ': ' + picks[i].n + ' (' + picks[i].hood + ', ' + picks[i].price + ')'; }));
+        lines.push('Est. total for two: ~$' + Math.round(total));
+        var text = lines.join('\n'), btn = this;
+        function done(){ btn.classList.add('copied'); btn.innerHTML = svg('check') + 'Copied'; setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = svg('copy') + 'Copy itinerary'; }, 1600); }
+        if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){});
+      });
+      $('dnReroll').addEventListener('click', function(){ locked = [false, false, false]; cardsEl.querySelectorAll('.dn-lock').forEach(function(b){ b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); b.innerHTML = svg('unlock'); }); cardsEl.querySelectorAll('.dn-card').forEach(function(c){ c.classList.remove('locked'); }); roll(); });
+    }
   })();
 </script>
 </body>
