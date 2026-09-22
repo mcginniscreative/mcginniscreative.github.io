@@ -504,13 +504,10 @@
     .tree-leaves::before{left:18px;top:0;height:100%;width:3px;}
     .tree-leaf{max-width:none;text-align:left;}
   }
-  .adv-bar{position:sticky;top:76px;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 20px;padding:12px 16px;border-radius:20px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -18px rgba(28,18,163,.4);font-size:13px;color:var(--ink-soft);}
+  /* static, not sticky: it was staying pinned over the interactive itself while
+     scrolling through a piece; scrolling to the top to switch pieces is fine */
+  .adv-bar{position:static;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 20px;padding:12px 16px;border-radius:20px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 28px -18px rgba(28,18,163,.4);font-size:13px;color:var(--ink-soft);}
   .adv-bar[hidden]{display:none;}
-  /* phones/tablets: slide this out of the way on scroll-down too, same trigger as the nav */
-  @media (max-width:820px){
-    .adv-bar{transition:transform .25s ease;}
-    html.mc-scrolled-down .adv-bar:not([hidden]){transform:translateY(-220px);}
-  }
   .adv-bar b{color:var(--ink);}
   .adv-crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600;}
   .adv-crumb button{font:inherit;font-weight:700;color:var(--indigo-1);background:none;border:none;cursor:pointer;padding:0;}
