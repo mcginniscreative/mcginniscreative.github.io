@@ -37,10 +37,12 @@ nav{
   border-bottom:1px solid var(--line);
 }
 /* phones/tablets: slide the nav out of the way on scroll-down, back on scroll-up
-   (see the scroll listener in js/theme.js) so it doesn't eat the screen */
+   (see the scroll listener in js/theme.js) so it doesn't eat the screen.
+   Skipped while the mobile menu is open: transforming <nav> would make it the
+   containing block for the menu's position:fixed panel and collapse it to a sliver. */
 @media (max-width:820px){
   nav{transition:transform .25s ease;}
-  html.mc-scrolled-down nav{transform:translateY(-100%);}
+  html.mc-scrolled-down nav:not(:has(.nav-links.open)){transform:translateY(-100%);}
 }
 .nav-inner{
   max-width:1120px;margin:0 auto;padding:14px 28px;
@@ -78,6 +80,10 @@ nav{
     transition:opacity .2s ease, transform .2s ease;
   }
   .nav-links.open{opacity:1;transform:none;pointer-events:auto;}
+  /* nav's own backdrop-filter makes it the containing block for this fixed panel,
+     which collapses the panel to a sliver sized to the header instead of the full
+     screen; drop the blur while the menu is open so the panel sizes correctly */
+  nav:has(.nav-links.open){backdrop-filter:none;-webkit-backdrop-filter:none;}
   .nav-links a{padding:14px 0;width:100%;border-bottom:1px solid var(--line);}
   .nav-cta{margin-top:14px;}
   .nav-toggle{display:block;}
