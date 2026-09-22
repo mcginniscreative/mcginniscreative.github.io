@@ -682,7 +682,10 @@
   .dn-meta svg{width:13px;height:13px;flex:none;}
   .dn-price{font-weight:700;color:var(--indigo-1);}
   .dn-vibe{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--indigo-soft);color:var(--indigo-1);border-radius:100px;padding:3px 9px;}
-  .dn-tip{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0;}
+  .dn-tip{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 10px;}
+  .dn-info{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--indigo-1);text-decoration:none;}
+  .dn-info svg{width:12px;height:12px;}
+  .dn-info:hover{text-decoration:underline;}
   .dn-placeholder{display:flex;align-items:center;justify-content:center;height:100%;min-height:150px;color:var(--ink-faint);font-size:13px;}
   .dn-summary{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding:18px 20px;border-radius:18px;background:var(--indigo-soft);}
   .dn-sum-item{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);}
@@ -3032,6 +3035,7 @@
       lock:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="currentColor" stroke-width="2"/>',
       unlock:'<rect x="4.5" y="10.5" width="15" height="9.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 8.6-1.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
       pin:'<path d="M12 21s-7-6.3-7-11.5A7 7 0 0 1 19 9.5C19 14.7 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/>',
+      link:'<path d="M9 15l6-6M10 7l1.3-1.3a3.5 3.5 0 0 1 5 5L15 12M14 17l-1.3 1.3a3.5 3.5 0 0 1-5-5L9 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
       dollar:'<path d="M12 2.5v19M17 7.2c-.6-1.3-2.3-2.2-5-2.2-3 0-5 1.4-5 3.5s2 3 5 3.5c3 .5 5 1.5 5 3.5s-2 3.5-5 3.5c-2.7 0-4.4-.9-5-2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
       sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" fill="currentColor"/><path d="M19 3.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" fill="currentColor"/>',
       copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 8.5V6.7a2.2 2.2 0 0 0-2.2-2.2H6.7a2.2 2.2 0 0 0-2.2 2.2v6.6a2.2 2.2 0 0 0 2.2 2.2h1.8" fill="none" stroke="currentColor" stroke-width="2"/>',
@@ -3061,6 +3065,9 @@
         {n:'George Eastman Museum Grounds', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–18', tip:'Wander the gardens and photography galleries before or after dinner nearby.', drive:1},
         {n:'The Little Theatre', hood:'Park Ave', vibe:['arts','cozy'], budget:1, price:'$10–13', tip:'An independent film house with a bar attached, easy to fold into a Park Ave evening.', drive:1},
         {n:'Radio Social', hood:'East End', vibe:['playful','active'], budget:1, price:'$0–15', tip:'Shuffleboard, darts, and arcade games in one big room downtown.', drive:1},
+        {n:'The Bug Jar', hood:'South Wedge', vibe:['playful','late'], budget:1, price:'$8–15', tip:'A scrappy, beloved Monroe Ave music venue for a band or DJ set before the night winds down.', drive:1},
+        {n:'Lovin\' Cup', hood:'South Wedge', vibe:['playful','active'], budget:1, price:'$0–15', tip:'Live music and a laid-back crowd on Gregory Street, good for catching a local act.', drive:1},
+        {n:'Village Gate Square', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'Free', tip:'A converted factory of galleries, shops, and studios, good for a slow wander before dinner.', drive:1},
         {n:'Lamberton Conservatory', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:1, price:'$3–5', tip:'A warm glass conservatory in Highland Park, full of tropical plants, a nice slow wander.', drive:2},
         {n:'Highland Park', hood:'Monroe/Highland', vibe:['active','cozy'], budget:1, price:'Free', tip:'A hillside stroll past the lilacs and the old reservoir, especially good at golden hour.', drive:2},
         {n:'Artisan Works', hood:'Monroe/Highland', vibe:['arts'], budget:1, price:'Free–$5', tip:'A sprawling, floor-to-ceiling gallery of art crammed into a converted factory, worth getting lost in.', drive:2},
@@ -3081,7 +3088,7 @@
         {n:'Fairport Ice Cream Parlour', hood:'Canal Towns', vibe:['cozy','casual'], budget:1, price:'$6–10', tip:'A classic small-town ice cream stop right on the canal in Fairport.', drive:3}
       ]
     };
-    var HOODS = ['All Rochester','South Wedge','NOTA','Park Ave','East End','Monroe/Highland','Canal Towns'];
+    var HOODS = ['All Rochester','South Wedge','NOTA','Park Ave','East End','Monroe/Highland','North Winton Village','Canal Towns'];
     var VIBES = [['all','All'],['cozy','Casual & Cozy'],['active','Active & Playful'],['arts','Arts & Culture'],['late','Late Night']];
     var STEPS = [['food','1. Food & Drinks'],['activity','2. Fun'],['dessert','3. Afterparty']];
 
@@ -3107,19 +3114,25 @@
     });
     function sync(group, btn){ group.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); }); btn.classList.add('on'); }
 
-    function pool(course){
+    function pool(course, opts){
+      opts = opts || {};
       return SPOTS[course].filter(function(s){
         if(s.budget > state.budget + 1) return false;
-        if(state.hood !== 'All Rochester' && s.hood !== state.hood) return false;
-        if(state.vibe !== 'all' && s.vibe.indexOf(state.vibe) === -1) return false;
+        if(!opts.anyHood && state.hood !== 'All Rochester' && s.hood !== state.hood) return false;
+        if(!opts.anyVibe && state.vibe !== 'all' && s.vibe.indexOf(state.vibe) === -1) return false;
         return true;
       });
     }
+    /* if this exact combo is thin (a new or small neighborhood), widen one filter at a time
+       rather than refusing to roll: drop the vibe first, then the neighborhood, then anything. */
+    function stretched(course){ return state.hood !== 'All Rochester' && pool(course).length < 2; }
     function pick(course, avoid){
-      var list = pool(course).filter(function(s){ return s !== avoid; });
-      if(!list.length) list = pool(course);
-      if(!list.length) list = SPOTS[course];
-      return list[Math.floor(Math.random() * list.length)];
+      var tries = [{}, {anyVibe:true}, {anyHood:true}, {anyHood:true, anyVibe:true}];
+      for(var t = 0; t < tries.length; t++){
+        var list = pool(course, tries[t]).filter(function(s){ return s !== avoid; });
+        if(list.length) return list[Math.floor(Math.random() * list.length)];
+      }
+      return SPOTS[course][Math.floor(Math.random() * SPOTS[course].length)];
     }
 
     STEPS.forEach(function(st, i){
@@ -3137,19 +3150,23 @@
       var s = picks[i]; var box = cardsEl.children[i].querySelector('.dn-body');
       if(!s){ box.innerHTML = '<div class="dn-placeholder">Spin to fill this stop</div>'; return; }
       var dollars = '$'.repeat(s.budget + 1) + '<span style="opacity:.3">' + '$'.repeat(3 - s.budget - 1) + '</span>';
+      var q = encodeURIComponent(s.n + ' Rochester NY');
       box.innerHTML = '<h3 class="dn-name">' + s.n + '</h3>' +
         '<div class="dn-meta"><span>' + svg('pin') + s.hood + '</span><span class="dn-price">' + dollars + '</span><span class="dn-vibe">' + s.price + '</span></div>' +
-        '<p class="dn-tip">' + s.tip + '</p>';
+        '<p class="dn-tip">' + s.tip + '</p>' +
+        '<a class="dn-info" href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener">More info ' + svg('link') + '</a>';
     }
     $('dnRollIcon').innerHTML = svg('dice');
 
-    function anyMatches(){ return STEPS.every(function(st){ return pool(st[0]).length > 0; }); }
-    function updateEmpty(){ emptyEl.textContent = anyMatches() ? '' : 'No spots match that combo yet, try loosening a filter.'; rollBtn.disabled = !anyMatches(); }
+    function updateEmpty(){
+      var thin = STEPS.some(function(st){ return stretched(st[0]); });
+      emptyEl.textContent = thin ? 'Not many exact matches there yet, so a pick or two may stretch your filters a bit.' : '';
+      rollBtn.disabled = false;
+    }
     [budgetEl, hoodEl, vibeEl].forEach(function(g){ g.addEventListener('click', function(){ updateEmpty(); }); });
     updateEmpty();
 
     function roll(){
-      if(!anyMatches()) return;
       rollBtn.disabled = true; rollBtn.classList.add('rolling'); $('dnRollLabel').textContent = 'Rolling...';
       var order = [0, 1, 2].filter(function(i){ return !locked[i]; });
       function settle(k){
