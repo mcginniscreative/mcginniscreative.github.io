@@ -513,6 +513,12 @@
   .adv-crumb button{font:inherit;font-weight:700;color:var(--indigo-1);background:none;border:none;cursor:pointer;padding:0;}
   .adv-crumb button:hover{text-decoration:underline;}
   .adv-sibs{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;align-items:center;}
+  @media (max-width:820px){
+    /* phones: one swipeable row of pieces instead of five stacked pills */
+    .adv-sibs{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+    .adv-sibs::-webkit-scrollbar{display:none;}
+    .adv-sibs button{flex:none;white-space:nowrap;}
+  }
   .adv-sibs button{font:600 12px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);border-radius:100px;padding:8px 14px;cursor:pointer;}
   .adv-sibs button:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
   .adv-sibs button.on{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;}
@@ -698,6 +704,52 @@
   .dn-btn svg{width:15px;height:15px;}
   .dn-btn.copied{color:#fff;background:#3fa34d;border-color:transparent;}
   .dn-note{font-size:12px;color:var(--ink-faint);margin:16px 0 0;}
+  /* date night: calmer layout (roll first, filters tucked away, compact stops) */
+  .dn-top{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:6px;}
+  .dn-custom{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 "Poppins",system-ui,sans-serif;color:var(--ink-soft);background:var(--bg);border:1.5px solid var(--line);border-radius:100px;padding:13px 16px;cursor:pointer;}
+  .dn-custom:hover{border-color:var(--indigo-1);color:var(--indigo-1);}
+  .dn-custom svg{width:14px;height:14px;transition:transform .2s ease;}
+  .dn-custom[aria-expanded="true"] svg{transform:rotate(180deg);}
+  .dn-count{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:linear-gradient(135deg,#ff8585,#786ae4);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+  .dn-count[hidden]{display:none;}
+  .dn-empty{font-size:12.5px;color:var(--ink-faint);margin:6px 2px 0;min-height:0;}
+  .dn-empty:empty{display:none;}
+  .dn-filters{margin:14px 0 4px;padding:16px;border-radius:16px;background:var(--bg);border:1px solid var(--line);}
+  .dn-filters[hidden]{display:none;}
+  .dn-filters .dn-controls{margin-bottom:12px;}
+  .dn-cards{margin-top:18px;}
+  .dn-plan{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .dn-primary{color:#fff;background:linear-gradient(135deg,#ff8585,#786ae4);border-color:transparent;text-decoration:none;}
+  .dn-primary:hover{color:#fff;filter:brightness(1.06);}
+  .dn-when{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;padding-top:12px;border-top:1px dashed var(--line);}
+  .dn-when[hidden]{display:none;}
+  .dn-when label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);}
+  .dn-when input{font:600 13px "Poppins",system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;}
+  .dn-go{color:#fff;background:linear-gradient(135deg,#4152e8,#786ae4);border-color:transparent;}
+  .dn-go:hover{color:#fff;}
+  @media (max-width:820px){
+    .dn{padding:18px 16px 22px;}
+    .dn-roll{flex:1 1 auto;justify-content:center;padding:15px 20px;}
+    .dn-custom{flex:0 0 auto;}
+    .dn-cards{grid-template-columns:1fr;gap:10px;}
+    .dn-card{min-height:0;padding:14px 16px 12px;border-radius:16px;}
+    .dn-step{margin-bottom:6px;}
+    .dn-name{font-size:17px;}
+    .dn-meta{margin-bottom:6px;}
+    .dn-tip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;font-size:12.5px;line-height:1.5;}
+    .dn-placeholder{min-height:44px;}
+    .dn-summary{padding:14px 16px;gap:10px;}
+    .dn-sum-actions{margin-left:0;width:100%;}
+    .dn-sum-actions .dn-btn{flex:1;justify-content:center;}
+    .dn-plan{margin-top:10px;padding:0;background:none;border:none;}
+    .dn-plan .dn-primary{flex:1 1 100%;justify-content:center;padding:14px 16px;}
+    .dn-plan #dnCal,.dn-plan #dnShare{flex:1 1 calc(50% - 5px);justify-content:center;}
+    .dn-when label{flex:1 1 calc(50% - 5px);}
+    .dn-when input{width:100%;}
+    .dn-go{flex:1 1 100%;justify-content:center;}
+    .dn-filters{padding:14px;}
+  }
+
 
   .dn-winter{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .dn-winter input{position:absolute;opacity:0;width:1px;height:1px;}
@@ -1173,32 +1225,37 @@
     <div class="section-head reveal" style="margin-top:12px;">
       <p class="section-kicker">12 · Live</p>
       <h2 class="section-title">Rochester Date Night Roulette</h2>
-      <p class="section-desc">Set your budget, neighborhood, and vibe, then spin for a three-stop night out: dinner or drinks, an activity, and dessert or a nightcap. Lock any stop you like and reroll the rest.</p>
+      <p class="section-desc">Spin for a three-stop night out: food, fun, and an afterparty. Lock the stops you like and reroll the rest.</p>
     </div>
 
     <div class="reveal playground">
       <div class="dn" id="dn">
-        <div class="dn-controls">
-          <div class="dn-field"><label>Budget</label><div class="dn-seg" id="dnBudget"></div></div>
-          <div class="dn-field"><label>Neighborhood</label><div class="dn-seg" id="dnHood"></div></div>
-          <div class="dn-field"><label>Vibe</label><div class="dn-seg" id="dnVibe"></div></div>
-        </div>
-        <div class="dn-roll-row">
+        <div class="dn-top">
           <button type="button" class="dn-roll" id="dnRoll"><span id="dnRollIcon"></span><span id="dnRollLabel">Spin the roulette</span></button>
+          <button type="button" class="dn-custom" id="dnCustom" aria-expanded="false" aria-controls="dnFilters"><span>Customize</span><span class="dn-count" id="dnCount" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <p class="dn-empty" id="dnEmpty"></p>
+        <div class="dn-filters" id="dnFilters" hidden>
+          <div class="dn-controls">
+            <div class="dn-field"><label>Budget</label><div class="dn-seg" id="dnBudget"></div></div>
+            <div class="dn-field"><label>Neighborhood</label><div class="dn-seg" id="dnHood"></div></div>
+            <div class="dn-field"><label>Vibe</label><div class="dn-seg" id="dnVibe"></div></div>
+          </div>
           <label class="dn-winter" id="dnWinterWrap"><input type="checkbox" id="dnWinter"><span id="dnWinterIcon"></span>Skip the beach picks, it's cold out</label>
-          <span class="dn-empty" id="dnEmpty"></span>
         </div>
         <div class="dn-cards" id="dnCards"></div>
         <div class="dn-summary" id="dnSummary" hidden></div>
         <div class="dn-plan" id="dnPlan" hidden>
-          <div class="dn-plan-when"><label for="dnDate">When</label><input type="date" id="dnDate"><input type="time" id="dnTime" value="19:00"></div>
-          <div class="dn-plan-actions">
-            <a class="dn-btn" id="dnDirections" target="_blank" rel="noopener"></a>
-            <button type="button" class="dn-btn" id="dnCal"></button>
-            <button type="button" class="dn-btn" id="dnShare"></button>
+          <a class="dn-btn dn-primary" id="dnDirections" target="_blank" rel="noopener"></a>
+          <button type="button" class="dn-btn" id="dnCal" aria-expanded="false"></button>
+          <button type="button" class="dn-btn" id="dnShare"></button>
+          <div class="dn-when" id="dnWhen" hidden>
+            <label>Date <input type="date" id="dnDate"></label>
+            <label>Time <input type="time" id="dnTime" value="19:00"></label>
+            <button type="button" class="dn-btn dn-go" id="dnCalGo"></button>
           </div>
         </div>
-        <p class="dn-note">A starting list of real Rochester-area spots, picked to show the idea. Hours, prices, and what is open change, so double-check before you go, and tell me your own favorites to add.</p>
+        <p class="dn-note">Real Rochester spots, picked to show the idea. Hours and prices change, so double-check before you go.</p>
       </div>
     </div>
     </div>
@@ -3101,7 +3158,7 @@
       ],
       activity: [
         {n:'Dryden Theatre at George Eastman Museum', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–12', tip:'A gorgeous old film palace showing classic and indie films most nights of the week.', drive:1},
-        {n:'George Eastman Museum Grounds', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–18', tip:'Wander the gardens and photography galleries before or after dinner nearby.', drive:1},
+        {n:'George Eastman Museum Grounds', q:'George Eastman Museum Rochester NY', hood:'NOTA', vibe:['arts','cozy'], budget:1, price:'$8–18', tip:'Wander the gardens and photography galleries before or after dinner nearby.', drive:1},
         {n:'The Little Theatre', hood:'Park Ave', vibe:['arts','cozy'], budget:1, price:'$10–13', tip:'An independent film house with a bar attached, easy to fold into a Park Ave evening.', drive:1},
         {n:'Radio Social', hood:'East End', vibe:['playful','active'], budget:1, price:'$0–15', tip:'Shuffleboard, darts, and arcade games in one big room downtown.', drive:1},
         {n:'The Bug Jar', hood:'South Wedge', vibe:['playful','late'], budget:1, price:'$8–15', tip:'A scrappy, beloved Monroe Ave music venue for a band or DJ set before the night winds down.', drive:1},
@@ -3116,7 +3173,7 @@
         {n:'Ted\'s Hot Dogs Drive', hood:'Canal Towns', vibe:['playful','casual'], budget:1, price:'$8–14', tip:'A silly, low-key detour: hot dogs and a drive-in feel on the way between spots.', drive:3},
         {n:'Ellison Park', hood:'Anywhere', area:'Penfield / east side', vibe:['active'], budget:0, price:'Free', tip:'Wooded trails along Irondequoit Creek, and a disc golf course if you want to make a game of it.', drive:2},
         {n:'Durand Eastman Park', hood:'Anywhere', area:'North Rochester, on Lake Ontario', vibe:['active','cozy'], budget:0, price:'Free', tip:'Hiking trails through the old arboretum, ending at a quiet beach on Lake Ontario.', drive:2},
-        {n:'Charlotte / Ontario Beach', hood:'Anywhere', area:'Charlotte, on Lake Ontario', vibe:['active','cozy'], budget:0, price:'Free', tip:'The classic Rochester beach walk, with the pier and the old carousel nearby.', drive:2, beachy:true},
+        {n:'Charlotte / Ontario Beach', q:'Ontario Beach Park Rochester NY', hood:'Anywhere', area:'Charlotte, on Lake Ontario', vibe:['active','cozy'], budget:0, price:'Free', tip:'The classic Rochester beach walk, with the pier and the old carousel nearby.', drive:2, beachy:true},
         {n:'Corbett\'s Glen Nature Park', hood:'Anywhere', area:'Penfield', vibe:['active','cozy'], budget:0, price:'Free', tip:'A short, pretty trail past a waterfall and an old rail bridge, easy to fit into any evening.', drive:2},
         {n:'Mount Hope Cemetery', hood:'Monroe/Highland', vibe:['cozy','arts'], budget:0, price:'Free', tip:'A quiet, historic walk past Susan B. Anthony\'s and Frederick Douglass\'s graves, especially nice at dusk.', drive:1}
       ],
@@ -3191,15 +3248,22 @@
       cardsEl.appendChild(card);
     });
 
+    /* what to type into Google Maps for a spot: name + a real-area hint + Rochester NY */
+    var HOOD_HINT = {'South Wedge':'South Wedge', 'Park Ave':'Park Ave', 'North Winton Village':'North Winton'};
+    function placeQuery(s){
+      if(s.q) return s.q;
+      var hint = s.hood === 'Anywhere' ? '' : (HOOD_HINT[s.hood] || '');
+      return s.n + (hint ? ' ' + hint : '') + ' Rochester NY';
+    }
     function cardBody(i){
       var s = picks[i]; var box = cardsEl.children[i].querySelector('.dn-body');
       if(!s){ box.innerHTML = '<div class="dn-placeholder">Spin to fill this stop</div>'; return; }
-      var dollars = '$'.repeat(s.budget + 1) + '<span style="opacity:.3">' + '$'.repeat(3 - s.budget - 1) + '</span>';
-      var q = encodeURIComponent(s.n + ' Rochester NY');
+      var dollars = '$'.repeat(s.budget + 1);
+      var q = encodeURIComponent(placeQuery(s));
       box.innerHTML = '<h3 class="dn-name">' + s.n + '</h3>' +
         '<div class="dn-meta"><span>' + svg('pin') + (s.area || s.hood) + '</span><span class="dn-price">' + dollars + '</span><span class="dn-vibe">' + s.price + '</span></div>' +
         '<p class="dn-tip">' + s.tip + '</p>' +
-        '<a class="dn-info" href="https://www.google.com/search?q=' + q + '" target="_blank" rel="noopener">More info ' + svg('link') + '</a>';
+        '<a class="dn-info" href="https://www.google.com/maps/search/?api=1&query=' + q + '" target="_blank" rel="noopener">Map &amp; hours ' + svg('link') + '</a>';
     }
     $('dnRollIcon').innerHTML = svg('dice');
 
@@ -3211,7 +3275,17 @@
     $('dnWinterIcon').innerHTML = svg('snow');
     winterEl.addEventListener('change', function(){ state.winter = winterEl.checked; updateEmpty(); });
 
+    /* customize panel: closed on phones, open on desktop; badge shows how many filters are set */
+    var customBtn = $('dnCustom'), filtersEl = $('dnFilters'), countEl = $('dnCount');
+    function setFilters(open){ filtersEl.hidden = !open; customBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    customBtn.addEventListener('click', function(){ setFilters(filtersEl.hidden); });
+    setFilters(window.innerWidth > 820);
+    function updateCount(){
+      var n = (state.budget !== 0 ? 1 : 0) + (state.hood !== 'All Rochester' ? 1 : 0) + (state.vibe !== 'all' ? 1 : 0);
+      countEl.hidden = n === 0; countEl.textContent = n;
+    }
     function updateEmpty(){
+      updateCount();
       var thin = STEPS.some(function(st){ return stretched(st[0]); });
       emptyEl.textContent = thin ? 'Not many exact matches there yet, so a pick or two may stretch your filters a bit.' : '';
       rollBtn.disabled = false;
@@ -3275,8 +3349,7 @@
 
     /* ---- directions: one Google Maps route through all three stops ---- */
     function directionsUrl(){
-      var q = function(s){ return encodeURIComponent(s.n + ' Rochester NY'); };
-      return 'https://www.google.com/maps/dir/?api=1&destination=' + q(picks[2]) + '&waypoints=' + q(picks[0]) + '%7C' + q(picks[1]) + '&travelmode=driving';
+      return 'https://www.google.com/maps/dir/' + picks.map(function(p){ return encodeURIComponent(placeQuery(p)); }).join('/') + '/';
     }
 
     /* ---- add to calendar: a single .ics event covering the whole date ---- */
@@ -3319,7 +3392,12 @@
 
       var plan = $('dnPlan'); plan.hidden = false;
       var dirBtn = $('dnDirections'); dirBtn.href = directionsUrl(); dirBtn.innerHTML = svg('route') + 'Get directions';
-      var calBtn = $('dnCal'); calBtn.innerHTML = svg('calendar') + 'Add to calendar'; calBtn.onclick = downloadIcs;
+      var calBtn = $('dnCal'), whenEl = $('dnWhen'); calBtn.innerHTML = svg('calendar') + 'Add to calendar';
+      calBtn.onclick = function(){
+        whenEl.hidden = !whenEl.hidden; calBtn.setAttribute('aria-expanded', whenEl.hidden ? 'false' : 'true');
+        if(!whenEl.hidden) $('dnDate').focus();
+      };
+      var goBtn = $('dnCalGo'); goBtn.innerHTML = svg('calendar') + 'Download event'; goBtn.onclick = downloadIcs;
       var shareBtn = $('dnShare'); shareBtn.innerHTML = svg('linkchain') + 'Copy link';
       shareBtn.onclick = function(){
         var btn = this;
